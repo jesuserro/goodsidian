@@ -164,20 +164,21 @@ cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
     osascript -e "display notification \"Failed to create note due to empty array.\" with title \"Error!\""
   else
     echo "---
+aliases: []
 bookid: ${bookid}
 isbn: ${isbn}
 asin:
-date: ${user_date_created}      
+author:: [[${author}]]
+pages: ${num_pages}
+book_published:: [[${book_published}]]  
+cover: ${imglink}   
 tags: 
 - book/profile
 - book/goodreads/${shelf}
+date: ${user_date_created} 
 rating:
-emotion:
-author:: [[${author}]]
-pages: ${num_pages}
 average_rating: ${average_rating}
-book_published:: [[${book_published}]]
-cover: ${imglink}
+emotion:
 ---
 
 # ${title}
