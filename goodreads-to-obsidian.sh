@@ -8,7 +8,9 @@
 
 # url for "Currently reading":
 # url="https://www.goodreads.com/url-to-your-rss-feed-shelf=currently-reading"
-url="https://www.goodreads.com/review/list_rss/$user?key=$key&shelf=to-read"
+# url="https://www.goodreads.com/review/list_rss/$user?key=$key&shelf=to-read"
+url="https://www.goodreads.com/review/list_rss/$user?key=$key&shelf=currently-reading"
+
 # url for "Read":
 # readurl="https://www.goodreads.com/url-to-your-rss-feed-shelf=read"
 readurl="https://www.goodreads.com/review/list_rss/$user?key=$key&shelf=read"
@@ -23,7 +25,7 @@ nummonth=$(date +%m)
 month=$(date +%B)
 
 # This grabs the data from the currently reading rss feed and formats it
-IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>)' | \
+IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|pubDate>)' | \
 sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
 -e 's/Joschua.s bookshelf: currently-reading//' \
 -e 's/<book_large_image_url>//' -e 's/<\/book_large_image_url>/ | /' \
@@ -31,6 +33,7 @@ sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
 -e 's/<author_name>//' -e 's/<\/author_name>/ | /' \
 -e 's/<book_published>//' -e 's/<\/book_published>/ | /' \
 -e 's/<book_id>//' -e 's/<\/book_id>/ | /' \
+-e 's/<pubDate>//' -e 's/<\/pubDate>/ | /' \
 -e 's/^[ \t]*//' -e 's/[ \t]*$//' | \
 tail +3 | \
 fmt
@@ -82,6 +85,7 @@ do
           unset arr[$( expr "$counter" + 2)]
           unset arr[$( expr "$counter" + 3)]
           unset arr[$( expr "$counter" + 4)]
+          unset arr[$( expr "$counter" + 5)]
 
        # code if not found
 
@@ -102,18 +106,30 @@ if (( "$bookamount" == 0 )); then
   osascript -e "display notification \"No new books found.\" with title \"Currently-reading: No update\""
 fi
 
+# printf '%s\n' "${arr[@]}"
+# return
+# Wed, 25 Aug 2021 13:15:49 -0700
+# Biblia de Jerusalén
+# 20924275
+# https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1393428258l/20924275.jpg
+# Ecole biblique de Jérusalem
+# 1966
+
+
 # Start the loop for each book
 for (( i = 0 ; i < ${bookamount} ; i++ ))
 do
 
-  counter=$( expr "$i" \* 5)
+  counter=$( expr "$i" \* 6)
 
   # Set variables
-  title=${arr["$counter"]}
-  bookid=${arr[$( expr "$counter" + 1)]}
-  imglink=${arr[$( expr "$counter" + 2)]}
-  author=${arr[$( expr "$counter" + 3)]}
-  pub=${arr[$( expr "$counter" + 4)]}
+  pubDate=${arr[$( expr "$counter")]}
+  title=${arr["$counter + 1"]}
+  bookid=${arr[$( expr "$counter" + 2)]}
+  imglink=${arr[$( expr "$counter" + 3)]}
+  author=${arr[$( expr "$counter" + 4)]}
+  pub=${arr[$( expr "$counter" + 5)]}
+  
 
 
 # Delete illegal (':' and '/') and unwanted ('#') characters
@@ -133,6 +149,7 @@ links: [[Books MOC]]
 #currently-reading
 # ${title}
 ![b|150](${imglink})
+* PubDate: ${pubDate}
 * Type: #book/
 * Universe/Series: ADD SERIES
 * Author: [[${author}]]
