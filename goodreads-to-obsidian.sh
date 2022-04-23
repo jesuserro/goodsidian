@@ -27,7 +27,7 @@ nummonth=$(date +%m)
 month=$(date +%B)
 
 # This grabs the data from the currently reading rss feed and formats it
-IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>|user_review>)' | \
+IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>|user_review>|guid>)' | \
 sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
 -e 's/Jei.s bookshelf: '$shelf'//' \
 -e 's/<book_large_image_url>//' -e 's/<\/book_large_image_url>/ | /' \
@@ -39,6 +39,7 @@ sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
 -e 's/<user_shelves>//' -e 's/<\/user_shelves>/ | /' \
 -e 's/<num_pages>//' -e 's/<\/num_pages>/ | /' \
 -e 's/<isbn>//' -e 's/<\/isbn>/ | /' \
+-e 's/<guid>//' -e 's/<\/guid>/ | /' \
 -e 's/<average_rating>//' -e 's/<\/average_rating>/ | /' \
 -e 's/<user_review>//' -e 's/<\/user_review>/ | /' \
 -e 's/<user_date_created>//' -e 's/<\/user_date_created>/ | /' \
@@ -100,6 +101,7 @@ do
           unset arr[$( expr "$counter" + 9)]
           unset arr[$( expr "$counter" + 10)]
           unset arr[$( expr "$counter" + 11)]
+          unset arr[$( expr "$counter" + 12)]
 
        # code if not found
 
@@ -135,30 +137,34 @@ fi
 for (( i = 0 ; i < ${bookamount} ; i++ ))
 do
 
-  counter=$( expr "$i" \* 12)
+  counter=$( expr "$i" \* 13)
 
   # Set variables
-  title=${arr["$counter"]}
-  bookid=${arr[$( expr "$counter" + 1)]}
-  imglink=${arr[$( expr "$counter" + 2)]}
-  book_description=${arr[$( expr "$counter + 3")]}
-  num_pages=${arr[$( expr "$counter + 4")]}
-  author=${arr[$( expr "$counter" + 5)]}
-  isbn=${arr[$( expr "$counter" + 6)]}
-  user_date_created=${arr[$( expr "$counter + 7")]}
-  user_date_created=$(date -d "$user_date_created" +'%Y-%m-%d %H:%M')
-  user_shelves=${arr[$( expr "$counter" + 8)]}
-  user_review=${arr[$( expr "$counter" + 9)]}
-  average_rating=${arr[$( expr "$counter" + 10)]}
-  book_published=${arr[$( expr "$counter" + 11)]}
+  guid=${arr["$counter"]}
+  title=${arr[$( expr "$counter" + 1)]}
+  bookid=${arr[$( expr "$counter" + 2)]}
+  imglink=${arr[$( expr "$counter" + 3)]}
+  book_description=${arr[$( expr "$counter + 4")]}
+  num_pages=${arr[$( expr "$counter + 5")]}
+  author=${arr[$( expr "$counter" + 6)]}
+  isbn=${arr[$( expr "$counter" + 7)]}
+  user_date_created=${arr[$( expr "$counter + 8")]}
+  user_shelves=${arr[$( expr "$counter" + 9)]}
+  user_review=${arr[$( expr "$counter" + 10)]}
+  average_rating=${arr[$( expr "$counter" + 11)]}
+  book_published=${arr[$( expr "$counter" + 12)]}
   
 
+# Clean vars
+# Format date
+user_date_created=$(date -d "$user_date_created" +'%Y-%m-%d %H:%M')
+clean_user_date_created=$(date -d "$user_date_created" +'%Y%m%d%H%M')
 
 # Delete illegal (':' and '/') and unwanted ('#') characters
 cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
 
-  # Write the contents for the book file
 
+  # Write the contents for the book file
   if [[ "$cleantitle" == "" ]];
   then
     osascript -e "display notification \"Failed to create note due to empty array.\" with title \"Error!\""
@@ -173,8 +179,8 @@ pages: ${num_pages}
 book_published:: [[${book_published}]]  
 cover: ${imglink}   
 tags: 
-- book/profile
-- book/goodreads/${shelf}
+- book/goodreads/profile
+- book/goodreads/status/${shelf}
 date: ${user_date_created} 
 rating:
 average_rating: ${average_rating}
@@ -185,6 +191,7 @@ emotion:
 * Author: [[${author}]]
 
 [[goodreads]]
+[Review, Private notes & Quotes](${guid})
 
 ![b|150](${imglink})
 
@@ -197,7 +204,7 @@ ${book_description}
 ## Review
 ${user_review}
 
-" >> "${vaultpath}/${cleantitle}.md"
+" >> "${vaultpath}/${clean_user_date_created} ${cleantitle}.md"
 
     # Display a notification when creating the file
     osascript -e "display notification \"Booknote created!\" with title \"${cleantitle//\"/\\\"}\""
