@@ -27,7 +27,7 @@ nummonth=$(date +%m)
 month=$(date +%B)
 
 # This grabs the data from the currently reading rss feed and formats it
-IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>)' | \
+IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>|user_review>)' | \
 sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
 -e 's/Jei.s bookshelf: '$shelf'//' \
 -e 's/<book_large_image_url>//' -e 's/<\/book_large_image_url>/ | /' \
@@ -40,6 +40,7 @@ sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
 -e 's/<num_pages>//' -e 's/<\/num_pages>/ | /' \
 -e 's/<isbn>//' -e 's/<\/isbn>/ | /' \
 -e 's/<average_rating>//' -e 's/<\/average_rating>/ | /' \
+-e 's/<user_review>//' -e 's/<\/user_review>/ | /' \
 -e 's/<user_date_created>//' -e 's/<\/user_date_created>/ | /' \
 -e 's/^[ \t]*//' -e 's/[ \t]*$//' | \
 tail +3 | \
@@ -94,6 +95,11 @@ do
           unset arr[$( expr "$counter" + 4)]
           unset arr[$( expr "$counter" + 5)]
           unset arr[$( expr "$counter" + 6)]
+          unset arr[$( expr "$counter" + 7)]
+          unset arr[$( expr "$counter" + 8)]
+          unset arr[$( expr "$counter" + 9)]
+          unset arr[$( expr "$counter" + 10)]
+          unset arr[$( expr "$counter" + 11)]
 
        # code if not found
 
@@ -129,7 +135,7 @@ fi
 for (( i = 0 ; i < ${bookamount} ; i++ ))
 do
 
-  counter=$( expr "$i" \* 11)
+  counter=$( expr "$i" \* 12)
 
   # Set variables
   title=${arr["$counter"]}
@@ -142,8 +148,9 @@ do
   user_date_created=${arr[$( expr "$counter + 7")]}
   user_date_created=$(date -d "$user_date_created" +'%Y-%m-%d %H:%M')
   user_shelves=${arr[$( expr "$counter" + 8)]}
-  average_rating=${arr[$( expr "$counter" + 9)]}
-  pub=${arr[$( expr "$counter" + 10)]}
+  user_review=${arr[$( expr "$counter" + 9)]}
+  average_rating=${arr[$( expr "$counter" + 10)]}
+  book_published=${arr[$( expr "$counter" + 11)]}
   
 
 
@@ -168,11 +175,11 @@ emotion:
 author:: [[${author}]]
 pages: ${num_pages}
 average_rating: ${average_rating}
+book_published:: [[${book_published}]]
 ---
 
 # ${title}
 * Author: [[${author}]]
-* Year published: [[${pub}]]
 
 [[goodreads]]
 
@@ -183,6 +190,9 @@ ${user_shelves}
 
 ## Descripción
 ${book_description}
+
+## Review
+${user_review}
 
 " >> "${vaultpath}/${cleantitle}.md"
 
