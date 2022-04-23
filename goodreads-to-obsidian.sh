@@ -4,7 +4,8 @@
 # You can find it by navigating to one of your goodreads shelves and
 # clicking the "RSS" button at the bottom of the page.
 
-shelf="currently-reading"
+shelf="read"
+# shelf="currently-reading"
 
 . ./goodreads.cfg
 
@@ -27,7 +28,7 @@ nummonth=$(date +%m)
 month=$(date +%B)
 
 # This grabs the data from the currently reading rss feed and formats it
-IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>|user_review>|guid>)' | \
+IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>|user_review>|guid>|user_rating>|user_read_at>|user_date_added>)' | \
 sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
 -e 's/Jei.s bookshelf: '$shelf'//' \
 -e 's/<book_large_image_url>//' -e 's/<\/book_large_image_url>/ | /' \
@@ -40,6 +41,9 @@ sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
 -e 's/<num_pages>//' -e 's/<\/num_pages>/ | /' \
 -e 's/<isbn>//' -e 's/<\/isbn>/ | /' \
 -e 's/<guid>//' -e 's/<\/guid>/ | /' \
+-e 's/<user_rating>//' -e 's/<\/user_rating>/ | /' \
+-e 's/<user_read_at>//' -e 's/<\/user_read_at>/ | /' \
+-e 's/<user_date_added>//' -e 's/<\/user_date_added>/ | /' \
 -e 's/<average_rating>//' -e 's/<\/average_rating>/ | /' \
 -e 's/<user_review>//' -e 's/<\/user_review>/ | /' \
 -e 's/<user_date_created>//' -e 's/<\/user_date_created>/ | /' \
@@ -102,6 +106,9 @@ do
           unset arr[$( expr "$counter" + 10)]
           unset arr[$( expr "$counter" + 11)]
           unset arr[$( expr "$counter" + 12)]
+          unset arr[$( expr "$counter" + 13)]
+          unset arr[$( expr "$counter" + 14)]
+          unset arr[$( expr "$counter" + 15)]
 
        # code if not found
 
@@ -137,7 +144,7 @@ fi
 for (( i = 0 ; i < ${bookamount} ; i++ ))
 do
 
-  counter=$( expr "$i" \* 13)
+  counter=$( expr "$i" \* 16)
 
   # Set variables
   guid=${arr["$counter"]}
@@ -148,15 +155,28 @@ do
   num_pages=${arr[$( expr "$counter + 5")]}
   author=${arr[$( expr "$counter" + 6)]}
   isbn=${arr[$( expr "$counter" + 7)]}
-  user_date_created=${arr[$( expr "$counter + 8")]}
-  user_shelves=${arr[$( expr "$counter" + 9)]}
-  user_review=${arr[$( expr "$counter" + 10)]}
-  average_rating=${arr[$( expr "$counter" + 11)]}
-  book_published=${arr[$( expr "$counter" + 12)]}
+  user_rating=${arr[$( expr "$counter" + 8)]}
+  user_read_at=${arr[$( expr "$counter" + 9)]}
+  user_date_added=${arr[$( expr "$counter" + 10)]}
+  user_date_created=${arr[$( expr "$counter + 11")]}
+  user_shelves=${arr[$( expr "$counter" + 12)]}
+  user_review=${arr[$( expr "$counter" + 13)]}
+  average_rating=${arr[$( expr "$counter" + 14)]}
+  book_published=${arr[$( expr "$counter" + 15)]}
   
+
+if [ -z "$user_read_at" ]
+then
+  user_read_at=${user_date_created}
+fi
 
 # Clean vars
 # Format date
+user_read_at=$(date -d "$user_read_at" +'%Y-%m-%d %H:%M')
+clean_user_read_at=$(date -d "$user_read_at" +'%Y%m%d%H%M')
+
+user_date_added=$(date -d "$user_date_added" +'%Y-%m-%d %H:%M')
+
 user_date_created=$(date -d "$user_date_created" +'%Y-%m-%d %H:%M')
 clean_user_date_created=$(date -d "$user_date_created" +'%Y%m%d%H%M')
 
@@ -181,8 +201,10 @@ cover: ${imglink}
 tags: 
 - book/goodreads/profile
 - book/goodreads/status/${shelf}
-date: ${user_date_created} 
-rating:
+date: ${user_read_at}
+created: ${user_date_created} 
+updated: ${user_date_added} 
+rating: ${user_rating}
 average_rating: ${average_rating}
 emotion:
 ---
@@ -204,7 +226,7 @@ ${book_description}
 ## Review
 ${user_review}
 
-" >> "${vaultpath}/${clean_user_date_created} ${cleantitle}.md"
+" >> "${vaultpath}/${clean_user_read_at} ${cleantitle}.md"
 
     # Display a notification when creating the file
     osascript -e "display notification \"Booknote created!\" with title \"${cleantitle//\"/\\\"}\""
