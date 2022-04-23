@@ -27,7 +27,7 @@ nummonth=$(date +%m)
 month=$(date +%B)
 
 # This grabs the data from the currently reading rss feed and formats it
-IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|pubDate>|book_description>)' | \
+IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>)' | \
 sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
 -e 's/Jei.s bookshelf: '$shelf'//' \
 -e 's/<book_large_image_url>//' -e 's/<\/book_large_image_url>/ | /' \
@@ -36,7 +36,11 @@ sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
 -e 's/<author_name>//' -e 's/<\/author_name>/ | /' \
 -e 's/<book_published>//' -e 's/<\/book_published>/ | /' \
 -e 's/<book_id>//' -e 's/<\/book_id>/ | /' \
--e 's/<pubDate>//' -e 's/<\/pubDate>/ | /' \
+-e 's/<user_shelves>//' -e 's/<\/user_shelves>/ | /' \
+-e 's/<num_pages>//' -e 's/<\/num_pages>/ | /' \
+-e 's/<isbn>//' -e 's/<\/isbn>/ | /' \
+-e 's/<average_rating>//' -e 's/<\/average_rating>/ | /' \
+-e 's/<user_date_created>//' -e 's/<\/user_date_created>/ | /' \
 -e 's/^[ \t]*//' -e 's/[ \t]*$//' | \
 tail +3 | \
 fmt
@@ -113,32 +117,33 @@ fi
 # printf '%s\n' "${arr[@]}"
 # return
 
-# Mon, 13 Sep 2021 06:47:44 -0700
 # El Abandono en la Divina Providencia: Clásicos Católicos
 # 25239369
 # https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1427597020l/25239369.jpg
 # Esta breve obra se compone de cartas escritas por un eclesiástico a la superiora de una comunidad religiosa. En ella se ve claro que el autor fue un hombre espiritual, interior y gran amigo de Dios. Él descubre en sus cartas, aquí abreviadas a veces, el verdadero método, el más corto y realmente el único para llegar a Dios. Feliz aquél que reciba fielmente estas lecciones. Los pecadores encontrarán cómo redimir sus pecados, expiando las acciones cumplidas por su propia voluntad, por la adhesión única a la voluntad de Dios. Y los justos comprobarán que, con muy poco esfuerzo y trabajo en sus ocupaciones y quehaceres, podrán llegar muy pronto a un alto grado de perfección y a una eminente santidad. No es otro el fin que aquí se pretende sino la mayor gloria de Dios y la santificación del lector
 # Jean-Pierre de Caussade
+# Fri, 12 Apr 2019 03:24:53 -0700
 # 1861
-
-
-
 
 # Start the loop for each book
 for (( i = 0 ; i < ${bookamount} ; i++ ))
 do
 
-  counter=$( expr "$i" \* 7)
+  counter=$( expr "$i" \* 11)
 
   # Set variables
-  pubDate=${arr[$( expr "$counter")]}
-  pubDate=$(date -d "$pubDate" +'%Y-%m-%d %H:%M')
-  title=${arr["$counter + 1"]}
-  bookid=${arr[$( expr "$counter" + 2)]}
-  imglink=${arr[$( expr "$counter" + 3)]}
-  book_description=${arr[$( expr "$counter + 4")]}
+  title=${arr["$counter"]}
+  bookid=${arr[$( expr "$counter" + 1)]}
+  imglink=${arr[$( expr "$counter" + 2)]}
+  book_description=${arr[$( expr "$counter + 3")]}
+  num_pages=${arr[$( expr "$counter + 4")]}
   author=${arr[$( expr "$counter" + 5)]}
-  pub=${arr[$( expr "$counter" + 6)]}
+  isbn=${arr[$( expr "$counter" + 6)]}
+  user_date_created=${arr[$( expr "$counter + 7")]}
+  user_date_created=$(date -d "$user_date_created" +'%Y-%m-%d %H:%M')
+  user_shelves=${arr[$( expr "$counter" + 8)]}
+  average_rating=${arr[$( expr "$counter" + 9)]}
+  pub=${arr[$( expr "$counter" + 10)]}
   
 
 
@@ -153,22 +158,28 @@ cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
   else
     echo "---
 bookid: ${bookid}
-date: ${pubDate}      
+isbn: ${isbn}
+date: ${user_date_created}      
 tags: 
 - book/profile
 - goodreads/${shelf}
 rating:
 emotion:
+author:: [[${author}]]
+pages: ${num_pages}
+average_rating: ${average_rating}
 ---
 
 # ${title}
+* Author: [[${author}]]
+* Year published: [[${pub}]]
 
 [[goodreads]]
 
 ![b|150](${imglink})
-* PubDate: ${pubDate}
-* Author: [[${author}]]
-* Year published: [[${pub}]]
+
+## Estanterías 
+${user_shelves}
 
 ## Descripción
 ${book_description}
