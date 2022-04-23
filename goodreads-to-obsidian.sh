@@ -4,13 +4,17 @@
 # You can find it by navigating to one of your goodreads shelves and
 # clicking the "RSS" button at the bottom of the page.
 
+. ./goodreads.cfg
+
 # url for "Currently reading":
-url="https://www.goodreads.com/url-to-your-rss-feed-shelf=currently-reading"
+# url="https://www.goodreads.com/url-to-your-rss-feed-shelf=currently-reading"
+url="https://www.goodreads.com/review/list_rss/${user}?key=${key}&shelf=to-read"
 # url for "Read":
-readurl="https://www.goodreads.com/url-to-your-rss-feed-shelf=read"
+# readurl="https://www.goodreads.com/url-to-your-rss-feed-shelf=read"
+readurl="https://www.goodreads.com/review/list_rss/${user}?key=${key}&shelf=read"
 
 # Enter the path to your Vault
-vaultpath="Path/to/your/vault"
+vaultpath="${vaultpath}"
 
 
 # Assign times to variables

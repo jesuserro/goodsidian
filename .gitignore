@@ -1,2 +1,4 @@
 .DS_Store
 rss-grabber.sh
+goodreads.cfg
+.history/*
