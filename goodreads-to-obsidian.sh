@@ -166,16 +166,18 @@ cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
     echo "---
 bookid: ${bookid}
 isbn: ${isbn}
+asin:
 date: ${user_date_created}      
 tags: 
 - book/profile
-- goodreads/${shelf}
+- book/goodreads/${shelf}
 rating:
 emotion:
 author:: [[${author}]]
 pages: ${num_pages}
 average_rating: ${average_rating}
 book_published:: [[${book_published}]]
+cover: ${imglink}
 ---
 
 # ${title}
