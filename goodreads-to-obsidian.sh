@@ -4,7 +4,8 @@
 # You can find it by navigating to one of your goodreads shelves and
 # clicking the "RSS" button at the bottom of the page.
 
-shelf="read"
+shelf="patata"
+# shelf="read"
 # shelf="currently-reading"
 
 . ./goodreads.cfg
@@ -170,8 +171,8 @@ then
   user_read_at=${user_date_created}
 fi
 
-# Clean vars
-# Format date
+# Clean vars:
+# 1. Format date
 user_read_at=$(date -d "$user_read_at" +'%Y-%m-%d %H:%M')
 clean_user_read_at=$(date -d "$user_read_at" +'%Y%m%d%H%M')
 
@@ -180,8 +181,16 @@ user_date_added=$(date -d "$user_date_added" +'%Y-%m-%d %H:%M')
 user_date_created=$(date -d "$user_date_created" +'%Y-%m-%d %H:%M')
 clean_user_date_created=$(date -d "$user_date_created" +'%Y%m%d%H%M')
 
-# Delete illegal (':' and '/') and unwanted ('#') characters
+# 2. Delete illegal (':' and '/') and unwanted ('#') characters
 cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
+
+# 3. Clean tags
+IFS=', ' read -ra arrtags <<< "$user_shelves"
+for index in "${!arrtags[@]}"
+do
+    arrtags[$index]="[[${arrtags[$index]}]]"
+done
+user_shelves=$(IFS=', ' ; echo "${arrtags[*]}")
 
 
   # Write the contents for the book file
@@ -202,6 +211,7 @@ tags:
 - book/goodreads/profile
 - book/goodreads/status/${shelf}
 date: ${user_read_at}
+readed: ${user_read_at}
 created: ${user_date_created} 
 updated: ${user_date_added} 
 rating: ${user_rating}
