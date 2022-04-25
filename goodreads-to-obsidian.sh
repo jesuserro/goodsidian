@@ -4,9 +4,10 @@
 # You can find it by navigating to one of your goodreads shelves and
 # clicking the "RSS" button at the bottom of the page.
 
-shelf="patata"
-# shelf="read"
 # shelf="currently-reading"
+# shelf="read"
+shelf="to-read"
+
 
 . ./goodreads.cfg
 
