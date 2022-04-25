@@ -1,3 +1,7 @@
+# My Goodsidian Usage
+- Open Windows explorer and run "goodreads-to-obsidian.sh"
+- Some minutes after, goodreads books in md notes will be downloaded in vaultpath defined in goodreads.cfg
+
 # Goodsidian 
 Goodsidian takes updates to your shelves on [Goodreads](https://www.goodreads.com/) and formats them to a note in [Obsidian](https://obsidian.md/).
 
