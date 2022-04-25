@@ -188,9 +188,11 @@ cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
 IFS=', ' read -ra arrtags <<< "$user_shelves"
 for index in "${!arrtags[@]}"
 do
+    arrlinks[$index]="[[${arrtags[$index]}]]"
     arrtags[$index]="- book/goodreads/tag/${arrtags[$index]}"
 done
 user_shelves=$(IFS=$'\n' ; echo "${arrtags[*]}")
+user_shelves_links=$(IFS=' ' ; echo "${arrlinks[*]}")
 
 
   # Write the contents for the book file
@@ -229,7 +231,7 @@ emotion:
 ![b|150](${imglink})
 
 ## Estanterías 
-${user_shelves}
+${user_shelves_links}
 
 ## Descripción
 ${book_description}
