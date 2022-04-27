@@ -250,6 +250,14 @@ ${user_review}
 
 
 # Ficha autor:
+FILE="${vaultpath}/${author}.md" 
+
+
+if [ -f "$FILE" ]; then
+    # echo "$FILE exists."
+    echo "- [[${clean_user_read_at} ${cleantitle}]]" >> "${FILE}"
+else 
+    # echo "$FILE does not exist."
 echo "---
 aliases: []
 author:: [[${author}]]  
@@ -272,9 +280,8 @@ emotion:
 ${user_shelves_links}
 
 ## Referencias
-- [[${clean_user_read_at} ${cleantitle}]]
-
-" >> "${vaultpath}/${author}.md"
+- [[${clean_user_read_at} ${cleantitle}]]" >> "${FILE}"
+  fi
 
 
 
