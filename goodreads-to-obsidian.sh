@@ -4,9 +4,12 @@
 # You can find it by navigating to one of your goodreads shelves and
 # clicking the "RSS" button at the bottom of the page.
 
+# shelf="patata"
 # shelf="currently-reading"
+# shelf="pausados"
+shelf="000-next"
 # shelf="read"
-shelf="to-read"
+# shelf="to-read"
 
 
 . ./goodreads.cfg
@@ -224,7 +227,7 @@ emotion:
 ---
 
 # ${title}
-* Author: [[${author}]]
+* Author: [[${author}]] [[${clean_user_date_created} ${author}]]
 
 [[goodreads]]
 [Review, Private notes & Quotes](${guid})
@@ -240,7 +243,40 @@ ${book_description}
 ## Review
 ${user_review}
 
+## Referencias
+- 
+
 " >> "${vaultpath}/${clean_user_read_at} ${cleantitle}.md"
+
+
+# Ficha autor:
+echo "---
+aliases: []
+author:: [[${author}]]  
+tags: 
+- people/author
+${user_shelves}
+date: ${user_read_at}
+readed: ${user_read_at}
+created: ${user_date_created} 
+updated: ${user_date_added} 
+rating: ${user_rating}
+emotion:
+---
+
+# ${author}
+
+[[goodreads]]
+
+## Estanterías 
+${user_shelves_links}
+
+## Referencias
+- [[${clean_user_read_at} ${cleantitle}]]
+
+" >> "${vaultpath}/${author}.md"
+
+
 
     # Display a notification when creating the file
     osascript -e "display notification \"Booknote created!\" with title \"${cleantitle//\"/\\\"}\""
