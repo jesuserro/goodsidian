@@ -58,67 +58,15 @@ fmt
 )
 
 
-# Grab the bookid from READ data from the url and format it
-IFS=$'\n' readfeed=$(curl --silent "$readurl" | grep -E '(book_id>)' | \
-sed -e 's/<book_id>//' -e 's/<\/book_id>/ | /' \
--e 's/^[ \t]*//' -e 's/[ \t]*$//' | \
-fmt
-)
-
 # Turn the data into an array
-arr=($(echo $feed | tr "|" "\n")) # CURRENTLY-READING
-readarr=($(echo $readfeed | tr "|" "\n")) # READ
+arr=($(echo $feed | tr "|" "\n")) # shelf
 
-# Remove whitespace on each element: CURRENTLY-READING
+# Remove whitespace on each element: shelf
 for (( i = 0 ; i < ${#arr[@]} ; i++ ))
 do
   arr[$i]=$(echo "${arr[$i]}" | sed -e 's/^[ \t]*//' -e 's/[ \t]*$//')
 done
 
-# Remove whitespace on each element: READ
-for (( i = 0 ; i < ${#readarr[@]} ; i++ ))
-do
-  readarr[$i]=$(echo "${readarr[$i]}" | sed -e 's/^[ \t]*//' -e 's/[ \t]*$//')
-done
-
-
-# Get the amount of books by dividing array by 5
-bookamount=$( expr "${#arr[@]}" / 5)
-
-for (( i = 0 ; i < ${bookamount} ; i++ ))
-do
-  # Create a temporary counter to loop through books
-  counter=$( expr "$i" \* 5)
-
-  # Set variables
-  bookid=${arr[$( expr "$counter" + 1)]}
-
-# Check if book already exists in note by bookid
-    
-    if grep -q "${bookid}" -r "${vaultpath}"
-      then
-        # code if found
-          unset arr["$counter"]
-          unset arr[$( expr "$counter" + 1)]
-          unset arr[$( expr "$counter" + 2)]
-          unset arr[$( expr "$counter" + 3)]
-          unset arr[$( expr "$counter" + 4)]
-          unset arr[$( expr "$counter" + 5)]
-          unset arr[$( expr "$counter" + 6)]
-          unset arr[$( expr "$counter" + 7)]
-          unset arr[$( expr "$counter" + 8)]
-          unset arr[$( expr "$counter" + 9)]
-          unset arr[$( expr "$counter" + 10)]
-          unset arr[$( expr "$counter" + 11)]
-          unset arr[$( expr "$counter" + 12)]
-          unset arr[$( expr "$counter" + 13)]
-          unset arr[$( expr "$counter" + 14)]
-          unset arr[$( expr "$counter" + 15)]
-
-       # code if not found
-
-     fi
-done
 
 # Reindex array to take away gaps
 for i in "${!arr[@]}"; do
