@@ -210,7 +210,7 @@ echo "---
 aliases: []
 author:: [[${author}]]  
 tags: 
-- people/author
+- people/goodreads/author
 ${user_shelves}
 date: ${user_read_at}
 readed: ${user_read_at}
