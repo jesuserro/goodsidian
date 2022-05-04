@@ -6,14 +6,9 @@
 
 . ./goodreads.cfg
 
-# url for "Currently reading":
-# url="https://www.goodreads.com/url-to-your-rss-feed-shelf=currently-reading"
-# url="https://www.goodreads.com/review/list_rss/$user?key=$key&shelf=to-read"
-url="https://www.goodreads.com/review/list_rss/$user?key=$key&shelf=$shelf"
-
-# Enter the path to your Vault
-vaultpath=$vaultpath
-shelf=$shelf
+# url="$urlbase/url-to-your-rss-feed-shelf=$shelf"
+# url="$urlbase/review/list_rss/$user?key=$key&shelf=$shelf"
+url="$urlbase/review/list_rss/$user?key=$key&shelf=$shelf"
 
 
 # This grabs the data from the currently reading rss feed and formats it
@@ -41,7 +36,7 @@ unset new_array
 bookamount=$( expr "${#arr[@]}")
 
 if (( "$bookamount" == 0 )); then
-  echo "No books found"
+  echo "No books found in shelf $shelf"
 fi
 
 # Start the loop for each book
