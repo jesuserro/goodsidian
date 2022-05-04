@@ -4,14 +4,6 @@
 # You can find it by navigating to one of your goodreads shelves and
 # clicking the "RSS" button at the bottom of the page.
 
-# shelf="patata"
-# shelf="currently-reading"
-# shelf="pausados"
-shelf="000-next"
-# shelf="read"
-# shelf="to-read"
-
-
 . ./goodreads.cfg
 
 # url for "Currently reading":
@@ -25,6 +17,7 @@ readurl="https://www.goodreads.com/review/list_rss/$user?key=$key&shelf=read"
 
 # Enter the path to your Vault
 vaultpath=$vaultpath
+shelf=$shelf
 
 
 # Assign times to variables
@@ -85,14 +78,6 @@ fi
 # printf '%s\n' "${arr[@]}"
 # cmd /k
 # return
-
-# El Abandono en la Divina Providencia: Clásicos Católicos
-# 25239369
-# https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1427597020l/25239369.jpg
-# Esta breve obra se compone de cartas escritas por un eclesiástico a la superiora de una comunidad religiosa. En ella se ve claro que el autor fue un hombre espiritual, interior y gran amigo de Dios. Él descubre en sus cartas, aquí abreviadas a veces, el verdadero método, el más corto y realmente el único para llegar a Dios. Feliz aquél que reciba fielmente estas lecciones. Los pecadores encontrarán cómo redimir sus pecados, expiando las acciones cumplidas por su propia voluntad, por la adhesión única a la voluntad de Dios. Y los justos comprobarán que, con muy poco esfuerzo y trabajo en sus ocupaciones y quehaceres, podrán llegar muy pronto a un alto grado de perfección y a una eminente santidad. No es otro el fin que aquí se pretende sino la mayor gloria de Dios y la santificación del lector
-# Jean-Pierre de Caussade
-# Fri, 12 Apr 2019 03:24:53 -0700
-# 1861
 
 # Start the loop for each book
 for (( i = 0 ; i < ${bookamount} ; i++ ))
