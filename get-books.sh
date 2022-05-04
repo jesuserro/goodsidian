@@ -11,45 +11,15 @@
 # url="https://www.goodreads.com/review/list_rss/$user?key=$key&shelf=to-read"
 url="https://www.goodreads.com/review/list_rss/$user?key=$key&shelf=$shelf"
 
-# url for "Read":
-# readurl="https://www.goodreads.com/url-to-your-rss-feed-shelf=read"
-readurl="https://www.goodreads.com/review/list_rss/$user?key=$key&shelf=read"
-
 # Enter the path to your Vault
 vaultpath=$vaultpath
 shelf=$shelf
 
 
-# Assign times to variables
-year=$(date +%Y)
-nummonth=$(date +%m)
-month=$(date +%B)
-
 # This grabs the data from the currently reading rss feed and formats it
-IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>|user_review>|guid>|user_rating>|user_read_at>|user_date_added>)' | \
+IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(book_id>)' | \
 sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
--e 's/Jei.s bookshelf: '$shelf'//' \
--e 's/<book_large_image_url>//' -e 's/<\/book_large_image_url>/ | /' \
--e 's/<title>//' -e 's/<\/title>/ | /' \
--e 's/<book_description>//' -e 's/<\/book_description>/ | /' \
--e 's/<author_name>//' -e 's/<\/author_name>/ | /' \
--e 's/<book_published>//' -e 's/<\/book_published>/ | /' \
--e 's/<book_id>//' -e 's/<\/book_id>/ | /' \
--e 's/<user_shelves>//' -e 's/<\/user_shelves>/ | /' \
--e 's/<num_pages>//' -e 's/<\/num_pages>/ | /' \
--e 's/<isbn>//' -e 's/<\/isbn>/ | /' \
--e 's/<guid>//' -e 's/<\/guid>/ | /' \
--e 's/<user_rating>//' -e 's/<\/user_rating>/ | /' \
--e 's/<user_read_at>//' -e 's/<\/user_read_at>/ | /' \
--e 's/<user_date_added>//' -e 's/<\/user_date_added>/ | /' \
--e 's/<average_rating>//' -e 's/<\/average_rating>/ | /' \
--e 's/<user_review>//' -e 's/<\/user_review>/ | /' \
--e 's/<user_date_created>//' -e 's/<\/user_date_created>/ | /' \
--e 's/^[ \t]*//' -e 's/[ \t]*$//' | \
-tail +3 | \
-fmt
-)
-
+-e 's/<book_id>//' -e 's/<\/book_id>/ | /')
 
 # Turn the data into an array
 arr=($(echo $feed | tr "|" "\n")) # shelf
@@ -60,7 +30,6 @@ do
   arr[$i]=$(echo "${arr[$i]}" | sed -e 's/^[ \t]*//' -e 's/[ \t]*$//')
 done
 
-
 # Reindex array to take away gaps
 for i in "${!arr[@]}"; do
     new_array+=( "${arr[i]}" )
@@ -68,49 +37,26 @@ done
 arr=("${new_array[@]}")
 unset new_array
 
-# Get the amount of books by dividing array by 5
-bookamount=$( expr "${#arr[@]}" / 5)
+# Get the amount of books
+bookamount=$( expr "${#arr[@]}")
 
 if (( "$bookamount" == 0 )); then
-  osascript -e "display notification \"No new books found.\" with title \"Currently-reading: No update\""
+  echo "No books found"
 fi
-
-# printf '%s\n' "${arr[@]}"
-# cmd /k
-# return
 
 # Start the loop for each book
 for (( i = 0 ; i < ${bookamount} ; i++ ))
 do
 
-  counter=$( expr "$i" \* 16)
+  bookid=${arr[$i]}
 
-  # Set variables
-  guid=${arr["$counter"]}
-  title=${arr[$( expr "$counter" + 1)]}
-  bookid=${arr[$( expr "$counter" + 2)]}
-  imglink=${arr[$( expr "$counter" + 3)]}
-  book_description=${arr[$( expr "$counter + 4")]}
-  num_pages=${arr[$( expr "$counter + 5")]}
-  author=${arr[$( expr "$counter" + 6)]}
-  isbn=${arr[$( expr "$counter" + 7)]}
-  user_rating=${arr[$( expr "$counter" + 8)]}
-  user_read_at=${arr[$( expr "$counter" + 9)]}
-  user_date_added=${arr[$( expr "$counter" + 10)]}
-  user_date_created=${arr[$( expr "$counter + 11")]}
-  user_shelves=${arr[$( expr "$counter" + 12)]}
-  user_review=${arr[$( expr "$counter" + 13)]}
-  average_rating=${arr[$( expr "$counter" + 14)]}
-  book_published=${arr[$( expr "$counter" + 15)]}
-  
+  if [ -z "$bookid" ]
+  then
+    continue
+  fi
 
-if [ -z "$bookid" ]
-then
-  continue
-fi
+  urlbook="$urlbase/book/show?format=xml&key=$apikey&id=$bookid"
 
-urlbook="$urlbase/book/show?format=xml&key=$apikey&id=$bookid"
-
-echo "BOOKID:$bookid -> $title"
+  echo "BOOKID:$bookid"
 
 done
