@@ -1,33 +1,14 @@
 #!/bin/sh
 
-# Enter urls to your goodreads rss feed below.
-# You can find it by navigating to one of your goodreads shelves and
-# clicking the "RSS" button at the bottom of the page.
-
 . ./goodreads.cfg
 
-# url="$urlbase/url-to-your-rss-feed-shelf=$shelf"
-# url="$urlbase/review/list_rss/$user?key=$key&shelf=$shelf"
 url="$urlbase/review/list_rss/$user?key=$key&shelf=$shelf"
 
 # This grabs the data from the currently reading rss feed and formats it
-IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(book_id>)' | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' -e 's/<book_id>//' -e 's/<\/book_id>/ | /')
+feed=$(curl --silent "$url" | grep -E '(book_id>)' | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' -e 's/<book_id>//' -e 's/<\/book_id>/ | /')
 
 # Turn the data into an array
-arr=($(echo $feed | tr "|" "\n")) # shelf
-
-# Remove whitespace on each element: shelf
-for (( i = 0 ; i < ${#arr[@]} ; i++ ))
-do
-  arr[$i]=$(echo "${arr[$i]}" | sed -e 's/^[ \t]*//' -e 's/[ \t]*$//')
-done
-
-# Reindex array to take away gaps
-for i in "${!arr[@]}"; do
-    new_array+=( "${arr[i]}" )
-done
-arr=("${new_array[@]}")
-unset new_array
+arr=($(echo $feed | tr "|" "\n"))
 
 # Get the amount of books
 bookamount=$( expr "${#arr[@]}")
@@ -47,8 +28,8 @@ do
     continue
   fi
 
-  urlbook="$urlbase/book/show?format=xml&key=$apikey&id=$bookid"
-
   echo "BOOKID:$bookid"
+
+  urlbook="$urlbase/book/show?format=xml&key=$apikey&id=$bookid"
 
 done
