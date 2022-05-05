@@ -10,11 +10,8 @@
 # url="$urlbase/review/list_rss/$user?key=$key&shelf=$shelf"
 url="$urlbase/review/list_rss/$user?key=$key&shelf=$shelf"
 
-
 # This grabs the data from the currently reading rss feed and formats it
-IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(book_id>)' | \
-sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
--e 's/<book_id>//' -e 's/<\/book_id>/ | /')
+IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(book_id>)' | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' -e 's/<book_id>//' -e 's/<\/book_id>/ | /')
 
 # Turn the data into an array
 arr=($(echo $feed | tr "|" "\n")) # shelf
