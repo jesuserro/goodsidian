@@ -17,6 +17,8 @@ if (( "$bookamount" == 0 )); then
   echo "No books found in shelf $shelf"
 fi
 
+xpathBook="GoodreadsResponse/book"
+
 # Start the loop for each book
 for (( i = 0 ; i < ${bookamount} ; i++ ))
 do
@@ -28,13 +30,13 @@ do
     continue
   fi
 
-  urlbook="$urlbase/book/show?format=xml&key=$apikey&id=$bookid"
+  urlBook="$urlbase/book/show?format=xml&key=$apikey&id=$bookid"
 
-  title=$(curl --silent "$urlbook" | xmllint --xpath "//GoodreadsResponse/book/title[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-  publication_year=$(curl --silent "$urlbook" | xmllint --xpath "//GoodreadsResponse/book/publication_year[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+  xmlBook=$(curl -s $urlBook)
+
+  title=$(echo $xmlBook | xmllint --xpath "//$xpathBook/title[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+  publication_year=$(echo $xmlBook | xmllint --xpath "//$xpathBook/publication_year[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 
   echo "$bookid -> $title -> $publication_year"
-
-  sleep 2
 
 done
