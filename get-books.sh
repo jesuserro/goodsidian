@@ -31,7 +31,10 @@ do
   urlbook="$urlbase/book/show?format=xml&key=$apikey&id=$bookid"
 
   title=$(curl --silent "$urlbook" | xmllint --xpath "//GoodreadsResponse/book/title[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+  publication_year=$(curl --silent "$urlbook" | xmllint --xpath "//GoodreadsResponse/book/publication_year[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 
-  echo "BOOKID:$bookid -> $title"
+  echo "$bookid -> $title -> $publication_year"
+
+  sleep 2
 
 done
