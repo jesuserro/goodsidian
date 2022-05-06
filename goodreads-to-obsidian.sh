@@ -1,30 +1,8 @@
 #!/bin/sh
 
-# Enter urls to your goodreads rss feed below.
-# You can find it by navigating to one of your goodreads shelves and
-# clicking the "RSS" button at the bottom of the page.
-
-# shelf="patata"
-# shelf="currently-reading"
-# shelf="pausados"
-shelf="000-next"
-# shelf="read"
-# shelf="to-read"
-
-
 . ./goodreads.cfg
 
-# url for "Currently reading":
-# url="$urlbase/url-to-your-rss-feed-shelf=currently-reading"
 url="$urlbase/review/list_rss/$user?key=$key&shelf=$shelf"
-
-# url for "Read":
-# readurl="https://www.goodreads.com/url-to-your-rss-feed-shelf=read"
-readurl="https://www.goodreads.com/review/list_rss/$user?key=$key&shelf=read"
-
-# Enter the path to your Vault
-vaultpath=$vaultpath
-
 
 # Assign times to variables
 year=$(date +%Y)
@@ -78,19 +56,8 @@ unset new_array
 bookamount=$( expr "${#arr[@]}" / 5)
 
 if (( "$bookamount" == 0 )); then
-  osascript -e "display notification \"No new books found.\" with title \"Currently-reading: No update\""
+  echo "No new books found in shelf $shelf"
 fi
-
-# printf '%s\n' "${arr[@]}"
-# return
-
-# El Abandono en la Divina Providencia: Clásicos Católicos
-# 25239369
-# https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1427597020l/25239369.jpg
-# Esta breve obra se compone de cartas escritas por un eclesiástico a la superiora de una comunidad religiosa. En ella se ve claro que el autor fue un hombre espiritual, interior y gran amigo de Dios. Él descubre en sus cartas, aquí abreviadas a veces, el verdadero método, el más corto y realmente el único para llegar a Dios. Feliz aquél que reciba fielmente estas lecciones. Los pecadores encontrarán cómo redimir sus pecados, expiando las acciones cumplidas por su propia voluntad, por la adhesión única a la voluntad de Dios. Y los justos comprobarán que, con muy poco esfuerzo y trabajo en sus ocupaciones y quehaceres, podrán llegar muy pronto a un alto grado de perfección y a una eminente santidad. No es otro el fin que aquí se pretende sino la mayor gloria de Dios y la santificación del lector
-# Jean-Pierre de Caussade
-# Fri, 12 Apr 2019 03:24:53 -0700
-# 1861
 
 # Start the loop for each book
 for (( i = 0 ; i < ${bookamount} ; i++ ))
@@ -146,11 +113,12 @@ user_shelves=$(IFS=$'\n' ; echo "${arrtags[*]}")
 user_shelves_links=$(IFS=' ' ; echo "${arrlinks[*]}")
 
 
-  # Write the contents for the book file
-  if [[ "$cleantitle" == "" ]];
-  then
-    osascript -e "display notification \"Failed to create note due to empty array.\" with title \"Error!\""
-  else
+# Write the contents for the book file
+if [[ "$cleantitle" == "" ]];
+then
+  # echo "Failed to create note due to empty array."
+  continue
+else
     echo "---
 aliases: []
 bookid: ${bookid}
@@ -197,14 +165,13 @@ ${user_review}
 
 
 # Ficha autor:
-FILE="${vaultpath}/${author}.md" 
+authorFile="${vaultpath}/${author}.md" 
 
-
-if [ -f "$FILE" ]; then
-    # echo "$FILE exists."
-    echo "- [[${clean_user_read_at} ${cleantitle}]]" >> "${FILE}"
+if [ -f "$authorFile" ]; then
+    # echo "$authorFile exists."
+    echo "- [[${clean_user_read_at} ${cleantitle}]]" >> "${authorFile}"
 else 
-    # echo "$FILE does not exist."
+    # echo "$authorFile does not exist."
 echo "---
 aliases: []
 author:: [[${author}]]  
@@ -227,13 +194,11 @@ emotion:
 ${user_shelves_links}
 
 ## Referencias
-- [[${clean_user_read_at} ${cleantitle}]]" >> "${FILE}"
+- [[${clean_user_read_at} ${cleantitle}]]" >> "${authorFile}"
   fi
-
-
 
     # Display a notification when creating the file
-    osascript -e "display notification \"Booknote created!\" with title \"${cleantitle//\"/\\\"}\""
-  fi
+    echo "Booknote created: $cleantitle"
+fi
 
 done
