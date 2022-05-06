@@ -15,9 +15,8 @@ shelf="000-next"
 . ./goodreads.cfg
 
 # url for "Currently reading":
-# url="https://www.goodreads.com/url-to-your-rss-feed-shelf=currently-reading"
-# url="https://www.goodreads.com/review/list_rss/$user?key=$key&shelf=to-read"
-url="https://www.goodreads.com/review/list_rss/$user?key=$key&shelf=$shelf"
+# url="$urlbase/url-to-your-rss-feed-shelf=currently-reading"
+url="$urlbase/review/list_rss/$user?key=$key&shelf=$shelf"
 
 # url for "Read":
 # readurl="https://www.goodreads.com/url-to-your-rss-feed-shelf=read"
