@@ -2,9 +2,15 @@
 
 # see: https://unix.stackexchange.com/questions/277861/parse-xml-returned-from-curl-within-a-bash-script
 
+if [ -z "$1" ]
+then
+  echo "Especifica una estantería"
+  exit 1
+fi
+
 . ./goodreads.cfg
 
-url="$urlbase/review/list_rss/$user?key=$key&shelf=$shelf"
+url="$urlbase/review/list_rss/$user?key=$key&shelf=$1"
 
 # This grabs the data from the currently reading rss feed and formats it
 feed=$(curl --silent "$url" | grep -E '(book_id>)' | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' -e 's/<book_id>//' -e 's/<\/book_id>/ | /')
