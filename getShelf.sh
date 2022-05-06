@@ -1,5 +1,13 @@
 #!/bin/sh
 
+if [ -z "$1" ]
+then
+      echo "Especifica una estantería por favor"
+      exit 1
+fi
+
+shelf=$1
+
 . ./goodreads.cfg
 
 url="$urlbase/review/list_rss/$user?key=$key&shelf=$shelf"
