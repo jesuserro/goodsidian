@@ -12,11 +12,6 @@ shelf=$1
 
 url="$urlbase/review/list_rss/$user?key=$key&shelf=$shelf"
 
-# Assign times to variables
-year=$(date +%Y)
-nummonth=$(date +%m)
-month=$(date +%B)
-
 # This grabs the data from the currently reading rss feed and formats it
 IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>|user_review>|guid>|user_rating>|user_read_at>|user_date_added>)' | \
 sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
@@ -46,22 +41,7 @@ fmt
 # Turn the data into an array
 arr=($(echo $feed | tr "|" "\n")) # shelf
 
-# Remove whitespace on each element: shelf
-for (( i = 0 ; i < ${#arr[@]} ; i++ ))
-do
-  arr[$i]=$(echo "${arr[$i]}" | sed -e 's/^[ \t]*//' -e 's/[ \t]*$//')
-done
-
-
-# Reindex array to take away gaps
-for i in "${!arr[@]}"; do
-    new_array+=( "${arr[i]}" )
-done
-arr=("${new_array[@]}")
-unset new_array
-
-# Get the amount of books by dividing array by 5
-bookamount=$( expr "${#arr[@]}" / 5)
+bookamount=$( expr "${#arr[@]}")
 
 if (( "$bookamount" == 0 )); then
   echo "No new books found in shelf $shelf"
