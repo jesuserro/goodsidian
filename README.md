@@ -1,5 +1,5 @@
 # My Goodsidian Usage
-- Open Windows explorer and run "goodreads-to-obsidian.sh"
+- Open shell and run "sh getShelf.sh PUT_YOUR_SHELF_NAME_HERE"
 - Some minutes after, goodreads books in md notes will be downloaded in vaultpath defined in goodreads.cfg
 
 # Goodsidian 
