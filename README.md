@@ -1,5 +1,6 @@
 # My Goodsidian Usage
 - Open shell and run "sh index.sh PUT_YOUR_SHELF_NAME_HERE"
+- Open shell and run "sh book.sh PUT_YOUR_SHELF_NAME_HERE"
 - Some minutes after, goodreads books in md notes will be downloaded in vaultpath defined in goodreads.cfg
 
 # Goodsidian 

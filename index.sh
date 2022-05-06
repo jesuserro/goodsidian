@@ -6,11 +6,9 @@ then
       exit 1
 fi
 
-shelf=$1
-
 . ./goodreads.cfg
 
-url="$urlbase/review/list_rss/$user?key=$key&shelf=$shelf"
+url="$urlbase/review/list_rss/$user?key=$key&shelf=$1"
 
 # This grabs the data from the currently reading rss feed and formats it
 IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>|user_review>|guid>|user_rating>|user_read_at>|user_date_added>)' | \
