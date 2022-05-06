@@ -113,22 +113,12 @@ user_shelves=$(IFS=$'\n' ; echo "${arrtags[*]}")
 user_shelves_links=$(IFS=' ' ; echo "${arrlinks[*]}")
 
 
-
 # Write the contents for the book file
 if [[ "$cleantitle" == "" ]];
 then
   # echo "Failed to create note due to empty array."
   continue
 else
-
-
-  urlBook="$urlbase/book/show?format=xml&key=$apikey&id=$bookid"
-  xpathBook="GoodreadsResponse/book"
-  xmlBook=$(curl -s $urlBook)
-  publisher=$(echo $xmlBook | xmllint --xpath "//$xpathBook/publisher[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-
-
-
     echo "---
 aliases: []
 bookid: ${bookid}
@@ -136,7 +126,6 @@ isbn: ${isbn}
 asin:
 author:: [[${author}]]
 pages: ${num_pages}
-publisher: $publisher
 book_published:: [[${book_published}]]  
 cover: ${imglink}   
 tags: 
@@ -175,17 +164,6 @@ ${user_review}
 " >> "${vaultpath}/${clean_user_read_at} ${cleantitle}.md"
 
 
-
-# AUTOR
-authorId=$(echo $xmlBook | xmllint --xpath "//$xpathAuthor/id/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-urlAuthor="$urlbase/author/show.xml?key=$apikey&id=$authorId"
-xpathAuthor="GoodreadsResponse/author[1]"
-xmlAuthor=$(curl -s $urlAuthor)
-authorImageurl=$(echo $xmlAuthor | xmllint --xpath "//$xpathAuthor/image_url[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-
-
-
-
 # Ficha autor:
 authorFile="${vaultpath}/${author}.md" 
 
@@ -209,8 +187,6 @@ emotion:
 ---
 
 # ${author}
-
-![b|150](${authorImageurl})
 
 [[goodreads]]
 
