@@ -110,4 +110,6 @@ do
   # Display a notification when creating the file
   echo "Review created $i: $cleantitle ($counter)"
 
+  sleep 1
+
 done
