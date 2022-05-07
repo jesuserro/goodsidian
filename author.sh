@@ -21,4 +21,42 @@ authorName=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | sed -
 authorImage=$( echo $xml | xmllint --xpath "//$xpathAuthor/image_url/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 authorLink=$( echo $xml | xmllint --xpath "//$xpathAuthor/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 
-echo "$authorName -> $authorLink"
+echo "AUTHOR $authorName -> $authorLink"
+
+: <<'END'
+# Ficha autor:
+authorFile="${vaultpath}/${authorName}.md" 
+
+if [ -f "$authorFile" ]; then
+    # echo "$authorFile exists."
+    # echo "- [[${clean_user_read_at} ${cleantitle}]]" >> "${authorFile}"
+    exit 1
+else 
+    # echo "$authorFile does not exist."
+echo "---
+aliases: []
+author:: [[${authorName}]]  
+tags: 
+- people/goodreads/author
+${user_shelves}
+date: ${user_read_at}
+readed: ${user_read_at}
+created: ${user_date_created} 
+updated: ${user_date_added} 
+rating: ${user_rating}
+emotion:
+---
+
+# ${authorName}
+
+[[goodreads]]
+
+## Estanterías 
+${user_shelves_links}
+
+## Libros
+- 
+
+## Referencias
+- " >> "${authorFile}"
+END

@@ -45,13 +45,18 @@ if (( "$bookamount" == 0 )); then
   echo "No new books found in shelf $shelf"
 fi
 
+miNumeroDeVariables=16
+
 # Start the loop for each book
-for (( i = 0 ; i < ${bookamount} ; i++ ))
+for (( i = 0 ; i < $miNumeroDeVariables ; i++ ))
 do
+  counter=$( expr "$i" \* $miNumeroDeVariables)
 
-  counter=$( expr "$i" \* 16)
+  if (( "$counter" > $miNumeroDeVariables )); then
+    break
+  fi
 
-  # Set variables
+  # Set variables 16 (miNumeroDeVariables)
   guid=${arr["$counter"]}
   title=${arr[$( expr "$counter" + 1)]}
   bookid=${arr[$( expr "$counter" + 2)]}
@@ -70,121 +75,39 @@ do
   book_published=${arr[$( expr "$counter" + 15)]}
   
 
-if [ -z "$user_read_at" ]
-then
-  user_read_at=${user_date_created}
-fi
-
-# Clean vars:
-# 1. Format date
-user_read_at=$(date -d "$user_read_at" +'%Y-%m-%d %H:%M')
-clean_user_read_at=$(date -d "$user_read_at" +'%Y%m%d%H%M')
-
-user_date_added=$(date -d "$user_date_added" +'%Y-%m-%d %H:%M')
-
-user_date_created=$(date -d "$user_date_created" +'%Y-%m-%d %H:%M')
-clean_user_date_created=$(date -d "$user_date_created" +'%Y%m%d%H%M')
-
-# 2. Delete illegal (':' and '/') and unwanted ('#') characters
-cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
-
-# 3. Clean tags
-IFS=', ' read -ra arrtags <<< "$user_shelves"
-for index in "${!arrtags[@]}"
-do
-    arrlinks[$index]="[[${arrtags[$index]}]]"
-    arrtags[$index]="- book/goodreads/tag/${arrtags[$index]}"
-done
-user_shelves=$(IFS=$'\n' ; echo "${arrtags[*]}")
-user_shelves_links=$(IFS=' ' ; echo "${arrlinks[*]}")
-
-
-# Write the contents for the book file
-if [[ "$cleantitle" == "" ]];
-then
-  # echo "Failed to create note due to empty array."
-  continue
-else
-    echo "---
-aliases: []
-bookid: ${bookid}
-isbn: ${isbn}
-asin:
-author:: [[${author}]]
-pages: ${num_pages}
-book_published:: [[${book_published}]]  
-cover: ${imglink}   
-tags: 
-- book/goodreads/profile
-- book/goodreads/status/${shelf}
-${user_shelves}
-date: ${user_read_at}
-readed: ${user_read_at}
-created: ${user_date_created} 
-updated: ${user_date_added} 
-rating: ${user_rating}
-average_rating: ${average_rating}
-emotion:
----
-
-# ${title}
-* Author: [[${author}]] [[${clean_user_date_created} ${author}]]
-
-[[goodreads]]
-[Review, Private notes & Quotes](${guid})
-
-![b|150](${imglink})
-
-## Estanterías 
-${user_shelves_links}
-
-## Descripción
-${book_description}
-
-## Review
-${user_review}
-
-## Referencias
-- 
-
-" >> "${vaultpath}/${clean_user_read_at} ${cleantitle}.md"
-
-
-# Ficha autor:
-authorFile="${vaultpath}/${author}.md" 
-
-if [ -f "$authorFile" ]; then
-    # echo "$authorFile exists."
-    echo "- [[${clean_user_read_at} ${cleantitle}]]" >> "${authorFile}"
-else 
-    # echo "$authorFile does not exist."
-echo "---
-aliases: []
-author:: [[${author}]]  
-tags: 
-- people/goodreads/author
-${user_shelves}
-date: ${user_read_at}
-readed: ${user_read_at}
-created: ${user_date_created} 
-updated: ${user_date_added} 
-rating: ${user_rating}
-emotion:
----
-
-# ${author}
-
-[[goodreads]]
-
-## Estanterías 
-${user_shelves_links}
-
-## Referencias
-- [[${clean_user_read_at} ${cleantitle}]]" >> "${authorFile}"
+  if [ -z "$user_read_at" ]; then
+    user_read_at=${user_date_created}
   fi
 
-    # Display a notification when creating the file
-    echo "Booknote created: $cleantitle"
-fi
+  # Clean vars:
+  # 1. Format date
+  user_read_at=$(date -d "$user_read_at" +'%Y-%m-%d %H:%M')
+  clean_user_read_at=$(date -d "$user_read_at" +'%Y%m%d%H%M')
+
+  user_date_added=$(date -d "$user_date_added" +'%Y-%m-%d %H:%M')
+
+  user_date_created=$(date -d "$user_date_created" +'%Y-%m-%d %H:%M')
+  clean_user_date_created=$(date -d "$user_date_created" +'%Y%m%d%H%M')
+
+  # 2. Delete illegal (':' and '/') and unwanted ('#') characters
+  cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
+
+  # 3. Clean tags
+  IFS=', ' read -ra arrtags <<< "$user_shelves"
+  for index in "${!arrtags[@]}"
+  do
+      arrlinks[$index]="[[${arrtags[$index]}]]"
+      arrtags[$index]="- book/goodreads/tag/${arrtags[$index]}"
+  done
+  user_shelves=$(IFS=$'\n' ; echo "${arrtags[*]}")
+  user_shelves_links=$(IFS=' ' ; echo "${arrlinks[*]}")
+
+
+  # SET book (and author) files here
+  bookidCleaned=$( echo $bookid | sed -e 's/^[[:space:]]*//')
+  sh ./book.sh $bookidCleaned
+
+  # Display a notification when creating the file
+  echo "Review created $i: $cleantitle ($counter)"
 
 done
