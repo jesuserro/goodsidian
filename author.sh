@@ -22,22 +22,3 @@ authorImage=$( echo $xml | xmllint --xpath "//$xpathAuthor/image_url/text()" - |
 authorLink=$( echo $xml | xmllint --xpath "//$xpathAuthor/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 
 echo "$authorName -> $authorLink"
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
