@@ -108,7 +108,7 @@ do
   sh ./book.sh $bookidCleaned
 
   # Display a notification when creating the file
-  echo "Review created $i: $cleantitle ($counter)"
+  echo "REVIEW $i: $cleantitle ($counter)"
 
   sleep 1
 
