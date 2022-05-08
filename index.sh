@@ -92,6 +92,8 @@ do
   # 2. Delete illegal (':' and '/') and unwanted ('#') characters
   cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
 
+  user_review=$(echo -e "${user_review//$'<br />'/\\n}" | sed 's/<[^\/][^<>]*> *<\/[^<>]*>//g' | sed -e 's|<i>|_|g' -e 's|</i>|_|g' -e 's/^[[:space:]]*//')
+
   # 3. Clean tags
   IFS=', ' read -ra arrtags <<< "$user_shelves"
   for index in "${!arrtags[@]}"
@@ -105,11 +107,47 @@ do
 
   # SET book (and author) files here
   bookidCleaned=$( echo $bookid | sed -e 's/^[[:space:]]*//')
-  sh ./book.sh $bookidCleaned
+  # sh ./book.sh $bookidCleaned
+
+  echo "---
+aliases: []
+bookid: ${bookid}
+isbn: ${isbn}
+asin: ${kindle_asin}
+author:: [[${author}]]
+pages: ${num_pages}
+publisher:: [[${publisher}]]  
+book_published:: [[${publication_year}]]  
+cover: ${image_url}   
+tags: 
+- goodreads/review
+- goodreads/status/${shelf}
+${user_shelves}
+date: ${user_read_at}
+rating: ${user_rating}
+emotion:
+---
+
+# ${title}
+$user_read_at
+![b|150](${imglink})
+
+[Goodreads Private Notes & Quotes]($1) 
+[[goodreads]] ${user_shelves_links}
+
+## Review
+${user_review}
+
+## Referencias
+- 
+
+" >> "${vaultpath}/${clean_user_read_at} ${cleantitle}.md"
+
+
+
+  # sleep 1
 
   # Display a notification when creating the file
   echo "REVIEW $i: $cleantitle ($counter)"
-
-  sleep 1
 
 done
