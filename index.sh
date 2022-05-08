@@ -60,6 +60,7 @@ do
   guid=${arr["$counter"]}
   title=${arr[$( expr "$counter" + 1)]}
   bookid=${arr[$( expr "$counter" + 2)]}
+  bookid=$( echo $bookid | sed -e 's/^[[:space:]]*//')
   imglink=${arr[$( expr "$counter" + 3)]}
   book_description=${arr[$( expr "$counter + 4")]}
   num_pages=${arr[$( expr "$counter + 5")]}
@@ -83,6 +84,7 @@ do
   # 1. Format date
   user_read_at=$(date -d "$user_read_at" +'%Y-%m-%d %H:%M')
   clean_user_read_at=$(date -d "$user_read_at" +'%Y%m%d%H%M')
+  published_user_read_at=$(date -d "$user_read_at" +'%A, %d %B %Y a las %H:%Mh.')
 
   user_date_added=$(date -d "$user_date_added" +'%Y-%m-%d %H:%M')
 
@@ -92,9 +94,15 @@ do
   # 2. Delete illegal (':' and '/') and unwanted ('#') characters
   cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
 
-  user_review=$(echo -e "${user_review//$'<br />'/\\n}" | sed 's/<[^\/][^<>]*> *<\/[^<>]*>//g' | sed -e 's|<i>|_|g' -e 's|</i>|_|g' -e 's/^[[:space:]]*//')
+  # 3. Clean long text for Obsidian
+  user_review=$(echo -e "${user_review//$'<br />'/\\n}" | \
+    sed 's/<[^\/][^<>]*> *<\/[^<>]*>//g' | \
+    sed -e 's|<i>|_|g' -e 's|</i>|_|g' | \
+    sed -e 's|<b>|*|g' -e 's|</b>|*|g' | \
+    sed -e 's|<strong>|*|g' -e 's|</strong>|*|g' | \
+    sed -e 's/^[[:space:]]*//')
 
-  # 3. Clean tags
+  # 4. Clean tags
   IFS=', ' read -ra arrtags <<< "$user_shelves"
   for index in "${!arrtags[@]}"
   do
@@ -106,8 +114,7 @@ do
 
 
   # SET book (and author) files here
-  bookidCleaned=$( echo $bookid | sed -e 's/^[[:space:]]*//')
-  # sh ./book.sh $bookidCleaned
+  # sh ./book.sh $bookid
 
   echo "---
 aliases: []
@@ -120,8 +127,8 @@ publisher:: [[${publisher}]]
 book_published:: [[${publication_year}]]  
 cover: ${image_url}   
 tags: 
-- goodreads/review
-- goodreads/status/${shelf}
+- book/goodreads/review
+- book/goodreads/status/${shelf}
 ${user_shelves}
 date: ${user_read_at}
 rating: ${user_rating}
@@ -129,7 +136,8 @@ emotion:
 ---
 
 # ${title}
-$user_read_at
+Publicado: $published_user_read_at
+
 ![b|150](${imglink})
 
 [Goodreads Private Notes & Quotes]($1) 
