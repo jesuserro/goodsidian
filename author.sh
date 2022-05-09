@@ -4,8 +4,8 @@
 
 if [ -z "$1" ]
 then
-      echo "Especifica author_id"
-      exit 1
+    echo "Especifica author_id"
+    exit 1
 fi
 
 . ./goodreads.cfg

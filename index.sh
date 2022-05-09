@@ -127,8 +127,8 @@ publisher:: [[${publisher}]]
 book_published:: [[${publication_year}]]  
 cover: ${image_url}   
 tags: 
-- book/goodreads/review
-- book/goodreads/status/${shelf}
+- review/goodreads
+- review/goodreads/status/${shelf}
 ${user_shelves}
 date: ${user_read_at}
 rating: ${user_rating}
@@ -136,12 +136,16 @@ emotion:
 ---
 
 # ${title}
-Publicado: $published_user_read_at
+
+## Info Review
+
+**Publicado**: $published_user_read_at
 
 ![b|150](${imglink})
 
-[Goodreads Private Notes & Quotes]($1) 
-[[goodreads]] ${user_shelves_links}
+**Rating**: ${user_rating} 
+**Ficha Goodreads**: [Goodreads Private Notes & Quotes]($1) 
+**Tags**: [[goodreads]] ${user_shelves_links}
 
 ## Review
 ${user_review}
