@@ -45,8 +45,8 @@ author=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | sed -e 's
 # echo "$bookid -> $title -> $kindle_asin -> $isbn -> $isbn13 -> $publication_year"
 echo "BOOK $1 -> $title -> $publisher"
 
-: <<'END'
-echo "---
+
+bookNote="---
 aliases: []
 bookid: ${bookid}
 isbn: ${isbn}
@@ -78,11 +78,10 @@ emotion:
 ## Descripción
 ${description}
 
-## Referencias
-- 
+## Referencias" 
 
-" >> "${vaultpath}/${clean_user_read_at} ${cleantitle}.md"
-END
+  bookPath="${vaultpath}/${clean_user_read_at} ${cleantitle}.md"
+
 
 
 
@@ -95,16 +94,19 @@ fi
 sleep 1
 
 authorIdCleaned=$( echo $authorId | sed -e 's/^[[:space:]]*//')
-sh ./author.sh $authorIdCleaned
 
-
-# Review Note
 if [ -z "$2" -a -z "$3" ]
 then
+  # Review note missing
+  # sh ./author.sh $authorIdCleaned "${bookNote}" "${bookPath}"
   exit 1
 fi
-reviewNote="${2}"
-echo "${2}" >> "${3}"
+
+# Review note exists
+reviewNote="${2} [[${clean_user_read_at} ${cleantitle}]]"
+# sh ./author.sh $authorIdCleaned "${bookNote}" "${bookPath}" "${reviewNote}" "${3}"
+
+echo -e "${reviewNote}" >> "${3}"
 
 
 

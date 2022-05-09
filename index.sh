@@ -152,6 +152,7 @@ ${user_review}
   reviewNotePath="${vaultpath}/${clean_user_read_at} ${cleantitle}.md"
 
   # echo "${reviewNote}" >> "${reviewNotePath}"
+  # doReviewNote=$("${reviewNote}" >> "${reviewNotePath}")
 
   # SET book (and author) files here
   sh ./book.sh $bookid "${reviewNote}" "${reviewNotePath}"
