@@ -2,8 +2,8 @@
 
 if [ -z "$1" ]
 then
-      echo "Especifica una estantería por favor"
-      exit 1
+    echo "Especifica una estantería por favor"
+    exit 1
 fi
 
 . ./goodreads.cfg
@@ -112,11 +112,7 @@ do
   user_shelves=$(IFS=$'\n' ; echo "${arrtags[*]}")
   user_shelves_links=$(IFS=' ' ; echo "${arrlinks[*]}")
 
-
-  # SET book (and author) files here
-  # sh ./book.sh $bookid
-
-  echo "---
+  reviewNote="---
 aliases: []
 bookid: ${bookid}
 isbn: ${isbn}
@@ -151,10 +147,12 @@ emotion:
 ${user_review}
 
 ## Referencias
-- 
+- " 
 
-" >> "${vaultpath}/${clean_user_read_at} ${cleantitle}.md"
+  # echo "${reviewNote}" >> "${vaultpath}/${clean_user_read_at} ${cleantitle}.md"
 
+  # SET book (and author) files here
+  sh ./book.sh $bookid "${reviewNote}"
 
 
   # sleep 1
