@@ -103,7 +103,7 @@ then
 fi
 
 # Review note exists
-reviewNote="${2} [[${clean_user_read_at} ${cleantitle}]]"
+reviewNote="${2} [[${publication_year} ${cleantitle}]]"
 # sh ./author.sh $authorIdCleaned "${bookNote}" "${bookPath}" "${reviewNote}" "${3}"
 
 echo -e "${reviewNote}" >> "${3}"
