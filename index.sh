@@ -149,10 +149,12 @@ ${user_review}
 ## Referencias
 - " 
 
-  # echo "${reviewNote}" >> "${vaultpath}/${clean_user_read_at} ${cleantitle}.md"
+  reviewNotePath="${vaultpath}/${clean_user_read_at} ${cleantitle}.md"
+
+  # echo "${reviewNote}" >> "${reviewNotePath}"
 
   # SET book (and author) files here
-  sh ./book.sh $bookid "${reviewNote}"
+  sh ./book.sh $bookid "${reviewNote}" "${reviewNotePath}"
 
 
   # sleep 1

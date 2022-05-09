@@ -98,4 +98,13 @@ authorIdCleaned=$( echo $authorId | sed -e 's/^[[:space:]]*//')
 sh ./author.sh $authorIdCleaned
 
 
+# Review Note
+if [ -z "$2" -a -z "$3" ]
+then
+  exit 1
+fi
+reviewNote="${2}"
+echo "${2}" >> "${3}"
+
+
 
