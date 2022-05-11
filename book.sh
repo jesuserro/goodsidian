@@ -30,6 +30,7 @@ description=$(echo -e "${description//$'<br />'/\\n}" | \
     sed -e 's|<i>|_|g' -e 's|</i>|_|g' | \
     sed -e 's|<b>|*|g' -e 's|</b>|*|g' | \
     sed -e 's|<strong>|*|g' -e 's|</strong>|*|g' | \
+    sed -e 's|<p>|\n|g' -e 's|</p>|\n|g' | \
     sed -e 's/^[[:space:]]*//')
 publisher=$( echo $xml | xmllint --xpath "//$xpathBook/publisher[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 isbn=$( echo $xml | xmllint --xpath "//$xpathBook/isbn[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )

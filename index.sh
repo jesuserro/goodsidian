@@ -100,6 +100,7 @@ do
     sed -e 's|<i>|_|g' -e 's|</i>|_|g' | \
     sed -e 's|<b>|*|g' -e 's|</b>|*|g' | \
     sed -e 's|<strong>|*|g' -e 's|</strong>|*|g' | \
+    sed -e 's|<p>|\n|g' -e 's|</p>|\n|g' | \
     sed -e 's/^[[:space:]]*//')
 
   # 4. Clean tags
