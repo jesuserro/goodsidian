@@ -30,7 +30,7 @@ aliases: []
 author:: [[${authorName}]]  
 tags: 
 - people/goodreads/author
-${user_shelves}
+popular_shelves:
 date: ${user_read_at}
 readed: ${user_read_at}
 created: ${user_date_created} 
@@ -41,15 +41,15 @@ emotion:
 
 # ${authorName}
 
-[[goodreads]]
+**Tags**:: [[goodreads]]
 
 ## Estanterías 
 ${user_shelves_links}
 
-## Libros
+## Libros del autor
 - 
 
-## Referencias
+## Referencias (mis reseñas)
 - "
 
 
