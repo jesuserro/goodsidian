@@ -68,5 +68,8 @@ echo -e "${bookNote}" >> "${3}"
 
 
 # Ficha autor:
+if [ -f "$authorFile" ]; then
+    exit 1
+fi
 authorNote="${authorNote} [[${3}]]"
 echo -e "${authorNote}" >> "${authorFile}"

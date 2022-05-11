@@ -63,21 +63,19 @@ book_published:: [[${publication_year}]]
 cover: ${image_url}   
 tags: 
 - book/goodreads/profile
-- book/goodreads/status/${shelf}
 date: ${publication_year}
 rating: ${average_rating}
 emotion:
 ---
 
 # ${title}
-* Author: [[${author}]] [[${clean_user_date_created} ${author}]]
-
-[[goodreads]]
-[Review, Private notes & Quotes]($1)
 
 ![b|150](${image_url})
 
-## Tags 
+**Author**: [[${author}]]
+**Publicado**: $publication_year
+**Ficha Goodreads**: [Review, Private notes & Quotes]($1)
+**Tags**: [[goodreads]]
 
 
 ## Descripción
