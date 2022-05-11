@@ -41,9 +41,7 @@ emotion:
 
 # ${authorName}
 
-**Tags**:: [[goodreads]]
-
-## Estanterías 
+**Tags**:: [[goodreads]] 
 ${user_shelves_links}
 
 ## Libros del autor
