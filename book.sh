@@ -80,7 +80,8 @@ ${description}
 
 ## Referencias" 
 
-  bookPath="${vaultpath}/${clean_user_read_at} ${cleantitle}.md"
+  bookFileName="${publication_year} ${cleantitle}"
+  bookPath="${vaultpath}/${bookFileName}.md"
 
 
 
@@ -103,7 +104,7 @@ then
 fi
 
 # Review note exists
-reviewNote="${2} [[${publication_year} ${cleantitle}]]"
+reviewNote="${2} [[${bookFileName}]]"
 # sh ./author.sh $authorIdCleaned "${bookNote}" "${bookPath}" "${reviewNote}" "${3}"
 
 echo -e "${reviewNote}" >> "${3}"

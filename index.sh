@@ -57,23 +57,23 @@ do
   fi
 
   # Set variables 16 (miNumeroDeVariables)
-  guid=${arr["$counter"]}
-  title=${arr[$( expr "$counter" + 1)]}
-  bookid=${arr[$( expr "$counter" + 2)]}
-  bookid=$( echo $bookid | sed -e 's/^[[:space:]]*//')
-  imglink=${arr[$( expr "$counter" + 3)]}
-  book_description=${arr[$( expr "$counter + 4")]}
-  num_pages=${arr[$( expr "$counter + 5")]}
-  author=${arr[$( expr "$counter" + 6)]}
-  isbn=${arr[$( expr "$counter" + 7)]}
-  user_rating=${arr[$( expr "$counter" + 8)]}
-  user_read_at=${arr[$( expr "$counter" + 9)]}
-  user_date_added=${arr[$( expr "$counter" + 10)]}
-  user_date_created=${arr[$( expr "$counter + 11")]}
-  user_shelves=${arr[$( expr "$counter" + 12)]}
-  user_review=${arr[$( expr "$counter" + 13)]}
-  average_rating=${arr[$( expr "$counter" + 14)]}
-  book_published=${arr[$( expr "$counter" + 15)]}
+  guid=$( echo ${arr["$counter"]} | xargs)
+  title=$( echo ${arr[$( expr "$counter" + 1)]} | xargs)
+  bookid=$( echo ${arr[$( expr "$counter" + 2)]} | xargs)
+  imglink=$( echo ${arr[$( expr "$counter" + 3)]} | xargs)
+  book_description=$( echo ${arr[$( expr "$counter" + 4)]} | xargs)
+  num_pages=$( echo ${arr[$( expr "$counter" + 5)]} | xargs)
+  author=$( echo ${arr[$( expr "$counter" + 6)]} | xargs)
+  isbn=$( echo ${arr[$( expr "$counter" + 7)]} | xargs)
+  user_rating=$( echo ${arr[$( expr "$counter" + 8)]} | xargs)
+  user_read_at=$( echo ${arr[$( expr "$counter" + 9)]} | xargs)
+  user_date_added=$( echo ${arr[$( expr "$counter" + 10)]} | xargs)
+  user_date_created=$( echo ${arr[$( expr "$counter" + 11)]} | xargs)
+  user_shelves=$( echo ${arr[$( expr "$counter" + 12)]} | xargs)
+  user_review=$( echo ${arr[$( expr "$counter" + 13)]} | xargs)
+  average_rating=$( echo ${arr[$( expr "$counter" + 14)]} | xargs)
+  book_published=$( echo ${arr[$( expr "$counter" + 15)]} | xargs)
+
   
 
   if [ -z "$user_read_at" ]; then
@@ -120,11 +120,11 @@ asin: ${kindle_asin}
 author:: [[${author}]]
 pages: ${num_pages}
 publisher:: [[${publisher}]]  
-book_published:: [[${publication_year}]]  
+book_published:: [[${book_published}]]  
 cover: ${image_url}   
 tags: 
 - review/goodreads
-- review/goodreads/status/${shelf}
+- review/goodreads/status/${1}
 ${user_shelves}
 date: ${user_read_at}
 rating: ${user_rating}
