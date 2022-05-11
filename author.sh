@@ -23,17 +23,9 @@ authorLink=$( echo $xml | xmllint --xpath "//$xpathAuthor/link/text()" - | sed -
 
 echo "AUTHOR $authorName -> $authorLink"
 
-: <<'END'
-# Ficha autor:
 authorFile="${vaultpath}/${authorName}.md" 
 
-if [ -f "$authorFile" ]; then
-    # echo "$authorFile exists."
-    # echo "- [[${clean_user_read_at} ${cleantitle}]]" >> "${authorFile}"
-    exit 1
-else 
-    # echo "$authorFile does not exist."
-echo "---
+authorNote="---
 aliases: []
 author:: [[${authorName}]]  
 tags: 
@@ -58,5 +50,23 @@ ${user_shelves_links}
 - 
 
 ## Referencias
-- " >> "${authorFile}"
-END
+- "
+
+
+
+if [ -n "$4" -a -n "$5" ]; then
+    # concat associated note at the end of file
+    reviewNote="${4}\n - [[${authorName}]]"
+    echo -e "${reviewNote}" >> "${5}"   
+fi
+
+
+# Review note missing
+bookNote="${2} [[${authorName}]]"
+echo -e "${bookNote}" >> "${3}"
+
+
+
+# Ficha autor:
+authorNote="${authorNote} [[${3}]]"
+echo -e "${authorNote}" >> "${authorFile}"

@@ -2,8 +2,7 @@
 # USAGE: sh book.sh 82405
 # see: https://unix.stackexchange.com/questions/277861/parse-xml-returned-from-curl-within-a-bash-script
 
-if [ -z "$1" ]
-then
+if [ -z "$1" ]; then
   echo "Especifica un bookid"
   exit 1
 fi
@@ -26,17 +25,23 @@ cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
 
 image_url=$( echo $xml | xmllint --xpath "//$xpathBook/image_url[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 description=$( echo $xml | xmllint --xpath "//$xpathBook/description[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+description=$(echo -e "${description//$'<br />'/\\n}" | \
+    sed 's/<[^\/][^<>]*> *<\/[^<>]*>//g' | \
+    sed -e 's|<i>|_|g' -e 's|</i>|_|g' | \
+    sed -e 's|<b>|*|g' -e 's|</b>|*|g' | \
+    sed -e 's|<strong>|*|g' -e 's|</strong>|*|g' | \
+    sed -e 's/^[[:space:]]*//')
 publisher=$( echo $xml | xmllint --xpath "//$xpathBook/publisher[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 isbn=$( echo $xml | xmllint --xpath "//$xpathBook/isbn[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 isbn13=$( echo $xml | xmllint --xpath "//$xpathBook/isbn13[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-if [ -z "$isbn" ]
-then
+if [ -z "$isbn" ]; then
   isbn=$isbn13
 fi
 kindle_asin=$( echo $xml | xmllint --xpath "//$xpathBook/kindle_asin[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 publication_year=$( echo $xml | xmllint --xpath "//$xpathBook/publication_year[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 average_rating=$( echo $xml | xmllint --xpath "//$xpathBook/average_rating[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 num_pages=$( echo $xml | xmllint --xpath "//$xpathBook/num_pages[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+
 
 # AUTHOR
 authorId=$( echo $xml | xmllint --xpath "//$xpathAuthor/id/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
@@ -57,7 +62,7 @@ publisher:: [[${publisher}]]
 book_published:: [[${publication_year}]]  
 cover: ${image_url}   
 tags: 
-- book/goodreads/review
+- book/goodreads/profile
 - book/goodreads/status/${shelf}
 date: ${publication_year}
 rating: ${average_rating}
@@ -78,7 +83,8 @@ emotion:
 ## Descripción
 ${description}
 
-## Referencias" 
+## Referencias
+- " 
 
   bookFileName="${publication_year} ${cleantitle}"
   bookPath="${vaultpath}/${bookFileName}.md"
@@ -87,8 +93,7 @@ ${description}
 
 
 # AUTOR
-if [ -z "$authorId" ]
-then
+if [ -z "$authorId" ]; then
   echo "Missing author_id"
   exit 1
 fi
@@ -96,18 +101,15 @@ sleep 1
 
 authorIdCleaned=$( echo $authorId | sed -e 's/^[[:space:]]*//')
 
-if [ -z "$2" -a -z "$3" ]
-then
+if [ -z "$2" -a -z "$3" ]; then
   # Review note missing
-  # sh ./author.sh $authorIdCleaned "${bookNote}" "${bookPath}"
+  sh ./author.sh $authorIdCleaned "${bookNote}" "${bookPath}"
   exit 1
 fi
 
-# Review note exists
+# Review note exist
 reviewNote="${2} [[${bookFileName}]]"
-# sh ./author.sh $authorIdCleaned "${bookNote}" "${bookPath}" "${reviewNote}" "${3}"
-
-echo -e "${reviewNote}" >> "${3}"
+sh ./author.sh $authorIdCleaned "${bookNote}" "${bookPath}" "${reviewNote}" "${3}"
 
 
 
