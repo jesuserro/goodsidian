@@ -53,23 +53,27 @@ ${user_shelves_links}
 - "
 
 
+bookNote="${2} [[${authorName}]]"
+authorNote="${authorNote} [[${3}]]"
 
 if [ -n "$4" -a -n "$5" ]; then
     # concat associated note at the end of file
     reviewNote="${4}\n - [[${authorName}]]"
-    echo -e "${reviewNote}" >> "${5}"   
+    echo -e "${reviewNote}" >> "${5}" 
+
+    bookNote="${bookNote}\n- [[${5}]]"
+    authorNote="${authorNote}\n- [[${5}]]"
 fi
 
-
 # Review note missing
-bookNote="${2} [[${authorName}]]"
+
+# BOOK
 echo -e "${bookNote}" >> "${3}"
 
 
-
-# Ficha autor:
+# AUTHOR
 if [ -f "$authorFile" ]; then
     exit 1
 fi
-authorNote="${authorNote} [[${3}]]"
+
 echo -e "${authorNote}" >> "${authorFile}"

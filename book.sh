@@ -79,7 +79,7 @@ emotion:
 **Tags**: [[goodreads]]
 
 
-## Descripción
+## Sinopsis
 ${description}
 
 ## Referencias
