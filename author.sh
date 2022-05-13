@@ -50,26 +50,41 @@ ${user_shelves_links}
 ## Referencias (mis reseñas)
 - "
 
+# 3 bookpath, 5 reviewpath
+prefix="${vaultpath}/"
+suffix=".md"
+string="${3}"
+bookPathNoteCleaned=${string#"$prefix"}
+bookPathNoteCleaned=${bookPathNoteCleaned%"$suffix"}
+
+prefix="${vaultpath}/"
+suffix=".md"
+string="${5}"
+reviewPathNoteCleaned=${string#"$prefix"}
+reviewPathNoteCleaned=${reviewPathNoteCleaned%"$suffix"}
+
+
+
 
 bookNote="${2} [[${authorName}]]"
-authorNote="${authorNote} [[${3}]]"
+authorNote="${authorNote} [[${bookPathNoteCleaned}]]"
 
+# Print REVIEW
 if [ -n "$4" -a -n "$5" ]; then
-    # concat associated note at the end of file
+    # Review exists: concat associated note at the end of file
     reviewNote="${4}\n - [[${authorName}]]"
     echo -e "${reviewNote}" >> "${5}" 
 
-    bookNote="${bookNote}\n- [[${5}]]"
-    authorNote="${authorNote}\n- [[${5}]]"
+    bookNote="${bookNote}\n- [[${reviewPathNoteCleaned}]]"
+    authorNote="${authorNote}\n- [[${reviewPathNoteCleaned}]]"
 fi
 
 # Review note missing
-
-# BOOK
+# Print BOOK
 echo -e "${bookNote}" >> "${3}"
 
 
-# AUTHOR
+# Print AUTHOR
 if [ -f "$authorFile" ]; then
     exit 1
 fi
