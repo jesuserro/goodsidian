@@ -57,8 +57,6 @@ string="${3}"
 bookPathNoteCleaned=${string#"$prefix"}
 bookPathNoteCleaned=${bookPathNoteCleaned%"$suffix"}
 
-prefix="${vaultpath}/"
-suffix=".md"
 string="${5}"
 reviewPathNoteCleaned=${string#"$prefix"}
 reviewPathNoteCleaned=${reviewPathNoteCleaned%"$suffix"}
