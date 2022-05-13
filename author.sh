@@ -51,15 +51,7 @@ ${user_shelves_links}
 - "
 
 # 3 bookpath, 5 reviewpath
-
-clean_note_path(){
-    prefix="${vaultpath}/"
-    suffix=".md"
-    local a="${1}"
-    local x=${a#"$prefix"}
-    x=${x%"$suffix"}
-    echo "${x}"
-}
+. ./functions.sh
 bookPathNoteCleaned=$(clean_note_path "${3}")
 reviewPathNoteCleaned=$(clean_note_path "${5}")
 
