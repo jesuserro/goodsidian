@@ -53,12 +53,10 @@ ${user_shelves_links}
 # 3 bookpath, 5 reviewpath
 prefix="${vaultpath}/"
 suffix=".md"
-string="${3}"
-bookPathNoteCleaned=${string#"$prefix"}
+bookPathNoteCleaned=${3#"$prefix"}
 bookPathNoteCleaned=${bookPathNoteCleaned%"$suffix"}
 
-string="${5}"
-reviewPathNoteCleaned=${string#"$prefix"}
+reviewPathNoteCleaned=${5#"$prefix"}
 reviewPathNoteCleaned=${reviewPathNoteCleaned%"$suffix"}
 
 
