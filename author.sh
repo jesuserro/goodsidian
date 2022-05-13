@@ -9,6 +9,7 @@ then
 fi
 
 . ./goodreads.cfg
+. ./functions.sh
 
 xpathAuthor="GoodreadsResponse/author[1]"
 
@@ -51,7 +52,6 @@ ${user_shelves_links}
 - "
 
 # 3 bookpath, 5 reviewpath
-. ./functions.sh
 bookPathNoteCleaned=$(clean_note_path "${3}")
 reviewPathNoteCleaned=$(clean_note_path "${5}")
 

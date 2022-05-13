@@ -7,6 +7,7 @@ then
 fi
 
 . ./goodreads.cfg
+. ./functions.sh
 
 url="$urlbase/review/list_rss/$user?key=$key&shelf=$1"
 
@@ -95,13 +96,7 @@ do
   cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
 
   # 3. Clean long text for Obsidian
-  user_review=$(echo -e "${user_review//$'<br />'/\\n}" | \
-    sed 's/<[^\/][^<>]*> *<\/[^<>]*>//g' | \
-    sed -e 's|<i>|_|g' -e 's|</i>|_|g' | \
-    sed -e 's|<b>|*|g' -e 's|</b>|*|g' | \
-    sed -e 's|<strong>|*|g' -e 's|</strong>|*|g' | \
-    sed -e 's|<p>|\n|g' -e 's|</p>|\n|g' | \
-    sed -e 's/^[[:space:]]*//')
+  user_review=$(clean_long_text "${user_review}")
 
   # 4. Clean tags
   IFS=', ' read -ra arrtags <<< "$user_shelves"

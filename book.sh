@@ -8,6 +8,7 @@ if [ -z "$1" ]; then
 fi
 
 . ./goodreads.cfg
+. ./functions.sh
 
 xpathBook="GoodreadsResponse/book"
 xpathAuthor="GoodreadsResponse/book/authors/author[1]"
@@ -25,13 +26,7 @@ cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
 
 image_url=$( echo $xml | xmllint --xpath "//$xpathBook/image_url[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 description=$( echo $xml | xmllint --xpath "//$xpathBook/description[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-description=$(echo -e "${description//$'<br />'/\\n}" | \
-    sed 's/<[^\/][^<>]*> *<\/[^<>]*>//g' | \
-    sed -e 's|<i>|_|g' -e 's|</i>|_|g' | \
-    sed -e 's|<b>|*|g' -e 's|</b>|*|g' | \
-    sed -e 's|<strong>|*|g' -e 's|</strong>|*|g' | \
-    sed -e 's|<p>|\n|g' -e 's|</p>|\n|g' | \
-    sed -e 's/^[[:space:]]*//')
+description=$(clean_long_text "${description}")
 publisher=$( echo $xml | xmllint --xpath "//$xpathBook/publisher[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 isbn=$( echo $xml | xmllint --xpath "//$xpathBook/isbn[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 isbn13=$( echo $xml | xmllint --xpath "//$xpathBook/isbn13[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
