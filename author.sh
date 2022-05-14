@@ -79,4 +79,9 @@ if [ -f "$authorFile" ]; then
     exit 1
 fi
 
-echo -e "${authorNote}" >> "${authorFile}"
+# echo -e "${authorNote}" >> "${authorFile}"
+sed -E \
+    -e "s;%authorName%;$authorName;g" \
+    -e "s;%authorImage%;$authorImage;g" \
+    -e "s;%authorLink%;$authorLink;g" \
+    author.tpl > "${authorFile}"
