@@ -129,17 +129,13 @@ emotion:
 
 # ${title}
 
-## Info Review
-
-**Publicado**: $published_user_read_at
+**Fecha Review**: $published_user_read_at
+**Ficha Goodreads**: [Goodreads Private Notes & Quotes]($1) 
+**Tags**: [[goodreads]] ${user_shelves_links}
+**Rating**: ${user_rating} 
 
 ![b|150](${imglink})
 
-**Rating**: ${user_rating} 
-**Ficha Goodreads**: [Goodreads Private Notes & Quotes]($1) 
-**Tags**: [[goodreads]] ${user_shelves_links}
-
-## Review
 ${user_review}
 
 ## Referencias

@@ -16,12 +16,10 @@ emotion:
 
 ![b|150](%authorImage%)
 [Goodreads profile](%authorLink%)
+**Tags**:: [[goodreads]] %user_shelves_links%
 
-**Tags**:: [[goodreads]] 
-%user_shelves_links%
-
-## Sus Libros
+## Libros
 %books%
 
-## Reseñas
+## Mis Reseñas
 %reviews% 

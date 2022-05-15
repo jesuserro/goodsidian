@@ -66,12 +66,12 @@ emotion:
 
 # ${title}
 
-![b|150](${image_url})
-
 **Author**: [[${author}]]
-**Publicado**: $publication_year
+**Fecha Publicación**: $publication_year
 **Ficha Goodreads**: [Review, Private notes & Quotes]($1)
 **Tags**: [[goodreads]]
+
+![b|150](${image_url})
 
 
 ## Sinopsis
