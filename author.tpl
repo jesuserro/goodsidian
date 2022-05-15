@@ -21,7 +21,7 @@ emotion:
 %user_shelves_links%
 
 ## Sus Libros
-- 
+%books%
 
 ## Reseñas
-- 
+%reviews% 

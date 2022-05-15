@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# array fns: 
+# - https://unix.stackexchange.com/questions/1527/bash-eval-array-variable-name
+# - https://www.ludvikjerabek.com/2015/08/24/getting-bashed-by-dynamic-arrays/
+
+# my functions
 clean_note_path(){
     prefix="${vaultpath}/"
     suffix=".md"
