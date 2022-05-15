@@ -26,30 +26,6 @@ echo "AUTHOR $authorName -> $authorLink"
 
 authorFile="${vaultpath}/${authorName}.md" 
 
-authorNote="---
-aliases: []
-author:: [[${authorName}]]  
-tags: 
-- people/goodreads/author
-popular_shelves:
-date: ${user_read_at}
-readed: ${user_read_at}
-created: ${user_date_created} 
-updated: ${user_date_added} 
-rating: ${user_rating}
-emotion:
----
-
-# ${authorName}
-
-**Tags**:: [[goodreads]] 
-${user_shelves_links}
-
-## Libros del autor
-- 
-
-## Referencias (mis reseñas)
-- "
 
 # 3 bookpath, 5 reviewpath
 bookPathNoteCleaned=$(clean_note_path "${3}")
@@ -57,7 +33,7 @@ reviewPathNoteCleaned=$(clean_note_path "${5}")
 
 
 bookNote="${2} [[${authorName}]]"
-authorNote="${authorNote} [[${bookPathNoteCleaned}]]"
+# authorNote="${authorNote} [[${bookPathNoteCleaned}]]"
 
 # Print REVIEW
 if [ -n "$4" -a -n "$5" ]; then
@@ -66,7 +42,7 @@ if [ -n "$4" -a -n "$5" ]; then
     echo -e "${reviewNote}" >> "${5}" 
 
     bookNote="${bookNote}\n- [[${reviewPathNoteCleaned}]]"
-    authorNote="${authorNote}\n- [[${reviewPathNoteCleaned}]]"
+    # authorNote="${authorNote}\n- [[${reviewPathNoteCleaned}]]"
 fi
 
 # Review note missing
