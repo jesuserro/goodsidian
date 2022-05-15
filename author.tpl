@@ -20,8 +20,8 @@ emotion:
 **Tags**:: [[goodreads]] 
 %user_shelves_links%
 
-## Libros del autor
+## Sus Libros
 - 
 
-## Referencias (mis reseñas)
+## Reseñas
 - 

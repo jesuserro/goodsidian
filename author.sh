@@ -22,7 +22,7 @@ authorName=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | sed -
 authorImage=$( echo $xml | xmllint --xpath "//$xpathAuthor/image_url/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 authorLink=$( echo $xml | xmllint --xpath "//$xpathAuthor/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 
-echo "AUTHOR $authorName -> $authorLink"
+echo "AUTHOR $authorName"
 
 authorFile="${vaultpath}/${authorName}.md" 
 
