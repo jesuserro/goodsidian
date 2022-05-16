@@ -49,7 +49,7 @@ echo "BOOK $1 -> $title -> $publisher"
 
 bookNote="---
 aliases: []
-bookid: ${bookid}
+bookid: ${1}
 isbn: ${isbn}
 asin: ${kindle_asin}
 author:: [[${author}]]
