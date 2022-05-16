@@ -1,5 +1,6 @@
 ---
 aliases: []
+authorid: %authorId%
 author:: [[%authorName%]]  
 tags: 
 - people/goodreads/author

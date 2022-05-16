@@ -57,6 +57,7 @@ fi
 
 # echo -e "${authorNote}" >> "${authorFile}"
 sed -E \
+    -e "s;%authorId%;$1;g" \
     -e "s;%authorName%;$authorName;g" \
     -e "s;%authorImage%;$authorImage;g" \
     -e "s;%authorLink%;$authorLink;g" \
