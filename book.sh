@@ -1,6 +1,5 @@
 #!/bin/sh
 # USAGE: sh book.sh 82405
-# see: https://unix.stackexchange.com/questions/277861/parse-xml-returned-from-curl-within-a-bash-script
 
 if [ -z "$1" ]; then
   echo "Especifica un bookid"
@@ -10,24 +9,14 @@ fi
 . ./goodreads.cfg
 . ./functions.sh
 
-
-
-# review=( "$@" )
-
-# for key in "${!review[@]}"; { data+=" $key=${review[$key]}"; }
-# echo "$data" 
-
-
-# declare -p scalar_array
 eval $scalar_review
-declare -p review &>/dev/null # escapa comillas
+declare -p review &>/dev/null # escapa comillas e impide print array en shell
 
 echo "bookid: $1"
 echo "review title: ${review[title]}"
 echo "review author: ${review[author]}"
 
 exit 1
-
 
 
 xpathBook="GoodreadsResponse/book"
