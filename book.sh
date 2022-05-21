@@ -12,11 +12,8 @@ fi
 eval $scalar_review
 declare -p review &>/dev/null # escapa comillas e impide print array en shell
 
-echo "bookid: $1"
-echo "review title: ${review[title]}"
-echo "review author: ${review[author]}"
+echo "review guid: ${review[guid]}"
 
-exit 1
 
 
 xpathBook="GoodreadsResponse/book"
@@ -28,32 +25,34 @@ url="$urlbase/book/show?format=xml&key=$apikey&id=$1"
 
 xml=$(curl -s $url)
 
+declare -A book
+book['bookid']="${1}"
 # LIBRO
-title=$( echo $xml | xmllint --xpath "//$xpathBook/title[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['title']=$( echo $xml | xmllint --xpath "//$xpathBook/title[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 # 2. Delete illegal (':' and '/') and unwanted ('#') characters
-cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
+book['cleantitle']=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
 
-image_url=$( echo $xml | xmllint --xpath "//$xpathBook/image_url[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-description=$( echo $xml | xmllint --xpath "//$xpathBook/description[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-description=$(clean_long_text "${description}")
-publisher=$( echo $xml | xmllint --xpath "//$xpathBook/publisher[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-isbn=$( echo $xml | xmllint --xpath "//$xpathBook/isbn[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-isbn13=$( echo $xml | xmllint --xpath "//$xpathBook/isbn13[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-if [ -z "$isbn" ]; then
-  isbn=$isbn13
+book['image_url']=$( echo $xml | xmllint --xpath "//$xpathBook/image_url[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['description']=$( echo $xml | xmllint --xpath "//$xpathBook/description[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['description']=$(clean_long_text "${book['description']}")
+book['publisher']=$( echo $xml | xmllint --xpath "//$xpathBook/publisher[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['isbn']=$( echo $xml | xmllint --xpath "//$xpathBook/isbn[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['isbn13']=$( echo $xml | xmllint --xpath "//$xpathBook/isbn13[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+if [ -z "${book['isbn']}" ]; then
+  book['isbn']="${book['isbn13']}"
 fi
-kindle_asin=$( echo $xml | xmllint --xpath "//$xpathBook/kindle_asin[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-publication_year=$( echo $xml | xmllint --xpath "//$xpathBook/publication_year[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-average_rating=$( echo $xml | xmllint --xpath "//$xpathBook/average_rating[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-num_pages=$( echo $xml | xmllint --xpath "//$xpathBook/num_pages[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['kindle_asin']=$( echo $xml | xmllint --xpath "//$xpathBook/kindle_asin[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['publication_year']=$( echo $xml | xmllint --xpath "//$xpathBook/publication_year[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['average_rating']=$( echo $xml | xmllint --xpath "//$xpathBook/average_rating[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['num_pages']=$( echo $xml | xmllint --xpath "//$xpathBook/num_pages[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 
 
 # AUTHOR
-authorId=$( echo $xml | xmllint --xpath "//$xpathAuthor/id/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-author=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['authorId']=$( echo $xml | xmllint --xpath "//$xpathAuthor/id/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['author']=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 
 # echo "$bookid -> $title -> $kindle_asin -> $isbn -> $isbn13 -> $publication_year"
-echo "BOOK $1 -> $title -> $publisher"
+echo "BOOK ${book['bookid']} -> ${book['title']} -> ${book['publisher']}"
 
 
 bookNote="---
@@ -90,30 +89,26 @@ ${description}
 ## Referencias
 - " 
 
-  bookFileName="${publication_year} ${cleantitle}"
-  bookPath="${vaultpath}/${bookFileName}.md"
-
-
+  book['bookFileName']="${publication_year} ${cleantitle}"
+  book['bookPath']="${vaultpath}/${bookFileName}.md"
 
 
 # AUTOR
-if [ -z "$authorId" ]; then
+if [ -z "${book['authorId']}" ]; then
   echo "Missing author_id"
   exit 1
 fi
 sleep 1
 
-authorIdCleaned=$( echo $authorId | sed -e 's/^[[:space:]]*//')
-
-if [ -z "$2" -a -z "$3" ]; then
-  # Review note missing
-  sh ./author.sh $authorIdCleaned "${bookNote}" "${bookPath}"
-  exit 1
-fi
+book['authorIdCleaned']=$( echo $authorId | sed -e 's/^[[:space:]]*//')
 
 # Review note exist
-reviewNote="${2} [[${bookFileName}]]"
-sh ./author.sh $authorIdCleaned "${bookNote}" "${bookPath}" "${reviewNote}" "${3}"
+# reviewNote="${2} [[${bookFileName}]]"
+# sh ./author.sh $authorIdCleaned "${bookNote}" "${bookPath}" "${reviewNote}" "${3}"
 
+echo "Book author: ${book['author']}"
 
+export scalar_book=$(declare -p book)
 
+# sh ./book.sh "${review[@]}"
+# sh ./author.sh ${book['authorId']}
