@@ -11,6 +11,20 @@ fi
 . ./goodreads.cfg
 . ./functions.sh
 
+
+
+eval $scalar_review
+declare -p review &>/dev/null # escapa comillas e impide print array en shell
+
+eval $scalar_book
+declare -p book &>/dev/null # escapa comillas e impide print array en shell
+
+echo "review guid: ${review[guid]}"
+echo "book title: ${book[title]}"
+echo "autorid: ${book[authorId]}"
+exit 1
+
+
 xpathAuthor="GoodreadsResponse/author[1]"
 
 url="$urlbase/author/show.xml?key=$apikey&id=$1"

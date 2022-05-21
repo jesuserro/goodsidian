@@ -12,7 +12,7 @@ fi
 eval $scalar_review
 declare -p review &>/dev/null # escapa comillas e impide print array en shell
 
-echo "review guid: ${review[guid]}"
+# echo "review guid: ${review[guid]}"
 
 
 
@@ -52,7 +52,7 @@ book['authorId']=$( echo $xml | xmllint --xpath "//$xpathAuthor/id/text()" - | s
 book['author']=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 
 # echo "$bookid -> $title -> $kindle_asin -> $isbn -> $isbn13 -> $publication_year"
-echo "BOOK ${book['bookid']} -> ${book['title']} -> ${book['publisher']}"
+# echo "BOOK ${book['bookid']} -> ${book['title']} -> ${book['publisher']}"
 
 
 bookNote="---
@@ -106,9 +106,9 @@ book['authorIdCleaned']=$( echo $authorId | sed -e 's/^[[:space:]]*//')
 # reviewNote="${2} [[${bookFileName}]]"
 # sh ./author.sh $authorIdCleaned "${bookNote}" "${bookPath}" "${reviewNote}" "${3}"
 
-echo "Book author: ${book['author']}"
+# echo "Book author: ${book['author']}"
 
 export scalar_book=$(declare -p book)
 
 # sh ./book.sh "${review[@]}"
-# sh ./author.sh ${book['authorId']}
+sh ./author.sh ${book['authorId']}
