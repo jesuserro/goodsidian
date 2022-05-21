@@ -127,7 +127,7 @@ do
   export scalar_review=$(declare -p review)
 
   # sh ./book.sh "${review[@]}"
-  sh ./book.sh
+  sh ./book.sh ${review['bookid']}
 
   exit 1
 

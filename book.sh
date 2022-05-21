@@ -2,7 +2,10 @@
 # USAGE: sh book.sh 82405
 # see: https://unix.stackexchange.com/questions/277861/parse-xml-returned-from-curl-within-a-bash-script
 
-
+if [ -z "$1" ]; then
+  echo "Especifica un bookid"
+  exit 1
+fi
 
 . ./goodreads.cfg
 . ./functions.sh
@@ -19,8 +22,9 @@
 eval $scalar_review
 declare -p review &>/dev/null # escapa comillas
 
-echo "title: ${review[title]}"
-echo "author: ${review[author]}"
+echo "bookid: $1"
+echo "review title: ${review[title]}"
+echo "review author: ${review[author]}"
 
 exit 1
 
