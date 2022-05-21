@@ -16,7 +16,7 @@
 
 
 # declare -p scalar_array
-eval $scalar_array
+eval $scalar_review
 declare -p review &>/dev/null # escapa comillas
 
 echo "title: ${review[title]}"

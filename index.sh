@@ -124,7 +124,7 @@ do
   # Display a notification when creating the file
   # echo "REVIEW $i: $cleantitle ($counter)"
 
-  export scalar_array=$(declare -p review)
+  export scalar_review=$(declare -p review)
 
   # sh ./book.sh "${review[@]}"
   sh ./book.sh
