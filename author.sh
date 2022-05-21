@@ -22,7 +22,6 @@ declare -p book &>/dev/null # escapa comillas e impide print array en shell
 echo "review guid: ${review[guid]}"
 echo "book title: ${book[title]}"
 echo "autorid: ${book[authorId]}"
-exit 1
 
 
 xpathAuthor="GoodreadsResponse/author[1]"
@@ -31,48 +30,48 @@ url="$urlbase/author/show.xml?key=$apikey&id=$1"
 
 xml=$(curl -s $url)
 
+declare -A author
 # AUTOR
-authorName=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-authorImage=$( echo $xml | xmllint --xpath "//$xpathAuthor/image_url/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-authorLink=$( echo $xml | xmllint --xpath "//$xpathAuthor/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+author['authorId']=${1}
+author['authorName']=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+author['authorImage']=$( echo $xml | xmllint --xpath "//$xpathAuthor/image_url/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+author['authorLink']=$( echo $xml | xmllint --xpath "//$xpathAuthor/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 
-echo "AUTHOR $authorName"
-
-authorFile="${vaultpath}/${authorName}.md" 
+author['authorFile']="${vaultpath}/${author['authorName']}.md" 
 
 
 # 3 bookpath, 5 reviewpath
-bookPathNoteCleaned=$(clean_note_path "${3}")
-reviewPathNoteCleaned=$(clean_note_path "${5}")
+# bookPathNoteCleaned=$(clean_note_path "${3}")
+# reviewPathNoteCleaned=$(clean_note_path "${5}")
 
 
-bookNote="${2} [[${authorName}]]"
+# bookNote="${2} [[${authorName}]]"
 # authorNote="${authorNote} [[${bookPathNoteCleaned}]]"
 
 # Print REVIEW
-if [ -n "$4" -a -n "$5" ]; then
+# if [ -n "$4" -a -n "$5" ]; then
     # Review exists: concat associated note at the end of file
-    reviewNote="${4}\n - [[${authorName}]]"
-    echo -e "${reviewNote}" >> "${5}" 
+    # reviewNote="${4}\n - [[${authorName}]]"
+    # echo -e "${reviewNote}" >> "${5}" 
 
-    bookNote="${bookNote}\n- [[${reviewPathNoteCleaned}]]"
+    # bookNote="${bookNote}\n- [[${reviewPathNoteCleaned}]]"
     # authorNote="${authorNote}\n- [[${reviewPathNoteCleaned}]]"
-fi
+# fi
 
 # Review note missing
 # Print BOOK
-echo -e "${bookNote}" >> "${3}"
+# echo -e "${bookNote}" >> "${3}"
 
 
 # Print AUTHOR
-if [ -f "$authorFile" ]; then
+if [ -f "${author['authorFile']}" ]; then
     exit 1
 fi
 
 # echo -e "${authorNote}" >> "${authorFile}"
 sed -E \
-    -e "s;%authorId%;$1;g" \
-    -e "s;%authorName%;$authorName;g" \
-    -e "s;%authorImage%;$authorImage;g" \
-    -e "s;%authorLink%;$authorLink;g" \
-    author.tpl > "${authorFile}"
+    -e "s;%authorId%;${author['authorId']};g" \
+    -e "s;%authorName%;${author['authorName']};g" \
+    -e "s;%authorImage%;${author['authorImage']};g" \
+    -e "s;%authorLink%;${author['authorLink']};g" \
+    author.tpl > "${author['authorFile']}"
