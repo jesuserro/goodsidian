@@ -39,6 +39,8 @@ author['authorLink']=$( echo $xml | xmllint --xpath "//$xpathAuthor/link/text()"
 
 author['authorFile']="${vaultpath}/${author['authorName']}.md" 
 
+author['books']="- [[${book['bookFileName']}]]" 
+
 
 # 3 bookpath, 5 reviewpath
 # bookPathNoteCleaned=$(clean_note_path "${3}")
@@ -74,4 +76,6 @@ sed -E \
     -e "s;%authorName%;${author['authorName']};g" \
     -e "s;%authorImage%;${author['authorImage']};g" \
     -e "s;%authorLink%;${author['authorLink']};g" \
+    -e "s;%books%;${author['books']};g" \
+    -e "s;%reviews%;${book['reviews']};g" \
     author.tpl > "${author['authorFile']}"

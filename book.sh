@@ -30,7 +30,7 @@ book['bookid']="${1}"
 # LIBRO
 book['title']=$( echo $xml | xmllint --xpath "//$xpathBook/title[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 # 2. Delete illegal (':' and '/') and unwanted ('#') characters
-book['cleantitle']=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
+book['cleantitle']=$(echo "${book['title']}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
 
 book['image_url']=$( echo $xml | xmllint --xpath "//$xpathBook/image_url[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['description']=$( echo $xml | xmllint --xpath "//$xpathBook/description[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
@@ -89,8 +89,10 @@ ${description}
 ## Referencias
 - " 
 
-  book['bookFileName']="${publication_year} ${cleantitle}"
+  book['bookFileName']="${book['publication_year']} ${book['cleantitle']}"
   book['bookPath']="${vaultpath}/${bookFileName}.md"
+
+  book['reviews']="- [[${review['reviewNoteFile']}]]"
 
 
 # AUTOR
