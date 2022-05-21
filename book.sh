@@ -17,9 +17,10 @@
 
 # declare -p scalar_array
 eval $scalar_array
-declare -p review # escapa comillas
+declare -p review &>/dev/null # escapa comillas
 
 echo "title: ${review[title]}"
+echo "author: ${review[author]}"
 
 exit 1
 
