@@ -2,13 +2,28 @@
 # USAGE: sh book.sh 82405
 # see: https://unix.stackexchange.com/questions/277861/parse-xml-returned-from-curl-within-a-bash-script
 
-if [ -z "$1" ]; then
-  echo "Especifica un bookid"
-  exit 1
-fi
+
 
 . ./goodreads.cfg
 . ./functions.sh
+
+
+
+# review=( "$@" )
+
+# for key in "${!review[@]}"; { data+=" $key=${review[$key]}"; }
+# echo "$data" 
+
+
+# declare -p scalar_array
+eval $scalar_array
+declare -p review # escapa comillas
+
+echo "title: ${review[title]}"
+
+exit 1
+
+
 
 xpathBook="GoodreadsResponse/book"
 xpathAuthor="GoodreadsResponse/book/authors/author[1]"

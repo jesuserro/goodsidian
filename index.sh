@@ -57,102 +57,78 @@ do
     break
   fi
 
-  # Set variables 16 (miNumeroDeVariables)
-  guid=$( echo ${arr["$counter"]} | xargs)
-  title=$( echo ${arr[$( expr "$counter" + 1)]} | xargs)
-  bookid=$( echo ${arr[$( expr "$counter" + 2)]} | xargs)
-  imglink=$( echo ${arr[$( expr "$counter" + 3)]} | xargs)
-  book_description=$( echo ${arr[$( expr "$counter" + 4)]} | xargs)
-  num_pages=$( echo ${arr[$( expr "$counter" + 5)]} | xargs)
-  author=$( echo ${arr[$( expr "$counter" + 6)]} | xargs)
-  isbn=$( echo ${arr[$( expr "$counter" + 7)]} | xargs)
-  user_rating=$( echo ${arr[$( expr "$counter" + 8)]} | xargs)
-  user_read_at=$( echo ${arr[$( expr "$counter" + 9)]} | xargs)
-  user_date_added=$( echo ${arr[$( expr "$counter" + 10)]} | xargs)
-  user_date_created=$( echo ${arr[$( expr "$counter" + 11)]} | xargs)
-  user_shelves=$( echo ${arr[$( expr "$counter" + 12)]} | xargs)
-  user_review=$( echo ${arr[$( expr "$counter" + 13)]} | xargs)
-  average_rating=$( echo ${arr[$( expr "$counter" + 14)]} | xargs)
-  book_published=$( echo ${arr[$( expr "$counter" + 15)]} | xargs)
+  declare -A review
 
-  
+  # Set variables 16 (miNumeroDeVariables)
+  review['guid']=$( echo ${arr["$counter"]} | xargs)
+  review['title']=$( echo ${arr[$( expr "$counter" + 1)]} | xargs)
+  review['bookid']=$( echo ${arr[$( expr "$counter" + 2)]} | xargs)
+  review['imglink']=$( echo ${arr[$( expr "$counter" + 3)]} | xargs)
+  review['book_description']=$( echo ${arr[$( expr "$counter" + 4)]} | xargs)
+  review['num_pages']=$( echo ${arr[$( expr "$counter" + 5)]} | xargs)
+  review['author']=$( echo ${arr[$( expr "$counter" + 6)]} | xargs)
+  review['isbn']=$( echo ${arr[$( expr "$counter" + 7)]} | xargs)
+  review['user_rating']=$( echo ${arr[$( expr "$counter" + 8)]} | xargs)
+  review['user_read_at']=$( echo ${arr[$( expr "$counter" + 9)]} | xargs)
+  review['user_date_added']=$( echo ${arr[$( expr "$counter" + 10)]} | xargs)
+  review['user_date_created']=$( echo ${arr[$( expr "$counter" + 11)]} | xargs)
+  review['user_shelves']=$( echo ${arr[$( expr "$counter" + 12)]} | xargs)
+  review['user_review']=$( echo ${arr[$( expr "$counter" + 13)]} | xargs)
+  review['average_rating']=$( echo ${arr[$( expr "$counter" + 14)]} | xargs)
+  review['book_published']=$( echo ${arr[$( expr "$counter" + 15)]} | xargs)
 
   if [ -z "$user_read_at" ]; then
-    user_read_at=${user_date_created}
+    review['user_read_at']=${user_date_created}
   fi
 
   # Clean vars:
   # 1. Format date
-  user_read_at=$(date -d "$user_read_at" +'%Y-%m-%d %H:%M')
-  clean_user_read_at=$(date -d "$user_read_at" +'%Y%m%d%H%M')
-  published_user_read_at=$(date -d "$user_read_at" +'%A, %d %B %Y a las %H:%Mh.')
+  review['user_read_at']=$(date -d "${review['user_read_at']}" +'%Y-%m-%d %H:%M')
+  review['clean_user_read_at']=$(date -d "${review['user_read_at']}" +'%Y%m%d%H%M')
+  review['published_user_read_at']=$(date -d "${review['user_read_at']}" +'%A, %d %B %Y a las %H:%Mh.')
 
-  user_date_added=$(date -d "$user_date_added" +'%Y-%m-%d %H:%M')
+  review['user_date_added']=$(date -d "${review['user_date_added']}" +'%Y-%m-%d %H:%M')
 
-  user_date_created=$(date -d "$user_date_created" +'%Y-%m-%d %H:%M')
-  clean_user_date_created=$(date -d "$user_date_created" +'%Y%m%d%H%M')
+  review['user_date_created']=$(date -d "${review['user_date_created']}" +'%Y-%m-%d %H:%M')
+  review['clean_user_date_created']=$(date -d "${review['user_date_created']}" +'%Y%m%d%H%M')
 
   # 2. Delete illegal (':' and '/') and unwanted ('#') characters
-  cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
+  review['cleantitle']=$(echo "${review['title']}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
 
   # 3. Clean long text for Obsidian
-  user_review=$(clean_long_text "${user_review}")
+  review['user_review']=$(clean_long_text "${review['user_review']}")
 
   # 4. Clean tags
-  IFS=', ' read -ra arrtags <<< "$user_shelves"
+  IFS=', ' read -ra arrtags <<< "${review['user_shelves']}"
   for index in "${!arrtags[@]}"
   do
       arrlinks[$index]="[[${arrtags[$index]}]]"
       arrtags[$index]="- book/goodreads/tag/${arrtags[$index]}"
   done
-  user_shelves=$(IFS=$'\n' ; echo "${arrtags[*]}")
-  user_shelves_links=$(IFS=' ' ; echo "${arrlinks[*]}")
+  review['user_shelves']=$(IFS=$'\n' ; echo "${arrtags[*]}")
+  review['user_shelves_links']=$(IFS=' ' ; echo "${arrlinks[*]}")
 
-  reviewNote="---
-aliases: []
-bookid: ${bookid}
-isbn: ${isbn}
-asin: ${kindle_asin}
-author:: [[${author}]]
-pages: ${num_pages}
-publisher:: [[${publisher}]]  
-book_published:: [[${book_published}]]  
-cover: ${image_url}   
-tags: 
-- review/goodreads
-- review/goodreads/status/${1}
-${user_shelves}
-date: ${user_read_at}
-rating: ${user_rating}
-emotion:
----
-
-# ${title}
-
-**Fecha Review**: $published_user_read_at
-**Ficha Goodreads**: [Goodreads Private Notes & Quotes]($1) 
-**Tags**: [[goodreads]] ${user_shelves_links}
-**Rating**: ${user_rating} 
-
-![b|150](${imglink})
-
-${user_review}
-
-## Referencias
-- " 
-
-  reviewNotePath="${vaultpath}/${clean_user_read_at} ${cleantitle}.md"
+   
+  # reviewNotePath="${vaultpath}/${clean_user_read_at} ${cleantitle}.md"
+    review['reviewNotePath']="${vaultpath}/${review[clean_user_read_at]} ${review[cleantitle]}.md"
 
   # echo "${reviewNote}" >> "${reviewNotePath}"
   # doReviewNote=$("${reviewNote}" >> "${reviewNotePath}")
 
   # SET book (and author) files here
-  sh ./book.sh $bookid "${reviewNote}" "${reviewNotePath}"
+  # sh ./book.sh $bookid "${reviewNote}" "${reviewNotePath}"
 
 
   # sleep 1
 
   # Display a notification when creating the file
-  echo "REVIEW $i: $cleantitle ($counter)"
+  # echo "REVIEW $i: $cleantitle ($counter)"
+
+  export scalar_array=$(declare -p review)
+
+  # sh ./book.sh "${review[@]}"
+  sh ./book.sh
+
+  exit 1
 
 done
