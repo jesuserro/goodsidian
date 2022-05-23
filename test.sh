@@ -10,4 +10,4 @@ link='<a href="https://www.goodreads.com/author/show/4443885._the_Catholic_Churc
 # echo "${link}" | sed 's|<a href="\([^\"]+\)".*>\(.*\)<\/a>|[\2](\1)|g'
 # echo "${link}" | sed 's|<a href="\(.*\)">\(.*\)<\/a>|[\2](\1)|g'
 # echo "${link}" | sed -r 's/<a href="(.*)">(.*)<.*/[\2](\1)/g' # Pilla texto link
-echo "${link}" | sed -r 's/<a(.*)href="\s*([^"]+).*>\s*(.*)\s*<.*/[\3](\2)/g' # OK
+echo "${link}" | sed -r 's|<a(.*)href="\s*([^"]+).*>\s*(.*)\s*<.*|[\3](\2)|g' # OK
