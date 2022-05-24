@@ -133,4 +133,5 @@ sed -E \
     -e "s;%num_pages%;${book['num_pages']};g" \
     -e "s;%publisher%;${book['publisher']};g" \
     -e "s;%publication_year%;${book['publication_year']};g" \
+    -e "s|%user_shelves_links%|${review['user_shelves_links']}|g" \
     review.tpl > "${review['reviewNotePath']}"
