@@ -15,9 +15,7 @@ clean_note_path(){
 }
 
 clean_long_text(){
-  local long_text="${1}"
-  # long_text=$(echo -e "${long_text//$'<br />'/\\n}" | \
-  long_text=$(echo -e "${1}" | \
+  echo -e "${1}" | \
     sed 's|<br \/>|\\n|g' | \
     sed 's|<[^\/][^<>]*> *<\/[^<>]*>||g' | \
     sed -e 's|<i>|_|g' -e 's|</i>|_|g' | \
@@ -25,7 +23,6 @@ clean_long_text(){
     sed -e 's|<strong>|*|g' -e 's|</strong>|*|g' | \
     sed -e 's|<p>|\n|g' -e 's|</p>|\n|g' | \
     # sed -r 's|<a(.*)href="\s*([^"]+)(\s*.*)>\s*(.*)\s*</a>|[\4](\2)|g' | \
-    sed -e 's|^[[:space:]]*||')
-  echo "${long_text}"
+    sed -e 's|^[[:space:]]*||'
 }
 
