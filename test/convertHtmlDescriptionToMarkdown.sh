@@ -7,7 +7,7 @@ link='<![CDATA[<p>As its title suggests, this book by Pope Benedict XVI, follows
 link2=''
 
 link2=$(cat <<'EOF'
-<![CDATA[God is all around! His fingerprints are everywhere! You don't have to lead the most daring life to find Him. He's present in metaphysical theories and on tennis courts, in the beauty of a thirty-foot waterfall and in the power of a lightning strike. No matter who you are or what life you lead, you can learn to see God everywhere you go. This book will help you get excited about hearing from God and allowing Him to enter into the hours and minutes of your days. This is taking "quiet time" out into a very loud world, marinating all your experiences in the riches of God's truth, not just a few minutes a day. Through this book's thirty-one devotions, you'll discover that we all can learn to find God's fingerprints - redemptive reflections in everyday moments, concrete examples of intangible concepts.]]>
+<![CDATA[God is all around! His <b>fingerprints</b> are everywhere! You don't have to lead the most daring life to find Him. He's present in metaphysical theories and on tennis courts, in the beauty of a thirty-foot waterfall and in the power of a lightning strike. No matter who you are or what life you lead, you can learn to see God everywhere you go. This book will help you get excited about hearing from God and allowing Him to enter into the hours and minutes of your days. This is taking "quiet time" out into a very loud world, marinating all your experiences in the riches of God's truth, not just a few minutes a day. Through this book's thirty-one devotions, you'll discover that we all can learn to find God's fingerprints - redemptive <i>reflections</i> in everyday moments, concrete examples of intangible concepts.]]>
 EOF
 )
 
