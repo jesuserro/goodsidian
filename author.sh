@@ -86,6 +86,7 @@ sed -E \
 if [ -f "${book['bookPath']}" ]; then
     exit 1
 fi
+sleep 1
 sed -E \
     -e "s;%bookid%;${book['bookid']};g" \
     -e "s;%isbn%;${book['isbn']};g" \
@@ -100,3 +101,36 @@ sed -E \
     -e "s;%kindle_asin%;${book['kindle_asin']};g" \
     -e "s;%goodreads_url%;${book['goodreads_url']};g" \
     book.tpl > "${book['bookPath']}"
+
+sleep 1
+
+# sed -E \
+#     -e "s;%bookid%;${review['bookid']};g" \
+#     -e "s;%isbn%;${review['isbn']};g" \
+#     -e "s;%kindle_asin%;${review['kindle_asin']};g" \
+#     -e "s;%title%;${review['title']};g" \
+#     -e "s;%author%;${author['authorName']};g" \
+#     -e "s|%user_review%|${review['user_review']}|g" \
+#     -e "s|%imglink%|${review[imglink]}|g" \
+#     -e "s;%user_rating%;${review['user_rating']};g" \
+#     -e "s;%user_read_at%;${review['user_read_at']};g" \
+#     -e "s|%user_shelves%|${review['user_shelves']}|g" \
+#     -e "s|%user_shelves_links%|${review['user_shelves_links']}|g" \
+#     review.tpl > "${review['reviewNotePath']}"
+
+sed -E \
+    -e "s;%bookid%;${review['bookid']};g" \
+    -e "s;%guid%;${review['guid']};g" \
+    -e "s;%isbn%;${review['isbn']};g" \
+    -e "s;%kindle_asin%;${review['kindle_asin']};g" \
+    -e "s;%title%;${review['title']};g" \
+    -e "s;%author%;${author['authorName']};g" \
+    -e "s;%publisher%;${book['publisher']};g" \
+    -e "s|%user_review%|${review['user_review']}|g" \
+    -e "s|%imglink%|${review[imglink]}|g" \
+    -e "s;%user_rating%;${review['user_rating']};g" \
+    -e "s;%user_read_at%;${review['user_read_at']};g" \
+    -e "s;%num_pages%;${book['num_pages']};g" \
+    -e "s;%publisher%;${book['publisher']};g" \
+    -e "s;%publication_year%;${book['publication_year']};g" \
+    review.tpl > "${review['reviewNotePath']}"

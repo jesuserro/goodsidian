@@ -6,8 +6,8 @@ asin: %kindle_asin%
 author:: [[%author%]]
 pages: %num_pages%
 publisher:: [[%publisher%]]  
-book_published:: [[%book_published%]]  
-cover: %image_url%   
+book_published:: [[%publication_year%]]  
+cover: %imglink%   
 tags: %tags%
 %user_shelves%
 date: %user_read_at%
@@ -17,8 +17,8 @@ emotion:
 
 # %title%
 
-**Fecha Review**: %published_user_read_at%
-**Ficha Goodreads**: [Goodreads Private Notes & Quotes](%1%) 
+**Fecha Review**: %user_read_at%
+**Ficha Goodreads**: [Goodreads Private Notes & Quotes](%guid%) 
 **Tags**: [[goodreads]] %user_shelves_links%
 **Rating**: %user_rating% 
 
