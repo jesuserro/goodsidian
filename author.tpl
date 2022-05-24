@@ -19,6 +19,9 @@ emotion:
 [Goodreads profile](%authorLink%)
 **Tags**:: [[goodreads]] %user_shelves_links%
 
+## About
+%about%
+
 ## Libros
 %books%
 
