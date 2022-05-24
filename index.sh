@@ -105,7 +105,7 @@ do
       arrlinks[$index]="[[${arrtags[$index]}]]"
       arrtags[$index]="- book/goodreads/tag/${arrtags[$index]}"
   done
-  review['user_shelves']=$(IFS=$'\n' ; echo "${arrtags[*]}")
+  review['user_shelves']=$(IFS=$'\\n' ; echo "${arrtags[*]}")
   review['user_shelves_links']=$(IFS=' ' ; echo "${arrlinks[*]}")
 
    

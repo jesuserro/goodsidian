@@ -8,7 +8,7 @@ pages: %num_pages%
 publisher:: [[%publisher%]]  
 book_published:: [[%publication_year%]]  
 cover: %imglink%   
-tags: %tags%
+tags:
 %user_shelves%
 date: %user_read_at%
 rating: %user_rating%
