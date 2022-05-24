@@ -36,9 +36,9 @@ author['authorId']=${1}
 author['authorName']=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 author['authorImage']=$( echo $xml | xmllint --xpath "//$xpathAuthor/image_url/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 author['authorLink']=$( echo $xml | xmllint --xpath "//$xpathAuthor/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-
+author['about']=$( echo $xml | xmllint --xpath "//$xpathAuthor/about/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+# author['about']=$(clean_long_text "${author['about']}")
 author['authorFile']="${vaultpath}/${author['authorName']}.md" 
-
 author['books']="- [[${book['bookFileName']}]]" 
 
 
@@ -71,11 +71,13 @@ if [ -f "${author['authorFile']}" ]; then
 fi
 
 # echo -e "${authorNote}" >> "${authorFile}"
+
 sed -E \
     -e "s;%authorId%;${author['authorId']};g" \
     -e "s;%authorName%;${author['authorName']};g" \
     -e "s;%authorImage%;${author['authorImage']};g" \
     -e "s;%authorLink%;${author['authorLink']};g" \
+    -e "s|%about%|${author[about]}|g" \
     -e "s;%books%;${author['books']};g" \
     -e "s;%reviews%;${book['reviews']};g" \
     author.tpl > "${author['authorFile']}"
