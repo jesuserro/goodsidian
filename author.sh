@@ -37,7 +37,7 @@ author['authorName']=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()"
 author['authorImage']=$( echo $xml | xmllint --xpath "//$xpathAuthor/image_url/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 author['authorLink']=$( echo $xml | xmllint --xpath "//$xpathAuthor/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 author['about']=$( echo $xml | xmllint --xpath "//$xpathAuthor/about/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-# author['about']=$(clean_long_text "${author['about']}")
+author['about']=$(clean_long_text "${author['about']}")
 author['authorFile']="${vaultpath}/${author['authorName']}.md" 
 author['books']="- [[${book['bookFileName']}]]" 
 
