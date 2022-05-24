@@ -13,9 +13,7 @@ eval $scalar_review
 declare -p review &>/dev/null # escapa comillas e impide print array en shell
 
 # echo "review guid: ${review[guid]}"
-
-
-
+ 
 xpathBook="GoodreadsResponse/book"
 xpathAuthor="GoodreadsResponse/book/authors/author[1]"
 
@@ -54,44 +52,10 @@ book['author']=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | s
 # echo "$bookid -> $title -> $kindle_asin -> $isbn -> $isbn13 -> $publication_year"
 # echo "BOOK ${book['bookid']} -> ${book['title']} -> ${book['publisher']}"
 
-
-bookNote="---
-aliases: []
-bookid: ${1}
-isbn: ${isbn}
-asin: ${kindle_asin}
-author:: [[${author}]]
-pages: ${num_pages}
-publisher:: [[${publisher}]]  
-book_published:: [[${publication_year}]]  
-cover: ${image_url}   
-tags: 
-- book/goodreads/profile
-date: ${publication_year}
-rating: ${average_rating}
-emotion:
----
-
-# ${title}
-
-**Author**: [[${author}]]
-**Fecha Publicación**: $publication_year
-**Ficha Goodreads**: [Review, Private notes & Quotes]($1)
-**Tags**: [[goodreads]]
-
-![b|150](${image_url})
-
-## Sinopsis
-${description}
-
-## Índice
-
-## Referencias
-- " 
-
   book['bookFileName']="${book['publication_year']} ${book['cleantitle']}"
-  book['bookPath']="${vaultpath}/${bookFileName}.md"
+  book['bookPath']="${vaultpath}/${book[bookFileName]}.md"
 
+  book['goodreads_url']="https://goodreads.com/book/show/${book[bookid]}"
   book['reviews']="- [[${review['reviewNoteFile']}]]"
 
 

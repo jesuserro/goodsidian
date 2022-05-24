@@ -30,5 +30,5 @@ emotion:
 ## Índice
 %indice%
 
-## Referencias
-%referencias%
+## Reviews
+%reviews%

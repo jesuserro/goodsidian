@@ -81,3 +81,22 @@ sed -E \
     -e "s;%books%;${author['books']};g" \
     -e "s;%reviews%;${book['reviews']};g" \
     author.tpl > "${author['authorFile']}"
+
+
+if [ -f "${book['bookPath']}" ]; then
+    exit 1
+fi
+sed -E \
+    -e "s;%bookid%;${book['bookid']};g" \
+    -e "s;%isbn%;${book['isbn']};g" \
+    -e "s;%title%;${book['title']};g" \
+    -e "s;%publication_year%;${book['publication_year']};g" \
+    -e "s|%description%|${book[description]}|g" \
+    -e "s;%image_url%;${book['image_url']};g" \
+    -e "s;%average_rating%;${book['average_rating']};g" \
+    -e "s;%publisher%;${book['publisher']};g" \
+    -e "s;%author%;${author['authorName']};g" \
+    -e "s;%num_pages%;${book['num_pages']};g" \
+    -e "s;%kindle_asin%;${book['kindle_asin']};g" \
+    -e "s;%goodreads_url%;${book['goodreads_url']};g" \
+    book.tpl > "${book['bookPath']}"
