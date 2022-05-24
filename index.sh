@@ -77,7 +77,7 @@ do
   review['average_rating']=$( echo ${arr[$( expr "$counter" + 14)]} | xargs)
   review['book_published']=$( echo ${arr[$( expr "$counter" + 15)]} | xargs)
 
-  if [ -z "$user_read_at" ]; then
+  if [ -z "$review['user_read_at']" ]; then
     review['user_read_at']=${user_date_created}
   fi
 
@@ -129,6 +129,6 @@ do
   # sh ./book.sh "${review[@]}"
   sh ./book.sh ${review['bookid']}
 
-  exit 1
+  sleep 1
 
 done

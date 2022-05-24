@@ -64,25 +64,30 @@ author['books']="- [[${book['bookFileName']}]]"
 # Print BOOK
 # echo -e "${bookNote}" >> "${3}"
 
-
-# Print AUTHOR
-if [ -f "${author['authorFile']}" ]; then
-    exit 1
-fi
-
-# echo -e "${authorNote}" >> "${authorFile}"
-
+# REVIEW
+sleep 1
 sed -E \
-    -e "s;%authorId%;${author['authorId']};g" \
-    -e "s;%authorName%;${author['authorName']};g" \
-    -e "s;%authorImage%;${author['authorImage']};g" \
-    -e "s;%authorLink%;${author['authorLink']};g" \
-    -e "s|%about%|${author[about]}|g" \
-    -e "s;%books%;${author['books']};g" \
-    -e "s;%reviews%;${book['reviews']};g" \
-    author.tpl > "${author['authorFile']}"
+    -e "s;%bookid%;${review['bookid']};g" \
+    -e "s;%guid%;${review['guid']};g" \
+    -e "s;%isbn%;${review['isbn']};g" \
+    -e "s;%kindle_asin%;${review['kindle_asin']};g" \
+    -e "s;%title%;${review['title']};g" \
+    -e "s;%author%;${author['authorName']};g" \
+    -e "s;%publisher%;${book['publisher']};g" \
+    -e "s|%user_review%|${review['user_review']}|g" \
+    -e "s|%imglink%|${review[imglink]}|g" \
+    -e "s;%user_rating%;${review['user_rating']};g" \
+    -e "s;%user_read_at%;${review['user_read_at']};g" \
+    -e "s;%num_pages%;${book['num_pages']};g" \
+    -e "s;%publisher%;${book['publisher']};g" \
+    -e "s;%publication_year%;${book['publication_year']};g" \
+    -e "s|%user_shelves_links%|${review['user_shelves_links']}|g" \
+    -e "s|%user_shelves%|${review['user_shelves']}|g" \
+    review.tpl > "${review['reviewNotePath']}"
 
+unset review
 
+# BOOK
 if [ -f "${book['bookPath']}" ]; then
     exit 1
 fi
@@ -102,37 +107,20 @@ sed -E \
     -e "s;%goodreads_url%;${book['goodreads_url']};g" \
     book.tpl > "${book['bookPath']}"
 
+# AUTHOR
+if [ -f "${author['authorFile']}" ]; then
+    exit 1
+fi
 sleep 1
-
-# sed -E \
-#     -e "s;%bookid%;${review['bookid']};g" \
-#     -e "s;%isbn%;${review['isbn']};g" \
-#     -e "s;%kindle_asin%;${review['kindle_asin']};g" \
-#     -e "s;%title%;${review['title']};g" \
-#     -e "s;%author%;${author['authorName']};g" \
-#     -e "s|%user_review%|${review['user_review']}|g" \
-#     -e "s|%imglink%|${review[imglink]}|g" \
-#     -e "s;%user_rating%;${review['user_rating']};g" \
-#     -e "s;%user_read_at%;${review['user_read_at']};g" \
-#     -e "s|%user_shelves%|${review['user_shelves']}|g" \
-#     -e "s|%user_shelves_links%|${review['user_shelves_links']}|g" \
-#     review.tpl > "${review['reviewNotePath']}"
-
 sed -E \
-    -e "s;%bookid%;${review['bookid']};g" \
-    -e "s;%guid%;${review['guid']};g" \
-    -e "s;%isbn%;${review['isbn']};g" \
-    -e "s;%kindle_asin%;${review['kindle_asin']};g" \
-    -e "s;%title%;${review['title']};g" \
-    -e "s;%author%;${author['authorName']};g" \
-    -e "s;%publisher%;${book['publisher']};g" \
-    -e "s|%user_review%|${review['user_review']}|g" \
-    -e "s|%imglink%|${review[imglink]}|g" \
-    -e "s;%user_rating%;${review['user_rating']};g" \
-    -e "s;%user_read_at%;${review['user_read_at']};g" \
-    -e "s;%num_pages%;${book['num_pages']};g" \
-    -e "s;%publisher%;${book['publisher']};g" \
-    -e "s;%publication_year%;${book['publication_year']};g" \
-    -e "s|%user_shelves_links%|${review['user_shelves_links']}|g" \
-    -e "s|%user_shelves%|${review['user_shelves']}|g" \
-    review.tpl > "${review['reviewNotePath']}"
+    -e "s;%authorId%;${author['authorId']};g" \
+    -e "s;%authorName%;${author['authorName']};g" \
+    -e "s;%authorImage%;${author['authorImage']};g" \
+    -e "s;%authorLink%;${author['authorLink']};g" \
+    -e "s|%about%|${author[about]}|g" \
+    -e "s;%books%;${author['books']};g" \
+    -e "s;%reviews%;${book['reviews']};g" \
+    author.tpl > "${author['authorFile']}"
+
+unset book
+unset author
