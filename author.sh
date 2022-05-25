@@ -109,8 +109,6 @@ sed -E \
     -e "s;%reviewNoteFile%;${review['reviewNoteFile']};g" \
     book.tpl > "${book['bookPath']}"
 
-unset review
-
 # AUTHOR
 if [ -f "${author['authorFile']}" ]; then
     exit 1
@@ -124,7 +122,12 @@ sed -E \
     -e "s|%about%|${author[about]}|g" \
     -e "s;%books%;${author['books']};g" \
     -e "s;%reviews%;${book['reviews']};g" \
+    -e "s;%user_read_at%;${review['user_read_at']};g" \
+    -e "s;%user_date_created%;${review['user_date_created']};g" \
+    -e "s;%user_date_added%;${review['user_date_added']};g" \
+    -e "s;%user_rating%;${review['user_rating']};g" \
     author.tpl > "${author['authorFile']}"
 
+unset review
 unset book
 unset author
