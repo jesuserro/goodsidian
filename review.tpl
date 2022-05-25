@@ -21,11 +21,11 @@ emotion:
 
 %user_review%
 
-## Valoración
-**Ficha Goodreads**: [Goodreads Private Notes & Quotes](%guid%) 
+## Valoración 
 **Tags**: [[goodreads]] %user_shelves_links%
 **Rating**: %user_rating%
 
 ## Referencias
 - [[%bookFileName%]]
 - [[%author%]]
+- [Goodreads](%guid%)

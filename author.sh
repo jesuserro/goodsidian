@@ -87,8 +87,6 @@ sed -E \
     -e "s|%published_user_read_at%|${review['published_user_read_at']}|g" \
     review.tpl > "${review['reviewNotePath']}"
 
-unset review
-
 # BOOK
 if [ -f "${book['bookPath']}" ]; then
     exit 1
@@ -107,7 +105,10 @@ sed -E \
     -e "s;%num_pages%;${book['num_pages']};g" \
     -e "s;%kindle_asin%;${book['kindle_asin']};g" \
     -e "s;%goodreads_url%;${book['goodreads_url']};g" \
+    -e "s;%reviewNoteFile%;${review['reviewNoteFile']};g" \
     book.tpl > "${book['bookPath']}"
+
+unset review
 
 # AUTHOR
 if [ -f "${author['authorFile']}" ]; then

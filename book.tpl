@@ -14,21 +14,24 @@ date: %publication_year%
 rating: %average_rating%
 emotion:
 ---
-
 # %title%
 
-**Author**: [[%author%]]
-**Fecha Publicación**: %publication_year%
-**Ficha Goodreads**: [Review, Private notes & Quotes](%goodreads_url%)
-**Tags**: [[goodreads]]
-
 ![b|150](%image_url%)
+
+[[%author%]] | %publication_year% | Editorial [[%publisher%]] | %num_pages% páginas | Puntuación %average_rating%
 
 ## Sinopsis
 %description%
 
+## Género 
+
 ## Índice
 %indice%
 
-## Reviews
-%reviews%
+## Referencias
+- [[%author%]]
+- [[%reviewNoteFile%]]
+- [Goodreads](%goodreads_url%)
+- [[goodreads]]
+
+
