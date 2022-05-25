@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# USAGE: sh index.sh patata
+
 if [ -z "$1" ]
 then
     echo "Especifica una estantería por favor"
