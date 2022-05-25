@@ -1,5 +1,6 @@
 ---
 aliases: []
+reviewid: %reviewid%
 bookid: %bookid%
 isbn: %isbn%
 asin: %kindle_asin%
