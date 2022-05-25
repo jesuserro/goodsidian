@@ -15,12 +15,12 @@ clean_note_path(){
 }
 
 clean_long_text(){
-  
-  IFS= read -r -d '' patata <<EOC
+  local cleaned_txt
+  IFS= read -r -d '' cleaned_txt <<EOC
     ${1}
 EOC
   
-  echo -e "${patata}" | \
+  echo -e "${cleaned_txt}" | \
     sed 's|<br \/>|\\n|g' | \
     sed 's|<[^\/][^<>]*> *<\/[^<>]*>||g' | \
     sed -e 's|<i>|_|g' -e 's|</i>|_|g' | \
