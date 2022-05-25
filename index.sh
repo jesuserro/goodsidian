@@ -72,15 +72,11 @@ do
 
   # Set variables 16 (miNumeroDeVariables)
   guid=$( echo ${arr["$counter"]} | xargs)
-
   #https://www.goodreads.com/review/show/2297011024?utm_medium=api%25guid%25utm_source=rss
-  # reviewid=$(echo "${review['guid']}" | grep -o '\d\d')
-  # reviewid=${review['guid']%%_*}
   last_url=$(echo "${guid##*/}") # último slash de la url
-  reviewid=${last_url%\?*} # remove suffix starting with "?"
-
+  
+  review['reviewid']=${last_url%\?*} # remove suffix starting with "?"
   review['guid']="$guid"
-  review['reviewid']="$reviewid"
   review['title']=$( echo ${arr[$( expr "$counter" + 1)]} | xargs)
   review['bookid']=$( echo ${arr[$( expr "$counter" + 2)]} | xargs)
   review['imglink']=$( echo ${arr[$( expr "$counter" + 3)]} | xargs)
