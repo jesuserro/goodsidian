@@ -15,13 +15,18 @@ clean_note_path(){
 }
 
 clean_long_text(){
-  echo -e "${1}" | \
+  
+  IFS= read -r -d '' patata <<EOC
+    ${1}
+EOC
+  
+  echo -e "${patata}" | \
     sed 's|<br \/>|\\n|g' | \
     sed 's|<[^\/][^<>]*> *<\/[^<>]*>||g' | \
     sed -e 's|<i>|_|g' -e 's|</i>|_|g' | \
     sed -e 's|<b>|*|g' -e 's|</b>|*|g' | \
     sed -e 's|<strong>|*|g' -e 's|</strong>|*|g' | \
-    sed -e 's|<p>|\n|g' -e 's|</p>|\n|g' | \
+    sed -e 's|<p>|\\n|g' -e 's|</p>|\\n|g' | \
     # sed -r 's|<a(.*)href="\s*([^"]+)(\s*.*)>\s*(.*)\s*</a>|[\4](\2)|g' | \
     sed -e 's|^[[:space:]]*||'
 }
