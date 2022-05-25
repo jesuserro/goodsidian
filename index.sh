@@ -13,7 +13,7 @@ fi
 shelf=${1}
 url="$urlbase/review/list_rss/$user?key=$key&shelf=$1"
 
-# This grabs the data from the currently reading rss feed and formats it
+# This grabs the data from the currently reading rss feed and formats it (16 campos)
 IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>|user_review>|guid>|user_rating>|user_read_at>|user_date_added>)' | \
 sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
 -e 's/Jei.s bookshelf: '$shelf'//' \
@@ -48,6 +48,7 @@ if (( "$bookamount" == 0 )); then
   echo "No new books found in shelf $shelf"
 fi
 
+# Número de campos del grep -E
 miNumeroDeVariables=16
 
 num_books=$(($bookamount / $miNumeroDeVariables))
