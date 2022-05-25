@@ -83,6 +83,8 @@ sed -E \
     -e "s;%publication_year%;${book['publication_year']};g" \
     -e "s|%user_shelves_links%|${review['user_shelves_links']}|g" \
     -e "s|%user_shelves%|${review['user_shelves']}|g" \
+    -e "s|%bookFileName%|${book['bookFileName']}|g" \
+    -e "s|%published_user_read_at%|${review['published_user_read_at']}|g" \
     review.tpl > "${review['reviewNotePath']}"
 
 unset review

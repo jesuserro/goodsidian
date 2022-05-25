@@ -14,17 +14,18 @@ date: %user_read_at%
 rating: %user_rating%
 emotion:
 ---
-
 # %title%
-
-**Fecha Review**: %user_read_at%
-**Ficha Goodreads**: [Goodreads Private Notes & Quotes](%guid%) 
-**Tags**: [[goodreads]] %user_shelves_links%
-**Rating**: %user_rating% 
+%published_user_read_at%
 
 ![b|150](%imglink%)
 
 %user_review%
 
+## Valoración
+**Ficha Goodreads**: [Goodreads Private Notes & Quotes](%guid%) 
+**Tags**: [[goodreads]] %user_shelves_links%
+**Rating**: %user_rating%
+
 ## Referencias
-%referencias%
+- [[%bookFileName%]]
+- [[%author%]]
