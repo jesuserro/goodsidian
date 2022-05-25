@@ -27,7 +27,7 @@ EOC
     sed -e 's|<b>|*|g' -e 's|</b>|*|g' | \
     sed -e 's|<strong>|*|g' -e 's|</strong>|*|g' | \
     sed -e 's|<p>|\\n|g' -e 's|</p>|\\n|g' | \
-    # sed -r 's|<a(.*)href="\s*([^"]+)(\s*.*)>\s*(.*)\s*</a>|[\4](\2)|g' | \
+    sed -e 's|<a\(.*\)href="\s*\([^"]+\)\(\s*.*\)>\s*\(.*\)\s*</a>|[\4](\2)|g' | \
     sed -e 's|^[[:space:]]*||'
 }
 
