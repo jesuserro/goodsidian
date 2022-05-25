@@ -9,6 +9,8 @@ fi
 . ./goodreads.cfg
 . ./functions.sh
 
+
+shelf=${1}
 url="$urlbase/review/list_rss/$user?key=$key&shelf=$1"
 
 # This grabs the data from the currently reading rss feed and formats it
@@ -48,9 +50,15 @@ fi
 
 miNumeroDeVariables=16
 
+num_books=$(($bookamount / $miNumeroDeVariables))
+echo "Capturando ${num_books} libros de estantería '${shelf}'..."
+
 # Start the loop for each book
 for (( i = 0 ; i < $miNumeroDeVariables ; i++ ))
 do
+
+  bookcounter=$(($i+1))
+
   counter=$( expr "$i" \* $miNumeroDeVariables)
 
   if (( "$counter" > $miNumeroDeVariables )); then
@@ -76,6 +84,8 @@ do
   review['user_review']=$( echo ${arr[$( expr "$counter" + 13)]} | xargs)
   review['average_rating']=$( echo ${arr[$( expr "$counter" + 14)]} | xargs)
   review['book_published']=$( echo ${arr[$( expr "$counter" + 15)]} | xargs)
+
+  echo "Libro ${bookcounter}: ${review['title']}"
 
   if [ -z "$review['user_read_at']" ]; then
     review['user_read_at']=${user_date_created}
