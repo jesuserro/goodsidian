@@ -53,11 +53,11 @@ book['author']=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | s
 # echo "$bookid -> $title -> $kindle_asin -> $isbn -> $isbn13 -> $publication_year"
 # echo "BOOK ${book['bookid']} -> ${book['title']} -> ${book['publisher']}"
 
-  book['bookFileName']="${book['publication_year']} ${book['cleantitle']}"
-  book['bookPath']="${vaultpath}/${book[bookFileName]}.md"
+book['bookFileName']="${book['publication_year']} ${book['cleantitle']}"
+book['bookPath']="${vaultpath}/${book[bookFileName]}.md"
 
-  book['goodreads_url']="https://goodreads.com/book/show/${book[bookid]}"
-  book['reviews']="- [[${review['reviewNoteFile']}]]"
+book['goodreads_url']="https://goodreads.com/book/show/${book[bookid]}"
+book['reviews']="- [[${review['reviewNoteFile']}]]"
 
 
 # AUTOR
