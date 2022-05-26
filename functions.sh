@@ -31,3 +31,22 @@ EOC
     sed -e 's|^[[:space:]]*||'
 }
 
+clean_long_text_test(){
+  local cleaned_txt
+  IFS= read -r -d '' cleaned_txt <<EOC
+    ${1}
+EOC
+  
+  echo -e "${cleaned_txt}" | \
+    sed 's|<br \/>|\\n|g' | \
+    sed 's|<[^\/][^<>]*> *<\/[^<>]*>||g' | \
+    sed -e 's|<i>|_|g' -e 's|</i>|_|g' | \
+    sed -e 's|<b>|*|g' -e 's|</b>|*|g' | \
+    sed -e 's|<strong>|*|g' -e 's|</strong>|*|g' | \
+    sed -e 's|<p>|\\n|g' -e 's|</p>|\\n|g' | \
+    # sed -e $'s|<a.+?\s*href\s*=\s*["\']?\([^"\'\s>]+\)["\']?.*>\(.*\)</a>|[\2](\1)|g' | \
+    sed -e $'s|<a\(.*\)href="?\s*\(.*\)"?[\s.]*>\s*\(.*\)\s*</a>|[\3](\2)|g' | \
+    sed -e 's|^[[:space:]]*||'
+}
+
+

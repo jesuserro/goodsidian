@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# see: https://regex101.com/r/8v93WL/2
+
 . ./functions.sh
 
 # Sinopsis Transfig
@@ -16,6 +18,11 @@ El primer tomo <a href=https://www.goodreads.com/book/show/16099176.Jesus_of_Naz
 El segundo <a href=https://www.goodreads.com/book/show/82405.Jesus_of_Nazareth_From_the_Baptism_in_the_Jordan_to_the_Transfiguration title=Jesus of Nazareth From the Baptism in the Jordan to the Transfiguration by Benedict XVI rel=nofollow noopener>Jesus of Nazareth: From the Baptism in the Jordan to the Transfiguration</a>
 El tercero <a href=https://www.goodreads.com/book/show/9488716.Jesus_of_Nazareth__Part_Two_Holy_Week_From_the_Entrance_into_Jerusalem_to_the_Resurrection title=Jesus of Nazareth, Part Two Holy Week From the Entrance into Jerusalem to the Resurrection by Benedict XVI rel=nofollow noopener>Jesus of Nazareth, Part Two: Holy Week: From the Entrance into Jerusalem to the Resurrection</a>. 
 400 páginas divididas en 10 capítulos. He podido recoger más de 40 citas en Goodreads. Se describen los hechos históricos relevantes de la vida pública de Jesús, así como el núcleo de su mensaje.
+EOF
+)
+
+link4=$(cat <<'EOF'
+En Mayo del 2000, el <i>Prefecto de la Doctrina de la Fe</i> – Cardenal Joseph Ratzinger – leía ante el mundo el misterioso <i><a href="http://www.vatican.va/roman_curia/congregations/cfaith/documents/rc_con_cfaith_doc_20000626_message-fatima_en.html">Tercer Secreto de Fátima</a></i>. El texto – confuso y repleto de imágenes oníricas – fue sometido al implacable criterio de Ratzinger.
 EOF
 )
 
