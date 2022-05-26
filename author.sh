@@ -95,6 +95,7 @@ fi
 sleep 1
 sed -E \
     -e "s;%bookid%;${book['bookid']};g" \
+    -e "s;%authorId%;${author['authorId']};g" \
     -e "s;%isbn%;${book['isbn']};g" \
     -e "s;%title%;${book['title']};g" \
     -e "s;%publication_year%;${book['publication_year']};g" \
@@ -107,6 +108,7 @@ sed -E \
     -e "s;%kindle_asin%;${book['kindle_asin']};g" \
     -e "s;%goodreads_url%;${book['goodreads_url']};g" \
     -e "s;%reviewNoteFile%;${review['reviewNoteFile']};g" \
+    -e "s;%my_reviews%;${review['reviewid']};g" \
     book.tpl > "${book['bookPath']}"
 
 # AUTHOR

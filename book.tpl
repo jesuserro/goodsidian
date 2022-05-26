@@ -1,6 +1,7 @@
 ---
 aliases: []
 bookid: %bookid%
+authorid: %authorId%
 isbn: %isbn%
 asin: %kindle_asin%
 author:: [[%author%]]
@@ -11,6 +12,7 @@ cover: %image_url%
 tags: 
 - book/goodreads/profile
 date: %publication_year%
+reviews: [%my_reviews%]
 rating: %average_rating%
 emotion:
 ---
