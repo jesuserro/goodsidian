@@ -47,6 +47,7 @@ book['num_pages']=$( echo $xml | xmllint --xpath "//$xpathBook/num_pages[1]/text
 
 # AUTHOR
 book['authorId']=$( echo $xml | xmllint --xpath "//$xpathAuthor/id/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+review['authorId']="${book['authorId']}"
 book['author']=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 
 # echo "$bookid -> $title -> $kindle_asin -> $isbn -> $isbn13 -> $publication_year"
@@ -75,6 +76,7 @@ book['authorIdCleaned']=$( echo $authorId | sed -e 's/^[[:space:]]*//')
 # echo "Book author: ${book['author']}"
 
 export scalar_book=$(declare -p book)
+export scalar_review=$(declare -p review)
 
 # sh ./book.sh "${review[@]}"
 sh ./author.sh ${book['authorId']}

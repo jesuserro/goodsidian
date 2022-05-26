@@ -4,6 +4,7 @@ reviewid: %reviewid%
 bookid: %bookid%
 isbn: %isbn%
 asin: %kindle_asin%
+authorid: %authorid%
 author:: [[%author%]]
 pages: %num_pages%
 publisher:: [[%publisher%]]  

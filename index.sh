@@ -127,8 +127,8 @@ do
   review['user_shelves_links']=$(IFS=' ' ; echo "${arrlinks[*]}")
 
    
-    review['reviewNoteFile']="${review[clean_user_read_at]} ${review[cleantitle]}"
-    review['reviewNotePath']="${vaultpath}/${review[reviewNoteFile]}.md"
+  review['reviewNoteFile']="${review[clean_user_read_at]} ${review[cleantitle]}"
+  review['reviewNotePath']="${vaultpath}/${review[reviewNoteFile]}.md"
 
   # echo "${reviewNote}" >> "${reviewNotePath}"
   # doReviewNote=$("${reviewNote}" >> "${reviewNotePath}")

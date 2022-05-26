@@ -86,6 +86,7 @@ sed -E \
     -e "s|%bookFileName%|${book['bookFileName']}|g" \
     -e "s|%published_user_read_at%|${review['published_user_read_at']}|g" \
     -e "s|%reviewid%|${review['reviewid']}|g" \
+    -e "s|%authorid%|${review['authorId']}|g" \
     review.tpl > "${review['reviewNotePath']}"
 
 # BOOK
