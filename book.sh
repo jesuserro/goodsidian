@@ -15,7 +15,7 @@ declare -p review &>/dev/null # escapa comillas e impide print array en shell
 # echo "review guid: ${review[guid]}"
  
 xpathBook="GoodreadsResponse/book"
-xpathAuthor="GoodreadsResponse/book/authors/author[1]"
+xpathAuthor="${xpathBook}/authors/author[1]"
 
 url="$urlbase/book/show?format=xml&key=$apikey&id=$1"
 
