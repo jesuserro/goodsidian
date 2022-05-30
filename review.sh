@@ -48,8 +48,6 @@ book['average_rating']=$( echo $xml | xmllint --xpath "//$xpathBook/average_rati
 book['ratings_count']=$( echo $xml | xmllint --xpath "//$xpathBook/ratings_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['description']=$( echo $xml | xmllint --xpath "//$xpathBook/description/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['description']=$(clean_long_text "${book['description']}")
-
-book['bookFileName']="${book['publication_year']}${book['publication_month']}${book['publication_day']} ${book['cleantitle']}"
 book['bookPath']="${vaultpath}/${book[bookFileName]}.md"
 END
 
@@ -69,12 +67,14 @@ book['publication_year']=$( echo $xml | xmllint --xpath "//$xpathBook/publicatio
 book['publication_month']=$( echo $xml | xmllint --xpath "//$xpathBook/publication_month/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['publication_date']="${book['publication_year']}-${book['publication_month']}-${book['publication_day']}"
 book['publication_date']=$(date -d "${book['publication_date']}" +'%Y-%m-%d')
+book['clean_publication_date']=$(date -d "${book['publication_date']}" +'%Y%m%d')
 book['bookFileName']="${book['publication_year']}${book['publication_month']}${book['publication_day']} ${book['cleantitle']}"
 book['isbn']=$( echo $xml | xmllint --xpath "//$xpathBook/isbn/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['isbn13']=$( echo $xml | xmllint --xpath "//$xpathBook/isbn13/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['num_pages']=$( echo $xml | xmllint --xpath "//$xpathBook/num_pages/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['uri']=$( echo $xml | xmllint --xpath "//$xpathBook/uri/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['publisher']=$( echo $xml | xmllint --xpath "//$xpathBook/publisher/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['bookFileName']="${book['clean_publication_date']} ${book['cleantitle']}"
 
 
 
