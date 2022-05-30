@@ -3,31 +3,40 @@ aliases: []
 reviewid: %reviewid%
 bookid: %bookid%
 isbn: %isbn%
-asin: %kindle_asin%
+isbn13: %isbn13%
+kindle: %kindle_uri%
 authorid: %authorid%
 author:: [[%author%]]
 pages: %num_pages%
 publisher:: [[%publisher%]]  
-book_published:: [[%publication_year%]]  
-cover: %imglink%   
+book_published:: [[%publication_date%]]  
+cover: %image_url%   
 tags:
 %user_shelves%
-date: %user_read_at%
-rating: %user_rating%
+date: %read_at%
+rating: %rating%
+votos: %votes%
 emotion:
 ---
 # %title%
-%published_user_read_at%
+%published_read_at%
 
-![b|150](%imglink%)
+![b|150](%image_url%)
 
-%user_review%
+%body%
 
 ## Valoración 
 **Tags**: [[goodreads]] %user_shelves_links%
-**Rating**: %user_rating%
+**Rating**: %rating%
+
+## Recomendado por
+%recommended_by%
+
+## Recomendado para
+%recommended_for%
 
 ## Referencias
 - [[%bookFileName%]]
 - [[%author%]]
-- [Goodreads](%guid%)
+- [Goodreads](%url%)
+- [Kindle app](%kindle_uri%)
