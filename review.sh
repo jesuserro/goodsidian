@@ -92,13 +92,34 @@ review['published_read_at']=$(date -d "${review['read_at']}" +'%A, %d %B %Y a la
 review['recommended_for']=$( echo $xml | xmllint --xpath "//$xpathReview/recommended_for/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 review['recommended_for']=$(clean_long_text "${review['recommended_for']}")
 review['url']=$( echo $xml | xmllint --xpath "//$xpathReview/url/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-review['recommended_by']=$( echo $xml | xmllint --xpath "//$xpathReview/recommended_by/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-review['recommended_by']=$(clean_long_text "${review['recommended_by']}")
+#review['recommended_by']=$( echo $xml | xmllint --xpath "//$xpathReview/recommended_by/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+#review['recommended_by']=$(clean_long_text "${review['recommended_by']}")
+
+# review['body']=$( echo -e $xml | xmllint --xpath "//$xpathReview/body/text()" - | sed -e 's|<!\[CDATA\[||' -e 's|\]\]>||' )
+review['body']=$( echo $xml | xmllint --xpath "//$xpathReview/body/text()" - | sed -e 's|<!\[CDATA\[||' -e 's|\]\]>||' )
+orig=$'\n'; replace=$'\\\n'
+# sed "s|COMMIT|${morerules//$orig/$replace}|g"
+patata=$( echo ${review[body]} | sed -e 's|${orig}|${replace}|g' )
+# echo "${patata}"
+# exit 1
+# review['body']='En Mayo del 2000, el <i>Prefecto de la Doctrina de la Fe</i> – Cardenal Joseph Ratzinger – leía ante el mundo el misterioso <i> <a href="http://www.vatican.va/roman_curia/congregations/cfaith/documents/rc_con_cfaith_doc_20000626_message-fatima_en.html" rel="nofollow noopener">Tercer Secreto de Fátima</a> </i>. El texto – confuso y repleto de imágenes oníricas – fue sometido al implacable criterio de Ratzinger. Sólo entonces cobraba sentido y resultaba coherente con la doctrina. En aquel momento supe que leería a este hombre. Observar la figura de Cristo bajo el prisma de esta mente privilegiada, era tentador. Así llegué a esta obra.<br /><br />El libro es un bello y profundo análisis de la vida pública de Jesús. Es el segundo tomo perteneciente a la trilogía sobre la vida de Cristo: <br />El primer tomo <a href="https://www.goodreads.com/book/show/16099176.Jesus_of_Nazareth_The_Infancy_Narratives" title="Jesus of Nazareth The Infancy Narratives by Benedict XVI" rel="nofollow noopener">Jesus of Nazareth: The Infancy Narratives</a><br />El segundo <a href="https://www.goodreads.com/book/show/82405.Jesus_of_Nazareth_From_the_Baptism_in_the_Jordan_to_the_Transfiguration" title="Jesus of Nazareth From the Baptism in the Jordan to the Transfiguration by Benedict XVI" rel="nofollow noopener">Jesus of Nazareth: From the Baptism in the Jordan to the Transfiguration</a><br />El tercero <a href="https://www.goodreads.com/book/show/9488716.Jesus_of_Nazareth__Part_Two_Holy_Week_From_the_Entrance_into_Jerusalem_to_the_Resurrection" title="Jesus of Nazareth, Part Two Holy Week From the Entrance into Jerusalem to the Resurrection by Benedict XVI" rel="nofollow noopener">Jesus of Nazareth, Part Two: Holy Week: From the Entrance into Jerusalem to the Resurrection</a>. <br />400 páginas divididas en 10 capítulos. He podido recoger más de 40 citas en Goodreads. Se describen los hechos históricos relevantes de la vida pública de Jesús, así como el núcleo de su mensaje.<br /><br />Como un buen ajedrecista, Ratzinger abre la partida posicionando de forma clara y firme sus piezas, su criterio exegético. Su interpretación del Jesús histórico está basada en la confianza en los Evangelios. Permite el despliegue de toda la potencialidad de la palabra. No la aprisiona en el momento histórico. De este modo, la biblia brilla como un cuerpo homogéneo, cobra auténtico sentido y desemboca en una única imagen coherente de Jesucristo.<br /><br />Ratzinger es capaz de revelar amplios registros evangélicos. Desde una teología elevada – casi metafísica – hasta los comportamientos más humanos de los discípulos. Por ejemplo, la descripción de las <i>experiencias teofánicas</i> de los Apóstoles es maravillosa. También puedes encontrar detalles sorprendentes de la figura de Cristo, como a un Jesús aventurero y amante de la naturaleza que lleva a sus discípulos de viaje – a lo que hoy es la <i>Reserva Natural de Hermón</i> – en el episodio de la <i>Confesión de Pedro</i>.<br /><br />¿Quieres conocer a Cristo? Este libro es para ti. ¿Necesitas esperanza en tu vida? Ratzinger te aclarará el mensaje de Cristo para que florezca tu fe en ti y en los demás. ¿Te gusta el misterio? Encontrarás fascinantes episodios de la vida pública de Jesús, dignos de una película de ciencia ficción: <i>la Transfiguración</i>, <i>la Pesca Milagrosa</i> y <i>Caminando sobre las Aguas</i>. ¿Eres fan de la Biblia? El libro está plagado de referencias y relaciones bíblicas que clarificarán tu entendimiento. ¿Eres fan de la literatura? Encontrarás buenas referencias de libros aquí. ¿Te gusta la oración? Encontrarás un completo estudio de las principales plegarias cristianas. ¿Eres un enamorado del lenguaje alegórico y parábolas? Se hace un amplio análisis de ellas. Además hay un capítulo entero dedicado al Evangelio de Juan y sus imágenes características.<br /><br />Además de acontecimientos históricos, el libro guarda otras sorpresas. Ratzinger destapa una teología que desde Cristo, entronca con nuestra realidad cotidiana. Es decir, el libro puede servirte también como auto ayuda espiritual. En este sentido, el capítulo 3 <i>“El Evangelio del Reino”</i> es muy instructivo. Uno puede identificar sus miserias en la explicación de la <i>Parábola del Fariseo y el Publicano</i>.<br /><br />Es el misterio de la figura de Jesús. Su mensaje sigue siendo cercano, conmovedor y universal. Ha sobrevivido al poder de emperadores y reyes, con algo tan aparentemente débil como la fe y el amor. Responde a las preguntas del hombre de hoy. Ha superado mitos, maestros y sabios. Ratzinger explica las novedades introducidas por el cristianismo. Y lo protege de la teología liberal, que trata de adaptar el mensaje de Cristo a sus propias necesidades.'
+
+# echo "${review[body]}"
+# exit 1
+
+# IFS= read -r -d '' patata <<EOC
+#     "${review[body]}"
+# EOC
+
+# review['body']=$(cat "${review[body]}")
+
+# review['body']=$(echo "$xml" | sed -e 's|\<body\>\<!\[CDATA\[||')
+# review['body']=$(sed -e 's|<body><!\[CDATA\[||' <<< "${xml}")
+
 
 
 
 : <<'END'
-review['body']=$( echo $xml | xmllint --xpath "//$xpathReview/body/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 review['body']=$(clean_long_text "${review['body']}")
 
 # review['shelves']=$( echo $xml | xmllint --xpath "//$xpathReview/shelves/shelf/@name" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
@@ -132,7 +153,7 @@ sed -E \
     -e "s;%title%;${review['title']};g" \
     -e "s;%author%;${author['name']};g" \
     -e "s;%publisher%;${book['publisher']};g" \
-    -e "s|%body%|${review['body']}|g" \
+    -e "s|%body%|${patata}|g" \
     -e "s|%image_url%|${book[image_url]}|g" \
     -e "s;%user_rating%;${review['user_rating']};g" \
     -e "s;%read_at%;${review['read_at']};g" \
