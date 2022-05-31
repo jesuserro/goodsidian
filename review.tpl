@@ -8,13 +8,16 @@ kindle: %kindle_uri%
 authorid: %authorid%
 author:: [[%author%]]
 pages: %num_pages%
-publisher:: [[%publisher%]]  
-book_published:: [[%publication_date%]]  
-cover: %image_url%   
-tags: %shelves%
-date: %read_at%
+publisher:: [[%publisher%]]   
+cover: %image_url%
+book_published:: [[%publication_date%]] 
+read_at: %read_at%
+started_at: %started_at%
+date_added: %date_added%
+date_updated: %date_updated%
 rating: %rating%
-votos: %votes%
+votos: %votes%   
+tags: %shelves%
 emotion:
 ---
 # %title%

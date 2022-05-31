@@ -87,6 +87,12 @@ review['read_at']=$( echo $xml | xmllint --xpath "//$xpathReview/read_at/text()"
 review['read_at']=$(date -d "${review['read_at']}" +'%Y-%m-%d %H:%M')
 review['clean_read_at']=$(date -d "${review['read_at']}" +'%Y%m%d%H%M')
 review['published_read_at']=$(date -d "${review['read_at']}" +'%A, %d %B %Y a las %H:%Mh.')
+review['started_at']=$( echo $xml | xmllint --xpath "//$xpathReview/started_at/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+review['started_at']=$(date -d "${review['started_at']}" +'%Y-%m-%d %H:%M')
+review['date_added']=$( echo $xml | xmllint --xpath "//$xpathReview/date_added/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+review['date_added']=$(date -d "${review['date_added']}" +'%Y-%m-%d %H:%M')
+review['date_updated']=$( echo $xml | xmllint --xpath "//$xpathReview/date_updated/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+review['date_updated']=$(date -d "${review['date_updated']}" +'%Y-%m-%d %H:%M')
 
 review['recommended_for']=$( echo $xml | xmllint --xpath "//$xpathReview/recommended_for/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 review['recommended_for']=$(clean_long_text "${review['recommended_for']}")
@@ -114,15 +120,6 @@ review['shelves_links']=$(IFS=' ' ; echo "${arrlinks[*]}")
 # review['shelves']=$( echo $xml | xmllint --xpath "//$xpathReview/shelves/shelf/@name" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 review['shelves']="Shelves..."
 
-review['started_at']=$( echo $xml | xmllint --xpath "//$xpathReview/started_at/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-review['started_at']=$(date -d "${review['started_at']}" +'%Y-%m-%d %H:%M')
-
-
-review['date_added']=$( echo $xml | xmllint --xpath "//$xpathReview/date_added/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-review['date_added']=$(date -d "${review['date_added']}" +'%Y-%m-%d %H:%M')
-review['date_updated']=$( echo $xml | xmllint --xpath "//$xpathReview/date_updated/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-review['date_updated']=$(date -d "${review['date_updated']}" +'%Y-%m-%d %H:%M')
-
 review['comments_count']=$( echo $xml | xmllint --xpath "//$xpathReview/comments_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 END
 
@@ -149,6 +146,9 @@ sed -E \
     -e "s;%num_pages%;${book['num_pages']};g" \
     -e "s;%publisher%;${book['publisher']};g" \
     -e "s;%publication_date%;${book['publication_date']};g" \
+    -e "s;%started_at%;${review['started_at']};g" \
+    -e "s;%date_added%;${review['date_added']};g" \
+    -e "s;%date_updated%;${review['date_updated']};g" \
     -e "s|%shelves_links%|${review['shelves_links']}|g" \
     -e "s|%shelves%|${review['shelves']}|g" \
     -e "s|%bookFileName%|${book['bookFileName']}|g" \
