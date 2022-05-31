@@ -74,78 +74,9 @@ do
   guid=$( echo ${arr["$counter"]} | xargs)
   #https://www.goodreads.com/review/show/2297011024?utm_medium=api%25guid%25utm_source=rss
   last_url=$(echo "${guid##*/}") # último slash de la url
-  
   review['reviewid']=${last_url%\?*} # remove suffix starting with "?"
-  review['guid']="$guid"
-  review['title']=$( echo ${arr[$( expr "$counter" + 1)]} | xargs)
-  review['bookid']=$( echo ${arr[$( expr "$counter" + 2)]} | xargs)
-  review['imglink']=$( echo ${arr[$( expr "$counter" + 3)]} | xargs)
-  review['book_description']=$( echo ${arr[$( expr "$counter" + 4)]} | xargs)
-  review['num_pages']=$( echo ${arr[$( expr "$counter" + 5)]} | xargs)
-  review['author']=$( echo ${arr[$( expr "$counter" + 6)]} | xargs)
-  review['isbn']=$( echo ${arr[$( expr "$counter" + 7)]} | xargs)
-  review['user_rating']=$( echo ${arr[$( expr "$counter" + 8)]} | xargs)
-  review['user_read_at']=$( echo ${arr[$( expr "$counter" + 9)]} | xargs)
-  review['user_date_added']=$( echo ${arr[$( expr "$counter" + 10)]} | xargs)
-  review['user_date_created']=$( echo ${arr[$( expr "$counter" + 11)]} | xargs)
-  review['user_shelves']=$( echo ${arr[$( expr "$counter" + 12)]} | xargs)
-  review['user_review']=$( echo ${arr[$( expr "$counter" + 13)]} | xargs)
-  review['average_rating']=$( echo ${arr[$( expr "$counter" + 14)]} | xargs)
-  review['book_published']=$( echo ${arr[$( expr "$counter" + 15)]} | xargs)
-
-  echo "Libro ${bookcounter}: ${review['title']}"
-
-  if [ -z "$review['user_read_at']" ]; then
-    review['user_read_at']=${user_date_created}
-  fi
-
-  # Clean vars:
-  # 1. Format date
-  review['user_read_at']=$(date -d "${review['user_read_at']}" +'%Y-%m-%d %H:%M')
-  review['clean_user_read_at']=$(date -d "${review['user_read_at']}" +'%Y%m%d%H%M')
-  review['published_user_read_at']=$(date -d "${review['user_read_at']}" +'%A, %d %B %Y a las %H:%Mh.')
-
-  review['user_date_added']=$(date -d "${review['user_date_added']}" +'%Y-%m-%d %H:%M')
-
-  review['user_date_created']=$(date -d "${review['user_date_created']}" +'%Y-%m-%d %H:%M')
-  review['clean_user_date_created']=$(date -d "${review['user_date_created']}" +'%Y%m%d%H%M')
-
-  # 2. Delete illegal (':' and '/') and unwanted ('#') characters
-  review['cleantitle']=$(echo "${review['title']}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
-
-  # 3. Clean long text for Obsidian
-  review['user_review']=$(clean_long_text "${review['user_review']}")
-
-  # 4. Clean tags
-  IFS=', ' read -ra arrtags <<< "${review['user_shelves']}"
-  for index in "${!arrtags[@]}"
-  do
-      arrlinks[$index]="[[${arrtags[$index]}]]"
-      arrtags[$index]="- book/goodreads/tag/${arrtags[$index]}"
-  done
-  review['user_shelves']=$(IFS=$'\\n' ; echo "${arrtags[*]}")
-  review['user_shelves_links']=$(IFS=' ' ; echo "${arrlinks[*]}")
-
-   
-  review['reviewNoteFile']="${review[clean_user_read_at]} ${review[cleantitle]}"
-  review['reviewNotePath']="${vaultpath}/${review[reviewNoteFile]}.md"
-
-  # echo "${reviewNote}" >> "${reviewNotePath}"
-  # doReviewNote=$("${reviewNote}" >> "${reviewNotePath}")
-
-  # SET book (and author) files here
-  # sh ./book.sh $bookid "${reviewNote}" "${reviewNotePath}"
-
-
-  # sleep 1
-
-  # Display a notification when creating the file
-  # echo "REVIEW $i: $cleantitle ($counter)"
-
-  export scalar_review=$(declare -p review)
-
-  # sh ./book.sh "${review[@]}"
-  sh ./book.sh ${review['bookid']}
+  
+  sh ./review.sh ${review['reviewid']}
 
   sleep 1
 
