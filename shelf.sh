@@ -15,19 +15,11 @@ fi
 shelf=${1}
 url="$urlbase/review/list_rss/$user?key=$key&shelf=$1"
 
-# This grabs the data from the currently reading rss feed and formats it (10 campos)
-IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>|user_review>|guid>)' | \
+# This grabs the data from the currently reading rss feed and formats it (2 campos)
+IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|guid>)' | \
 sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
 -e 's/Jei.s bookshelf: '$shelf'//' \
--e 's/<book_large_image_url>//' -e 's/<\/book_large_image_url>/ | /' \
 -e 's/<title>//' -e 's/<\/title>/ | /' \
--e 's/<book_description>//' -e 's/<\/book_description>/ | /' \
--e 's/<author_name>//' -e 's/<\/author_name>/ | /' \
--e 's/<book_published>//' -e 's/<\/book_published>/ | /' \
--e 's/<book_id>//' -e 's/<\/book_id>/ | /' \
--e 's/<user_shelves>//' -e 's/<\/user_shelves>/ | /' \
--e 's/<num_pages>//' -e 's/<\/num_pages>/ | /' \
--e 's/<isbn>//' -e 's/<\/isbn>/ | /' \
 -e 's/<guid>//' -e 's/<\/guid>/ | /' \
 -e 's/^[ \t]*//' -e 's/[ \t]*$//' | \
 tail +3 | \
@@ -45,7 +37,7 @@ if (( "$bookamount" == 0 )); then
 fi
 
 # Número de campos del grep -E
-miNumeroDeVariables=10
+miNumeroDeVariables=2
 
 num_books=$(($bookamount / $miNumeroDeVariables))
 echo "Capturando ${num_books} libros de estantería '${shelf}'..."
@@ -64,7 +56,7 @@ do
 
   declare -A review
 
-  # Set variables 16 (miNumeroDeVariables)
+  # Set variables 2 (miNumeroDeVariables)
   guid=$( echo ${arr["$counter"]} | xargs)
   #https://www.goodreads.com/review/show/2297011024?utm_medium=api%25guid%25utm_source=rss
   last_url=$(echo "${guid##*/}") # último slash de la url
