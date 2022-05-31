@@ -18,7 +18,6 @@ url="$urlbase/review/list_rss/$user?key=$key&shelf=$1"
 # This grabs the data from the currently reading rss feed and formats it (2 campos)
 IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|guid>)' | \
 sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
--e 's/Jei.s bookshelf: '$shelf'//' \
 -e 's/<title>//' -e 's/<\/title>/ | /' \
 -e 's/<guid>//' -e 's/<\/guid>/ | /' \
 -e 's/^[ \t]*//' -e 's/[ \t]*$//' | \
