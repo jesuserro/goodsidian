@@ -15,8 +15,8 @@ fi
 shelf=${1}
 url="$urlbase/review/list_rss/$user?key=$key&shelf=$1"
 
-# This grabs the data from the currently reading rss feed and formats it (16 campos)
-IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>|user_review>|guid>|user_rating>|user_read_at>|user_date_added>)' | \
+# This grabs the data from the currently reading rss feed and formats it (10 campos)
+IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>|user_review>|guid>)' | \
 sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
 -e 's/Jei.s bookshelf: '$shelf'//' \
 -e 's/<book_large_image_url>//' -e 's/<\/book_large_image_url>/ | /' \
@@ -29,12 +29,6 @@ sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
 -e 's/<num_pages>//' -e 's/<\/num_pages>/ | /' \
 -e 's/<isbn>//' -e 's/<\/isbn>/ | /' \
 -e 's/<guid>//' -e 's/<\/guid>/ | /' \
--e 's/<user_rating>//' -e 's/<\/user_rating>/ | /' \
--e 's/<user_read_at>//' -e 's/<\/user_read_at>/ | /' \
--e 's/<user_date_added>//' -e 's/<\/user_date_added>/ | /' \
--e 's/<average_rating>//' -e 's/<\/average_rating>/ | /' \
--e 's/<user_review>//' -e 's/<\/user_review>/ | /' \
--e 's/<user_date_created>//' -e 's/<\/user_date_created>/ | /' \
 -e 's/^[ \t]*//' -e 's/[ \t]*$//' | \
 tail +3 | \
 fmt
@@ -51,7 +45,7 @@ if (( "$bookamount" == 0 )); then
 fi
 
 # Número de campos del grep -E
-miNumeroDeVariables=16
+miNumeroDeVariables=10
 
 num_books=$(($bookamount / $miNumeroDeVariables))
 echo "Capturando ${num_books} libros de estantería '${shelf}'..."
