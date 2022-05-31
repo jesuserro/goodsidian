@@ -98,6 +98,17 @@ review['body']=$( echo $xml | xmllint --xpath "//$xpathReview/body/text()" - | s
 review['body']=$(clean_long_text "${review['body']}")
 
 
+review['shelves']=$( echo $xml | xmllint --xpath "//$xpathReview/shelves/shelf/@name" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' | cut -f 2 -d "=" | tr -d \" )
+mapfile -t arrtags <<< "${review['shelves']}"
+  for index in "${!arrtags[@]}"
+  do
+      arrlinks[$index]="[[${arrtags[$index]}]]"
+      arrtags[$index]="\n- book/goodreads/tag/${arrtags[$index]}"
+  done
+  review['shelves']=$(echo "${arrtags[*]}")
+  review['shelves_links']=$(IFS=' ' ; echo "${arrlinks[*]}")
+
+
 
 : <<'END'
 # review['shelves']=$( echo $xml | xmllint --xpath "//$xpathReview/shelves/shelf/@name" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
@@ -138,8 +149,8 @@ sed -E \
     -e "s;%num_pages%;${book['num_pages']};g" \
     -e "s;%publisher%;${book['publisher']};g" \
     -e "s;%publication_date%;${book['publication_date']};g" \
-    -e "s|%user_shelves_links%|${review['user_shelves_links']}|g" \
-    -e "s|%user_shelves%|${review['user_shelves']}|g" \
+    -e "s|%shelves_links%|${review['shelves_links']}|g" \
+    -e "s|%shelves%|${review['shelves']}|g" \
     -e "s|%bookFileName%|${book['bookFileName']}|g" \
     -e "s|%published_read_at%|${review['published_read_at']}|g" \
     -e "s|%reviewid%|${review['reviewid']}|g" \

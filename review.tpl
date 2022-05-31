@@ -11,8 +11,7 @@ pages: %num_pages%
 publisher:: [[%publisher%]]  
 book_published:: [[%publication_date%]]  
 cover: %image_url%   
-tags:
-%user_shelves%
+tags: %shelves%
 date: %read_at%
 rating: %rating%
 votos: %votes%
@@ -26,7 +25,7 @@ emotion:
 %body%
 
 ## Valoración 
-**Tags**: [[goodreads]] %user_shelves_links%
+**Tags**: [[goodreads]] %shelves_links%
 **Rating**: %rating%
 
 ## Recomendado por
