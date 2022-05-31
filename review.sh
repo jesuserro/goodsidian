@@ -100,13 +100,13 @@ review['body']=$(clean_long_text "${review['body']}")
 
 review['shelves']=$( echo $xml | xmllint --xpath "//$xpathReview/shelves/shelf/@name" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' | cut -f 2 -d "=" | tr -d \" )
 mapfile -t arrtags <<< "${review['shelves']}"
-  for index in "${!arrtags[@]}"
-  do
-      arrlinks[$index]="[[${arrtags[$index]}]]"
-      arrtags[$index]="\n- book/goodreads/tag/${arrtags[$index]}"
-  done
-  review['shelves']=$(echo "${arrtags[*]}")
-  review['shelves_links']=$(IFS=' ' ; echo "${arrlinks[*]}")
+for index in "${!arrtags[@]}"
+do
+    arrlinks[$index]="[[${arrtags[$index]}]]"
+    arrtags[$index]="\n- book/goodreads/tag/${arrtags[$index]}"
+done
+review['shelves']=$(echo "${arrtags[*]}")
+review['shelves_links']=$(IFS=' ' ; echo "${arrlinks[*]}")
 
 
 
