@@ -6,11 +6,11 @@ isbn: %isbn%
 isbn13: %isbn13%
 kindle: %kindle_uri%
 authorid: %authorid%
-author:: [[%author%]]
+author: %author%
 pages: %num_pages%
-publisher:: [[%publisher%]]   
+publisher: %publisher%   
 cover: %image_url%
-book_published:: [[%publication_date%]] 
+book_published: %publication_date% 
 read_at: %read_at%
 started_at: %started_at%
 date_added: %date_added%
@@ -21,6 +21,7 @@ tags: %shelves%
 emotion:
 ---
 # %title%
+[[%author%]] | %publication_year% | [[%publisher%]]
 %published_read_at%
 
 ![b|150](%image_url%)
@@ -39,6 +40,7 @@ emotion:
 
 ## Referencias
 - [[%bookFileName%]]
-- [[%author%]]
 - [Goodreads](%url%)
 - [Kindle app](%kindle_uri%)
+- Publicación libro: [[%publication_date%]]
+- Publicación review: [[%read_at_date%]]

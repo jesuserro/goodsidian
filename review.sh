@@ -85,6 +85,7 @@ review['votes']=$( echo $xml | xmllint --xpath "//$xpathReview/votes/text()" - |
 
 review['read_at']=$( echo $xml | xmllint --xpath "//$xpathReview/read_at/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 review['read_at']=$(date -d "${review['read_at']}" +'%Y-%m-%d %H:%M')
+review['read_at_date']=$(date -d "${review['read_at']}" +'%Y-%m-%d')
 review['clean_read_at']=$(date -d "${review['read_at']}" +'%Y%m%d%H%M')
 review['published_read_at']=$(date -d "${review['read_at']}" +'%A, %d %B %Y a las %H:%Mh.')
 review['started_at']=$( echo $xml | xmllint --xpath "//$xpathReview/started_at/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
@@ -143,8 +144,10 @@ sed -E \
     -e "s|%image_url%|${book[image_url]}|g" \
     -e "s;%user_rating%;${review['user_rating']};g" \
     -e "s;%read_at%;${review['read_at']};g" \
+    -e "s;%read_at_date%;${review['read_at_date']};g" \
     -e "s;%num_pages%;${book['num_pages']};g" \
     -e "s;%publisher%;${book['publisher']};g" \
+    -e "s;%publication_year%;${book['publication_year']};g" \
     -e "s;%publication_date%;${book['publication_date']};g" \
     -e "s;%started_at%;${review['started_at']};g" \
     -e "s;%date_added%;${review['date_added']};g" \
