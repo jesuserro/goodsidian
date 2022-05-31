@@ -43,7 +43,6 @@ book['title']=$( echo $xml | xmllint --xpath "//$xpathBook/title/text()" - | sed
 book['cleantitle']=$(echo "${book['title']}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
 book['image_url']=$( echo $xml | xmllint --xpath "//$xpathBook/image_url/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['link']=$( echo $xml | xmllint --xpath "//$xpathBook/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-book['format']=$( echo $xml | xmllint --xpath "//$xpathBook/format/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['average_rating']=$( echo $xml | xmllint --xpath "//$xpathBook/average_rating/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['ratings_count']=$( echo $xml | xmllint --xpath "//$xpathBook/ratings_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['description']=$( echo $xml | xmllint --xpath "//$xpathBook/description/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
@@ -75,6 +74,7 @@ book['num_pages']=$( echo $xml | xmllint --xpath "//$xpathBook/num_pages/text()"
 book['uri']=$( echo $xml | xmllint --xpath "//$xpathBook/uri/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['publisher']=$( echo $xml | xmllint --xpath "//$xpathBook/publisher/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['bookFileName']="${book['clean_publication_date']} ${book['cleantitle']}"
+book['format']=$( echo $xml | xmllint --xpath "//$xpathBook/format/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 
 
 # REVIEW
@@ -162,6 +162,7 @@ sed -E \
     -e "s|%rating%|${review['rating']}|g" \
     -e "s|%recommended_for%|${review['recommended_for']}|g" \
     -e "s|%recommended_by%|${review['recommended_by']}|g" \
+    -e "s|%format%|${book['format']}|g" \
     review.tpl > "${review['reviewNotePath']}"
 
 

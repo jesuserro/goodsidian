@@ -21,7 +21,7 @@ tags: %shelves%
 emotion:
 ---
 # %title%
-[[%author%]] | %publication_year% | [[%publisher%]]
+[[%author%]] | [[%publication_year%]] | [[%publisher%]] | [[%format%]]
 %published_read_at%
 
 ![b|150](%image_url%)
