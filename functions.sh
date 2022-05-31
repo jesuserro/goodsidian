@@ -15,10 +15,12 @@ clean_note_path(){
 }
 
 clean_long_text(){
-  local cleaned_txt
+  local cleaned_txt; orig=$'\n'; replace=$'\\\n'
   IFS= read -r -d '' cleaned_txt <<EOC
     ${1}
 EOC
+
+  cleaned_txt=$( echo ${cleaned_txt} | sed -e 's|${orig}|${replace}|g' )
   
   echo -e "${cleaned_txt}" | \
     sed 's|<br \/>|\\n|g' | \
