@@ -31,7 +31,6 @@ emotion:
 %indice%
 
 ## Referencias
-- [[%author%]]
 - [[%reviewNoteFile%]]
 - [Goodreads](%goodreads_url%)
 - [[goodreads]]

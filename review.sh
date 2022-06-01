@@ -178,7 +178,7 @@ sed -E \
     -e "s;%image_url%;${book['image_url']};g" \
     -e "s;%average_rating%;${book['average_rating']};g" \
     -e "s;%publisher%;${book['publisher']};g" \
-    -e "s;%author%;${author['authorName']};g" \
+    -e "s;%author%;${author['name']};g" \
     -e "s;%num_pages%;${book['num_pages']};g" \
     -e "s;%goodreads_url%;${book['goodreads_url']};g" \
     -e "s;%reviewNoteFile%;${review['reviewNoteFile']};g" \

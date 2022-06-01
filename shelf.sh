@@ -62,7 +62,7 @@ do
   last_url=$(echo "${guid##*/}") # último slash de la url
   review['reviewid']=${last_url%\?*} # remove suffix starting with "?"
   
-  echo "${i} - ${title}"
+  echo "$( expr "$i" + 1).- ${title}"
 
   sh ./review.sh ${review['reviewid']}
 
