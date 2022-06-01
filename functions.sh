@@ -24,11 +24,15 @@ EOC
   
   echo -e "${cleaned_txt}" | \
     sed 's|<br \/>|\\n|g' | \
+    sed 's|&lt;br /&gt;|\\n|g' | \
     sed 's|<[^\/][^<>]*> *<\/[^<>]*>||g' | \
     sed -e 's|<i>|_|g' -e 's|</i>|_|g' | \
+    sed -e 's|&lt;i&gt;|_|g' -e 's|&lt;/i&gt;|_|g' | \
     sed -e 's|<b>|*|g' -e 's|</b>|*|g' | \
+    sed -e 's|&lt;b&gt;|*|g' -e 's|&lt;/b&gt;|*|g' | \
     sed -e 's|<strong>|*|g' -e 's|</strong>|*|g' | \
     sed -e 's|<p>|\\n|g' -e 's|</p>|\\n|g' | \
+    sed -e 's|&lt;p&gt;|\\n|g' -e 's|&lt;/p&gt;|\\n|g' | \
     sed -e 's|<a\(.*\)href="\s*\([^"]+\)\(\s*.*\)>\s*\(.*\)\s*</a>|[\4](\2)|g' | \
     sed -e 's|^[[:space:]]*||'
 }

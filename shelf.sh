@@ -57,10 +57,13 @@ do
 
   # Set variables 2 (miNumeroDeVariables)
   guid=$( echo ${arr["$counter"]} | xargs)
+  title=$( echo ${arr[$( expr "$counter" + 1)]} | xargs)
   #https://www.goodreads.com/review/show/2297011024?utm_medium=api%25guid%25utm_source=rss
   last_url=$(echo "${guid##*/}") # último slash de la url
   review['reviewid']=${last_url%\?*} # remove suffix starting with "?"
   
+  echo "${i} - ${title}"
+
   sh ./review.sh ${review['reviewid']}
 
   sleep 1
