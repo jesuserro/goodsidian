@@ -42,16 +42,12 @@ num_books=$(($bookamount / $miNumeroDeVariables))
 echo "Capturando ${num_books} libros de estantería '${shelf}'..."
 
 # Start the loop for each book
-for (( i = 0 ; i < $miNumeroDeVariables ; i++ ))
+for (( i = 0 ; i < $num_books ; i++ ))
 do
 
   bookcounter=$(($i+1))
 
   counter=$( expr "$i" \* $miNumeroDeVariables)
-
-  if (( "$counter" > $miNumeroDeVariables )); then
-    break
-  fi
 
   declare -A review
 
@@ -62,7 +58,7 @@ do
   last_url=$(echo "${guid##*/}") # último slash de la url
   review['reviewid']=${last_url%\?*} # remove suffix starting with "?"
   
-  echo "$( expr "$i" + 1).- ${title}"
+  echo "$( expr "$i" + 1)/${num_books} - ${title}"
 
   sh ./review.sh ${review['reviewid']}
 
