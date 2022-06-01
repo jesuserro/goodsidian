@@ -1,7 +1,7 @@
 ---
 aliases: []
 bookid: %bookid%
-authorid: %authorId%
+authorid: %authorid%
 isbn: %isbn%
 asin: %kindle_asin%
 author:: [[%author%]]

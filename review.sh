@@ -45,9 +45,6 @@ book['image_url']=$( echo $xml | xmllint --xpath "//$xpathBook/image_url/text()"
 book['link']=$( echo $xml | xmllint --xpath "//$xpathBook/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['average_rating']=$( echo $xml | xmllint --xpath "//$xpathBook/average_rating/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['ratings_count']=$( echo $xml | xmllint --xpath "//$xpathBook/ratings_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-book['description']=$( echo $xml | xmllint --xpath "//$xpathBook/description/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-book['description']=$(clean_long_text "${book['description']}")
-book['bookPath']="${vaultpath}/${book[bookFileName]}.md"
 END
 
 
@@ -75,6 +72,10 @@ book['uri']=$( echo $xml | xmllint --xpath "//$xpathBook/uri/text()" - | sed -e 
 book['publisher']=$( echo $xml | xmllint --xpath "//$xpathBook/publisher/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['bookFileName']="${book['clean_publication_date']} ${book['cleantitle']}"
 book['format']=$( echo $xml | xmllint --xpath "//$xpathBook/format/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['bookPath']="${vaultpath}/${book[bookFileName]}.md"
+
+book['description']=$( echo $xml | xmllint --xpath "//$xpathBook/description/text()" - | sed -e 's|<!\[CDATA\[||' -e 's|\]\]>||' )
+book['description']=$(clean_long_text "${book['description']}")
 
 
 # REVIEW
@@ -166,6 +167,23 @@ sed -E \
     review.tpl > "${review['reviewNotePath']}"
 
 
+sed -E \
+    -e "s;%bookid%;${book['bookid']};g" \
+    -e "s;%authorid%;${author['authorid']};g" \
+    -e "s;%isbn%;${book['isbn']};g" \
+    -e "s;%kindle_asin%;${book['kindle_asin']};g" \
+    -e "s;%title%;${book['title']};g" \
+    -e "s;%publication_year%;${book['publication_year']};g" \
+    -e "s|%description%|${book['description']}|g" \
+    -e "s;%image_url%;${book['image_url']};g" \
+    -e "s;%average_rating%;${book['average_rating']};g" \
+    -e "s;%publisher%;${book['publisher']};g" \
+    -e "s;%author%;${author['authorName']};g" \
+    -e "s;%num_pages%;${book['num_pages']};g" \
+    -e "s;%goodreads_url%;${book['goodreads_url']};g" \
+    -e "s;%reviewNoteFile%;${review['reviewNoteFile']};g" \
+    -e "s;%my_reviews%;${review['reviewid']};g" \
+    book.tpl > "${book['bookPath']}"
 
 
 
@@ -174,24 +192,6 @@ sed -E \
 if [ -f "${book['bookPath']}" ]; then
     exit 1
 fi
-sleep 1
-sed -E \
-    -e "s;%bookid%;${book['bookid']};g" \
-    -e "s;%authorId%;${author['authorId']};g" \
-    -e "s;%isbn%;${book['isbn']};g" \
-    -e "s;%title%;${book['title']};g" \
-    -e "s;%publication_year%;${book['publication_year']};g" \
-    -e "s|%description%|${book[description]}|g" \
-    -e "s;%image_url%;${book['image_url']};g" \
-    -e "s;%average_rating%;${book['average_rating']};g" \
-    -e "s;%publisher%;${book['publisher']};g" \
-    -e "s;%author%;${author['authorName']};g" \
-    -e "s;%num_pages%;${book['num_pages']};g" \
-    -e "s;%kindle_asin%;${book['kindle_asin']};g" \
-    -e "s;%goodreads_url%;${book['goodreads_url']};g" \
-    -e "s;%reviewNoteFile%;${review['reviewNoteFile']};g" \
-    -e "s;%my_reviews%;${review['reviewid']};g" \
-    book.tpl > "${book['bookPath']}"
 
 # AUTHOR
 if [ -f "${author['authorFile']}" ]; then
