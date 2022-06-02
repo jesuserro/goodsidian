@@ -1,5 +1,8 @@
 #!/bin/sh
-# USAGE: sh review.sh 2297011024
+# USAGE: 
+# - sh review.sh 2297011024 Jesús de Nazareth Tranfiguración
+# - sh review.sh 2333083521 Mi corazoón triunfará
+# - sh review.sh 2304450830 Arte Recomenzar
 
 if [ -z "$1" ]; then
   echo "Especifica un reviewid"
@@ -167,23 +170,23 @@ sed -E \
     review.tpl > "${review['reviewNotePath']}"
 
 
-sed -E \
-    -e "s;%bookid%;${book['bookid']};g" \
-    -e "s;%authorid%;${author['authorid']};g" \
-    -e "s;%isbn%;${book['isbn']};g" \
-    -e "s;%kindle_asin%;${book['kindle_asin']};g" \
-    -e "s;%title%;${book['title']};g" \
-    -e "s;%publication_year%;${book['publication_year']};g" \
-    -e "s|%description%|${book['description']}|g" \
-    -e "s;%image_url%;${book['image_url']};g" \
-    -e "s;%average_rating%;${book['average_rating']};g" \
-    -e "s;%publisher%;${book['publisher']};g" \
-    -e "s;%author%;${author['name']};g" \
-    -e "s;%num_pages%;${book['num_pages']};g" \
-    -e "s;%goodreads_url%;${book['goodreads_url']};g" \
-    -e "s;%reviewNoteFile%;${review['reviewNoteFile']};g" \
-    -e "s;%my_reviews%;${review['reviewid']};g" \
-    book.tpl > "${book['bookPath']}"
+# sed -E \
+#     -e "s;%bookid%;${book['bookid']};g" \
+#     -e "s;%authorid%;${author['authorid']};g" \
+#     -e "s;%isbn%;${book['isbn']};g" \
+#     -e "s;%kindle_asin%;${book['kindle_asin']};g" \
+#     -e "s;%title%;${book['title']};g" \
+#     -e "s;%publication_year%;${book['publication_year']};g" \
+#     -e "s|%description%|${book['description']}|g" \
+#     -e "s;%image_url%;${book['image_url']};g" \
+#     -e "s;%average_rating%;${book['average_rating']};g" \
+#     -e "s;%publisher%;${book['publisher']};g" \
+#     -e "s;%author%;${author['name']};g" \
+#     -e "s;%num_pages%;${book['num_pages']};g" \
+#     -e "s;%goodreads_url%;${book['goodreads_url']};g" \
+#     -e "s;%reviewNoteFile%;${review['reviewNoteFile']};g" \
+#     -e "s;%my_reviews%;${review['reviewid']};g" \
+#     book.tpl > "${book['bookPath']}"
 
 
 
