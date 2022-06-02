@@ -3,6 +3,7 @@
 # - sh review.sh 2297011024 Jesús de Nazareth Tranfiguración
 # - sh review.sh 2333083521 Mi corazoón triunfará
 # - sh review.sh 2304450830 Arte Recomenzar
+# - sh review.sh 2727533981 Retorno Hijo Pródigo
 
 if [ -z "$1" ]; then
   echo "Especifica un reviewid"
