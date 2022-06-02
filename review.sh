@@ -5,6 +5,7 @@
 # - sh review.sh 2304450830 Arte Recomenzar
 # - sh review.sh 2727533981 Retorno Hijo Pródigo
 # - sh review.sh 2767408990 Libertad Interior
+# - sh review.sh 2297008019 Shegatashya
 
 if [ -z "$1" ]; then
   echo "Especifica un reviewid"
@@ -88,7 +89,6 @@ review['reviewid']="${1}"
 review['title']="${book['title']}"
 review['rating']=$( echo $xml | xmllint --xpath "//$xpathReview/rating/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 review['votes']=$( echo $xml | xmllint --xpath "//$xpathReview/votes/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-
 review['read_at']=$( echo $xml | xmllint --xpath "//$xpathReview/read_at/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 review['read_at']=$(date -d "${review['read_at']}" +'%Y-%m-%d %H:%M')
 review['read_at_date']=$(date -d "${review['read_at']}" +'%Y-%m-%d')

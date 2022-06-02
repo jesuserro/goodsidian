@@ -23,7 +23,7 @@ emotion:
 # %title%
 [[%author%]] | [[%publication_year%]] | [[%publisher%]] | [[%format%]]
 %published_read_at%
-Votos: %votes% 👍 
+[Goodreads](%url%) %votes% votos
 
 ![b|150](%image_url%)
 
@@ -41,7 +41,6 @@ Votos: %votes% 👍
 
 ## Referencias
 - [[%bookFileName%]]
-- [Goodreads](%url%)
 - [Kindle app](%kindle_uri%)
 - Publicación libro: [[%publication_date%]]
 - Publicación review: [[%read_at_date%]]
