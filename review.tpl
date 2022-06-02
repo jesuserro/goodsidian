@@ -23,6 +23,7 @@ emotion:
 # %title%
 [[%author%]] | [[%publication_year%]] | [[%publisher%]] | [[%format%]]
 %published_read_at%
+Votos: %votes% 👍 
 
 ![b|150](%image_url%)
 
