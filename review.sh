@@ -6,6 +6,8 @@
 # - sh review.sh 2727533981 Retorno Hijo Pródigo
 # - sh review.sh 2767408990 Libertad Interior
 # - sh review.sh 2297008019 Shegatashya
+# - sh review.sh 3258859089 Meditaciones sobre la fe
+# - sh review.sh 2313170178 Metamorfosis Kafka
 
 if [ -z "$1" ]; then
   echo "Especifica un reviewid"
@@ -90,13 +92,16 @@ review['title']="${book['title']}"
 review['rating']=$( echo $xml | xmllint --xpath "//$xpathReview/rating/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 review['votes']=$( echo $xml | xmllint --xpath "//$xpathReview/votes/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 review['read_at']=$( echo $xml | xmllint --xpath "//$xpathReview/read_at/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+review['date_added']=$( echo $xml | xmllint --xpath "//$xpathReview/date_added/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+if [ -z "${review['read_at']}" ]; then
+    review['read_at']="${review['date_added']}"
+fi
 review['read_at']=$(date -d "${review['read_at']}" +'%Y-%m-%d %H:%M')
 review['read_at_date']=$(date -d "${review['read_at']}" +'%Y-%m-%d')
 review['clean_read_at']=$(date -d "${review['read_at']}" +'%Y%m%d%H%M')
 review['published_read_at']=$(date -d "${review['read_at']}" +'%A, %d %B %Y a las %H:%Mh.')
 review['started_at']=$( echo $xml | xmllint --xpath "//$xpathReview/started_at/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 review['started_at']=$(date -d "${review['started_at']}" +'%Y-%m-%d %H:%M')
-review['date_added']=$( echo $xml | xmllint --xpath "//$xpathReview/date_added/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 review['date_added']=$(date -d "${review['date_added']}" +'%Y-%m-%d %H:%M')
 review['date_updated']=$( echo $xml | xmllint --xpath "//$xpathReview/date_updated/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 review['date_updated']=$(date -d "${review['date_updated']}" +'%Y-%m-%d %H:%M')
