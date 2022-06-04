@@ -125,7 +125,7 @@ do
 done
 review['shelves']=$(echo "${arrtags[*]}")
 review['shelves_links']=$(IFS=' ' ; echo "${arrlinks[*]}")
-
+review['book_large_image_url']="${2}"
 
 
 : <<'END'
@@ -153,6 +153,7 @@ sed -E \
     -e "s;%publisher%;${book['publisher']};g" \
     -e "s|%body%|${review['body']}|g" \
     -e "s|%image_url%|${book[image_url]}|g" \
+    -e "s|%book_large_image_url%|${review[book_large_image_url]}|g" \
     -e "s;%user_rating%;${review['user_rating']};g" \
     -e "s;%read_at%;${review['read_at']};g" \
     -e "s;%read_at_date%;${review['read_at_date']};g" \

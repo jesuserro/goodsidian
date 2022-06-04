@@ -9,7 +9,7 @@ authorid: %authorid%
 author: %author%
 pages: %num_pages%
 publisher: %publisher%   
-cover: %image_url%
+cover: %book_large_image_url%
 book_published: %publication_date% 
 read_at: %read_at%
 started_at: %started_at%
@@ -25,7 +25,7 @@ emotion:
 %published_read_at%
 [Goodreads](%url%) %votes% votos
 
-![b|150](%image_url%)
+![b|150](%book_large_image_url%)
 
 %body%
 

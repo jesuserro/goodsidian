@@ -16,10 +16,11 @@ shelf=${1}
 url="$urlbase/review/list_rss/$user?key=$key&shelf=$1"
 
 # This grabs the data from the currently reading rss feed and formats it (2 campos)
-IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|guid>)' | \
+IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|guid>|book_large_image_url>)' | \
 sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
 -e 's/<title>//' -e 's/<\/title>/ | /' \
 -e 's/<guid>//' -e 's/<\/guid>/ | /' \
+-e 's/<book_large_image_url>//' -e 's/<\/book_large_image_url>/ | /' \
 -e 's/^[ \t]*//' -e 's/[ \t]*$//' | \
 tail +3 | \
 fmt
@@ -36,7 +37,7 @@ if (( "$bookamount" == 0 )); then
 fi
 
 # Número de campos del grep -E
-miNumeroDeVariables=2
+miNumeroDeVariables=3
 
 num_books=$(($bookamount / $miNumeroDeVariables))
 echo "Capturando ${num_books} libros de estantería '${shelf}'..."
@@ -54,13 +55,14 @@ do
   # Set variables 2 (miNumeroDeVariables)
   guid=$( echo ${arr["$counter"]} | xargs)
   title=$( echo ${arr[$( expr "$counter" + 1)]} | xargs)
+  book_large_image_url=$( echo ${arr[$( expr "$counter" + 2)]} | xargs)
   #https://www.goodreads.com/review/show/2297011024?utm_medium=api%25guid%25utm_source=rss
   last_url=$(echo "${guid##*/}") # último slash de la url
   review['reviewid']=${last_url%\?*} # remove suffix starting with "?"
   
-  echo "$( expr "$i" + 1)/${num_books} - ${title}"
+  echo "$( expr "$i" + 1)/${num_books} - ${title} - ${book_large_image_url}"
 
-  sh ./review.sh ${review['reviewid']}
+  sh ./review.sh ${review['reviewid']} ${book_large_image_url}
 
   sleep 1
 
