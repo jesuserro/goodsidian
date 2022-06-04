@@ -4,7 +4,45 @@
 # - https://unix.stackexchange.com/questions/1527/bash-eval-array-variable-name
 # - https://www.ludvikjerabek.com/2015/08/24/getting-bashed-by-dynamic-arrays/
 
-# my functions
+get_publication_date(){
+    local year="${1}"
+    local month=$(printf %02d ${2})
+    local day=$(printf %02d ${3})
+    local result=""
+
+    if [ -n "${year}" ]; then
+      result="${year}"
+      if [ -n "${month}" -a "${month}" -ne "00" ]; then
+        result="${year}-${month}"
+        if [ -n "${day}" -a "${day}" -ne "00" ]; then
+          result="${year}-${month}-${day}"
+        fi
+      fi
+    fi
+
+    echo "${result}"
+}
+
+
+get_clean_publication_date(){
+    local year="${1}"
+    local month=$(printf %02d ${2})
+    local day=$(printf %02d ${3})
+    local result=""
+
+    if [ -n "${year}" ]; then
+      result="${year}"
+      if [ -n "${month}" -a "${month}" -ne "00" ]; then
+        result="${year}${month}"
+        if [ -n "${day}" -a "${day}" -ne "00" ]; then
+          result="${year}${month}${day}"
+        fi
+      fi
+    fi
+
+    echo "${result}"
+}
+
 clean_note_path(){
     prefix="${vaultpath}/"
     suffix=".md"

@@ -65,13 +65,19 @@ book['title']=$( echo $xml | xmllint --xpath "//$xpathBook/title/text()" - | sed
 # 2. Delete illegal (':' and '/') and unwanted ('#') characters
 book['cleantitle']=$(echo "${book['title']}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
 book['image_url']=$( echo $xml | xmllint --xpath "//$xpathBook/image_url/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-book['publication_day']=$( echo $xml | xmllint --xpath "//$xpathBook/publication_day/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-# book['publication_day']=$(date -d "${book['publication_day']}" +'%d')
+
+
+
+
 book['publication_year']=$( echo $xml | xmllint --xpath "//$xpathBook/publication_year/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['publication_month']=$( echo $xml | xmllint --xpath "//$xpathBook/publication_month/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-book['publication_date']="${book['publication_year']}-${book['publication_month']}-${book['publication_day']}"
-book['publication_date']=$(date -d "${book['publication_date']}" +'%Y-%m-%d')
-book['clean_publication_date']=$(date -d "${book['publication_date']}" +'%Y%m%d')
+book['publication_day']=$( echo $xml | xmllint --xpath "//$xpathBook/publication_day/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['publication_date']=$(get_publication_date "${book['publication_year']}" "${book['publication_month']}" "${book['publication_day']}")
+book['clean_publication_date']=$(get_clean_publication_date "${book['publication_year']}" "${book['publication_month']}" "${book['publication_day']}")
+
+
+
+
 book['bookFileName']="${book['publication_year']}${book['publication_month']}${book['publication_day']} ${book['cleantitle']}"
 book['isbn']=$( echo $xml | xmllint --xpath "//$xpathBook/isbn/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['isbn13']=$( echo $xml | xmllint --xpath "//$xpathBook/isbn13/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
