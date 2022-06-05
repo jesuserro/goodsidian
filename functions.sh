@@ -4,6 +4,28 @@
 # - https://unix.stackexchange.com/questions/1527/bash-eval-array-variable-name
 # - https://www.ludvikjerabek.com/2015/08/24/getting-bashed-by-dynamic-arrays/
 
+get_review_header(){
+  local author="${1}"
+  local publication_year="${2}"
+  local publisher="${3}"
+  local format="${4}"
+  local result=""
+
+  if [ -n "${author}" ]; then
+    result="[[${author}]]"
+    if [ -n "${publication_year}" ]; then
+      result="${result} | [[${publication_year}]]"
+      if [ -n "${publisher}" ]; then
+        result="${result} | [[${publisher}]]"
+        if [ -n "${format}" ]; then
+          result="${result} | [[${format}]]"
+        fi
+      fi
+    fi
+  fi
+  echo "${result}"
+}
+
 get_publication_date(){
     local year="${1}"
     local month=$(printf %02d ${2})
@@ -18,6 +40,7 @@ get_publication_date(){
           result="${year}-${month}-${day}"
         fi
       fi
+      result="[[${result}]]"
     fi
 
     echo "${result}"

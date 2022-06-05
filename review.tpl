@@ -21,7 +21,8 @@ tags: %shelves%
 emotion:
 ---
 # %title%
-[[%author%]] | [[%publication_year%]] | [[%publisher%]] | [[%format%]]
+%header%
+
 %published_read_at%
 [Goodreads](%url%) %votes% votos
 
@@ -42,5 +43,3 @@ emotion:
 ## Referencias
 - [[%bookFileName%]]
 - [Kindle app](%kindle_uri%)
-- Publicación libro: [[%publication_date%]]
-- Publicación review: [[%read_at_date%]]
