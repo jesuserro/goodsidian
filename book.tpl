@@ -8,7 +8,7 @@ author:: [[%author%]]
 pages: %num_pages%
 publisher:: [[%publisher%]]  
 book_published:: [[%publication_year%]]  
-cover: %image_url%   
+cover: %book_large_image_url%   
 tags: 
 - book/goodreads/profile
 date: %publication_year%
@@ -18,7 +18,7 @@ emotion:
 ---
 # %title%
 
-![b|150](%image_url%)
+![b|150](%book_large_image_url%)
 
 [[%author%]] | %publication_year% | Editorial [[%publisher%]] | %num_pages% páginas | Puntuación %average_rating%
 
