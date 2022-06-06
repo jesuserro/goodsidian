@@ -7,20 +7,21 @@ asin: %kindle_asin%
 author:: [[%author%]]
 pages: %num_pages%
 publisher:: [[%publisher%]]  
-book_published:: [[%publication_year%]]  
+book_published:: %publication_date%  
 cover: %book_large_image_url%   
 tags: 
 - book/goodreads/profile
-date: %publication_year%
+date: %publication_date%
 reviews: [%my_reviews%]
-rating: %average_rating%
+average_rating: %average_rating%
+ratings_count: %ratings_count%
 emotion:
 ---
 # %title%
 
 ![b|150](%book_large_image_url%)
 
-[[%author%]] | %publication_year% | Editorial [[%publisher%]] | %num_pages% páginas | Puntuación %average_rating%
+[[%author%]] | %publication_date% | [[%publisher%]] | %num_pages% págs. | Núm. Ratings: %ratings_count% | Puntuación %average_rating%
 
 ## Sinopsis
 %description%

@@ -51,8 +51,6 @@ book['title']=$( echo $xml | xmllint --xpath "//$xpathBook/title/text()" - | sed
 book['cleantitle']=$(echo "${book['title']}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
 book['image_url']=$( echo $xml | xmllint --xpath "//$xpathBook/image_url/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['link']=$( echo $xml | xmllint --xpath "//$xpathBook/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-book['average_rating']=$( echo $xml | xmllint --xpath "//$xpathBook/average_rating/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-book['ratings_count']=$( echo $xml | xmllint --xpath "//$xpathBook/ratings_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 END
 
 
@@ -66,16 +64,11 @@ book['title']=$( echo $xml | xmllint --xpath "//$xpathBook/title/text()" - | sed
 book['cleantitle']=$(echo "${book['title']}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
 book['image_url']=$( echo $xml | xmllint --xpath "//$xpathBook/image_url/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 
-
-
-
 book['publication_year']=$( echo $xml | xmllint --xpath "//$xpathBook/publication_year/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['publication_month']=$( echo $xml | xmllint --xpath "//$xpathBook/publication_month/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['publication_day']=$( echo $xml | xmllint --xpath "//$xpathBook/publication_day/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['publication_date']=$(get_publication_date "${book['publication_year']}" "${book['publication_month']}" "${book['publication_day']}")
 book['clean_publication_date']=$(get_clean_publication_date "${book['publication_year']}" "${book['publication_month']}" "${book['publication_day']}")
-
-
 
 if [ -n "${book['clean_publication_date']}" ]; then
     book['bookFileName']="${book['clean_publication_date']} ${book['cleantitle']}"
@@ -93,6 +86,8 @@ book['bookPath']="${vaultpath}/${book[bookFileName]}.md"
 
 book['description']=$( echo $xml | xmllint --xpath "//$xpathBook/description/text()" - | sed -e 's|<!\[CDATA\[||' -e 's|\]\]>||' )
 book['description']=$(clean_long_text "${book['description']}")
+book['average_rating']=$( echo $xml | xmllint --xpath "//$xpathBook/average_rating/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['ratings_count']=$( echo $xml | xmllint --xpath "//$xpathBook/ratings_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 
 
 # REVIEW
@@ -196,6 +191,7 @@ sed -E \
     -e "s;%kindle_asin%;${book['kindle_asin']};g" \
     -e "s;%title%;${book['title']};g" \
     -e "s;%publication_year%;${book['publication_year']};g" \
+    -e "s;%publication_date%;${book['publication_date']};g" \
     -e "s|%description%|${book['description']}|g" \
     -e "s;%image_url%;${book['image_url']};g" \
     -e "s|%book_large_image_url%|${review[book_large_image_url]}|g" \
@@ -206,6 +202,8 @@ sed -E \
     -e "s;%goodreads_url%;${book['goodreads_url']};g" \
     -e "s;%reviewNoteFile%;${review['reviewNoteFile']};g" \
     -e "s;%my_reviews%;${review['reviewid']};g" \
+    -e "s;%average_rating%;${book['average_rating']};g" \
+    -e "s;%ratings_count%;${book['ratings_count']};g" \
     book.tpl > "${book['bookPath']}"
 
 
