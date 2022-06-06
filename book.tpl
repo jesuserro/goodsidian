@@ -4,17 +4,20 @@ bookid: %bookid%
 authorid: %authorid%
 isbn: %isbn%
 asin: %kindle_asin%
-author:: [[%author%]]
+author: %author%
 pages: %num_pages%
-publisher:: [[%publisher%]]  
-book_published:: %publication_date%  
+publisher: %publisher%  
+book_published: %publication_date%  
 cover: %book_large_image_url%   
 tags: 
 - book/goodreads/profile
+- book/goodreads/average_rating/%average_rating%
+- book/rating/%rating%
 date: %publication_date%
 reviews: [%my_reviews%]
 average_rating: %average_rating%
 ratings_count: %ratings_count%
+rating: %rating%
 emotion:
 ---
 # %title%
@@ -33,7 +36,7 @@ emotion:
 
 ## Referencias
 - [[%reviewNoteFile%]]
-- [Goodreads](%goodreads_url%)
+- [Goodreads Profile](%goodreads_url%)
 - [[goodreads]]
 
 

@@ -204,6 +204,7 @@ sed -E \
     -e "s;%my_reviews%;${review['reviewid']};g" \
     -e "s;%average_rating%;${book['average_rating']};g" \
     -e "s;%ratings_count%;${book['ratings_count']};g" \
+    -e "s|%rating%|${review['rating']}|g" \
     book.tpl > "${book['bookPath']}"
 
 
