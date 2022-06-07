@@ -37,6 +37,5 @@ emotion:
 ## Referencias
 - [[%reviewNoteFile%]]
 - [Goodreads Profile](%goodreads_url%)
-- [[goodreads]]
 
 

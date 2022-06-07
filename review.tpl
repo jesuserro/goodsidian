@@ -32,7 +32,7 @@ emotion:
 %body%
 
 ## Valoración 
-**Tags**: [[goodreads]] %shelves_links%
+**Tags**: %shelves_links%
 **Rating**: %rating%
 
 ## Recomendado por
