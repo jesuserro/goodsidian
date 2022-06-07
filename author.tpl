@@ -3,7 +3,7 @@ aliases: []
 authorid: %authorId%
 author:: [[%authorName%]]  
 tags: 
-- people/goodreads/author
+- people/author/goodreads
 popular_shelves:
 date: %user_read_at%
 readed: %user_read_at%

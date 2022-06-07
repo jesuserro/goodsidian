@@ -10,7 +10,7 @@ publisher: %publisher%
 book_published: %publication_date%  
 cover: %book_large_image_url%   
 tags: 
-- book/goodreads/profile
+- book/goodreads
 - book/goodreads/average_rating/%average_rating%
 - book/rating/%rating%
 date: %publication_date%

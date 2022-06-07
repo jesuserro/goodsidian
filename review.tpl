@@ -17,7 +17,8 @@ date_added: %date_added%
 date_updated: %date_updated%
 rating: %rating%
 votos: %votes%   
-tags: %shelves%
+tags: 
+- review/goodreads %shelves%
 emotion:
 ---
 # %title%

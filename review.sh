@@ -125,7 +125,7 @@ mapfile -t arrtags <<< "${review['shelves']}"
 for index in "${!arrtags[@]}"
 do
     arrlinks[$index]="[[${arrtags[$index]}]]"
-    arrtags[$index]="\n- book/goodreads/tag/${arrtags[$index]}"
+    arrtags[$index]="\n- ${arrtags[$index]}"
 done
 review['shelves']=$(echo "${arrtags[*]}")
 review['shelves_links']=$(IFS=' ' ; echo "${arrlinks[*]}")
