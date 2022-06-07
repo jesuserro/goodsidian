@@ -50,7 +50,6 @@ book['title']=$( echo $xml | xmllint --xpath "//$xpathBook/title/text()" - | sed
 # 2. Delete illegal (':' and '/') and unwanted ('#') characters
 book['cleantitle']=$(echo "${book['title']}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
 book['image_url']=$( echo $xml | xmllint --xpath "//$xpathBook/image_url/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-book['link']=$( echo $xml | xmllint --xpath "//$xpathBook/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 END
 
 
@@ -88,6 +87,8 @@ book['description']=$( echo $xml | xmllint --xpath "//$xpathBook/description/tex
 book['description']=$(clean_long_text "${book['description']}")
 book['average_rating']=$( echo $xml | xmllint --xpath "//$xpathBook/average_rating/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['ratings_count']=$( echo $xml | xmllint --xpath "//$xpathBook/ratings_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['link']=$( echo $xml | xmllint --xpath "//$xpathBook/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['header']=$(get_book_header "${author['name']}" "${book['publication_year']}" "${book['publisher']}" "${book['link']}" "${book['num_pages']}" "${book['ratings_count']}" "${book['average_rating']}")
 
 
 # REVIEW
@@ -199,12 +200,13 @@ sed -E \
     -e "s;%publisher%;${book['publisher']};g" \
     -e "s;%author%;${author['name']};g" \
     -e "s;%num_pages%;${book['num_pages']};g" \
-    -e "s;%goodreads_url%;${book['goodreads_url']};g" \
+    -e "s;%goodreads_url%;${book['link']};g" \
     -e "s;%reviewNoteFile%;${review['reviewNoteFile']};g" \
     -e "s;%my_reviews%;${review['reviewid']};g" \
     -e "s;%average_rating%;${book['average_rating']};g" \
     -e "s;%ratings_count%;${book['ratings_count']};g" \
     -e "s|%rating%|${review['rating']}|g" \
+    -e "s;%header%;${book['header']};g" \
     book.tpl > "${book['bookPath']}"
 
 

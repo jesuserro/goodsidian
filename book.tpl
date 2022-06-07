@@ -24,18 +24,19 @@ emotion:
 
 ![b|150](%book_large_image_url%)
 
-[[%author%]] | %publication_date% | [[%publisher%]] | %num_pages% págs. | Núm. Ratings: %ratings_count% | Puntuación %average_rating%
+%header%
 
 ## Sinopsis
 %description%
 
-## Género 
-
 ## Índice
 %indice%
 
-## Referencias
+## Géneros 
+
+## Reviews
 - [[%reviewNoteFile%]]
-- [Goodreads Profile](%goodreads_url%)
+
+## Citas
 
 

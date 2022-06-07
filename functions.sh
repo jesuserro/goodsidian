@@ -8,20 +8,32 @@ get_book_header(){
   local author="${1}"
   local publication_year="${2}"
   local publisher="${3}"
-  local format="${4}"
+  local link="${4}"
+  local num_pages="${5}"
+  local ratings_count="${6}"
+  local average_rating="${7}"
   local result=""
 
   if [ -n "${author}" ]; then
     result="[[${author}]]"
-    if [ -n "${publication_year}" ]; then
-      result="${result} | [[${publication_year}]]"
-      if [ -n "${publisher}" ]; then
-        result="${result} | [[${publisher}]]"
-        if [ -n "${format}" ]; then
-          result="${result} | [[${format}]]"
-        fi
-      fi
-    fi
+  fi
+  if [ -n "${publication_year}" ]; then
+    result="${result} | [[${publication_year}]]"
+  fi
+  if [ -n "${publisher}" ]; then
+    result="${result} | [[${publisher}]]" 
+  fi
+  if [ -n "${link}" ]; then
+    result="${result} | [Goodreads Profile](${link})"
+  fi
+  if [ -n "${num_pages}" ]; then
+    result="${result} | ${num_pages}"  
+  fi
+  if [ -n "${ratings_count}" ]; then
+    result="${result} | ${ratings_count}"
+  fi
+  if [ -n "${average_rating}" ]; then
+    result="${result} | ${average_rating}"
   fi
   echo "${result}"
 }
@@ -35,16 +47,17 @@ get_review_header(){
 
   if [ -n "${author}" ]; then
     result="[[${author}]]"
-    if [ -n "${publication_year}" ]; then
-      result="${result} | [[${publication_year}]]"
-      if [ -n "${publisher}" ]; then
-        result="${result} | [[${publisher}]]"
-        if [ -n "${format}" ]; then
-          result="${result} | [[${format}]]"
-        fi
-      fi
-    fi
   fi
+  if [ -n "${publication_year}" ]; then
+    result="${result} | [[${publication_year}]]"
+  fi
+  if [ -n "${publisher}" ]; then
+    result="${result} | [[${publisher}]]"
+  fi
+  if [ -n "${format}" ]; then
+    result="${result} | [[${format}]]"
+  fi
+
   echo "${result}"
 }
 
