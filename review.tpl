@@ -22,12 +22,14 @@ tags:
 emotion:
 ---
 # %title%
-%header%
-
 %published_read_at%
 [Goodreads](%url%) %votes% votos
 
 ![b|150](%book_large_image_url%)
+
+%header%
+[[%bookFileName%]]
+[Kindle app](%kindle_uri%)
 
 %body%
 
@@ -41,6 +43,8 @@ emotion:
 ## Recomendado para
 %recommended_for%
 
-## Referencias
-- [[%bookFileName%]]
-- [Kindle app](%kindle_uri%)
+## Citas
+%citas%
+
+## Notas
+%notas%

@@ -21,9 +21,7 @@ rating: %rating%
 emotion:
 ---
 # %title%
-
 ![b|150](%book_large_image_url%)
-
 %header%
 
 ## Sinopsis
@@ -32,11 +30,13 @@ emotion:
 ## Índice
 %indice%
 
-## Géneros 
-
 ## Reviews
 - [[%reviewNoteFile%]]
 
 ## Citas
+%citas%
+
+## Notas
+%notas% 
 
 

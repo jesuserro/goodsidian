@@ -56,6 +56,7 @@ do
   guid=$( echo ${arr["$counter"]} | xargs)
   title=$( echo ${arr[$( expr "$counter" + 1)]} | xargs)
   book_large_image_url=$( echo ${arr[$( expr "$counter" + 2)]} | xargs)
+  book_large_image_url=${book_large_image_url//$'\n'/}
   #https://www.goodreads.com/review/show/2297011024?utm_medium=api%25guid%25utm_source=rss
   last_url=$(echo "${guid##*/}") # último slash de la url
   review['reviewid']=${last_url%\?*} # remove suffix starting with "?"
