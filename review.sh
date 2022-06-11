@@ -42,7 +42,7 @@ author['image_url']=$( echo $xml | xmllint --xpath "//$xpathAuthor/image_url/tex
 # Remueve saltos de línea de la imagen url
 author['image_url']=${author[image_url]//$'\n'/}
 author['link']=$( echo $xml | xmllint --xpath "//$xpathAuthor/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-author['authorFile']="${vaultpath}/${author['name']}.md"
+author['authorFile']="${vaultpath}/autores/${author['name']}.md"
 author['average_rating']=$( echo $xml | xmllint --xpath "//$xpathAuthor/average_rating/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 author['ratings_count']=$( echo $xml | xmllint --xpath "//$xpathAuthor/ratings_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 author['text_reviews_count']=$( echo $xml | xmllint --xpath "//$xpathAuthor/text_reviews_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' ) 
@@ -198,7 +198,12 @@ sed -E \
     -e "s;%header%;${book['header']};g" \
     book.tpl > "${book['bookPath']}"
 
-    # AUTHOR
+# AUTHOR
+if [ -z "${book['publisher']}" ]; then
+    book['publisher']=""
+else
+    book['publisher']="[[${book['publisher']}]]"
+fi
 sed -E \
     -e "s|%authorid%|${author['authorid']}|g" \
     -e "s|%name%|${author['name']}|g" \
@@ -209,7 +214,7 @@ sed -E \
     -e "s|%text_reviews_count%|${author['text_reviews_count']}|g" \
     -e "s|%books%|${book[bookFileName]}|g" \
     -e "s|%reviews%|${review['reviewNoteFile']}|g" \
-    -e "s|%publishers%|${book['publisher']}|g" \
+    -e "s|%publishers%|${book['publisher']}|" \
     -e "s|%user_read_at%|${review['read_at']}|g" \
     -e "s|%user_rating%|${review['rating']}|g" \
     -e "s|%user_date_updated%|${review['date_updated']}|g" \

@@ -30,7 +30,7 @@ emotion:
 - [[%reviews%]] 
 
 ## Editoriales
-- [[%publishers%]]
+- %publishers%
 
 ## Citas
 %citas%
