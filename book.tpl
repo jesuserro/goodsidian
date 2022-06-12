@@ -10,9 +10,7 @@ publisher: %publisher%
 book_published: %publication_date%  
 cover: %book_large_image_url%   
 tags: 
-- book/goodreads
-- book/goodreads/average_rating/%average_rating%
-- book/rating/%rating%
+- books
 date: %publication_date%
 reviews: [%my_reviews%]
 average_rating: %average_rating%
@@ -23,6 +21,7 @@ emotion:
 # %title%
 ![b|150](%book_large_image_url%)
 %header%
+[[libros]]
 
 ## Sinopsis
 %description%

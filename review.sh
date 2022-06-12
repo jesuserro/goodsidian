@@ -42,7 +42,7 @@ author['image_url']=$( echo $xml | xmllint --xpath "//$xpathAuthor/image_url/tex
 # Remueve saltos de línea de la imagen url
 author['image_url']=${author[image_url]//$'\n'/}
 author['link']=$( echo $xml | xmllint --xpath "//$xpathAuthor/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-author['authorFile']="${vaultpath}/autores/${author['name']}.md"
+author['authorFile']="${vaultpath}/${author['name']}.md"
 author['average_rating']=$( echo $xml | xmllint --xpath "//$xpathAuthor/average_rating/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 author['ratings_count']=$( echo $xml | xmllint --xpath "//$xpathAuthor/ratings_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 author['text_reviews_count']=$( echo $xml | xmllint --xpath "//$xpathAuthor/text_reviews_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' ) 

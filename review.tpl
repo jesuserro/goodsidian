@@ -18,7 +18,7 @@ date_updated: %date_updated%
 rating: %rating%
 votos: %votes%   
 tags: 
-- review/goodreads %shelves%
+- reviews %shelves%
 emotion:
 ---
 # %title%
@@ -29,7 +29,7 @@ emotion:
 
 %header%
 [[%bookFileName%]]
-[Kindle app](%kindle_uri%)
+[Kindle app](%kindle_uri%) | [[reviews]]
 
 %body%
 

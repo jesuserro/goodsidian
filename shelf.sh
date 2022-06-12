@@ -65,6 +65,6 @@ do
 
   sh ./review.sh ${review['reviewid']} ${book_large_image_url}
 
-  sleep 1
+  # sleep 1
 
 done

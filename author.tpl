@@ -3,7 +3,7 @@ aliases: []
 authorid: %authorid%
 author: %name%
 tags: 
-- people/author/goodreads
+- people/author/writer
 popular_shelves:
 date: %user_read_at%
 readed: %user_read_at%
@@ -13,12 +13,13 @@ rating: %user_rating%
 average_rating: %average_rating%
 ratings_count: %ratings_count%
 text_reviews_count: %text_reviews_count%
+cover: %image_url%
 emotion:
 ---
 
 # %name%
 ![b|150](%image_url%)
-[Goodreads profile](%link%)
+[Goodreads profile](%link%) | [[escritores]]
 
 ## About
 %about%
