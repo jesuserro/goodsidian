@@ -7,11 +7,13 @@ asin: %kindle_asin%
 author: %author%
 pages: %num_pages%
 publisher: %publisher%  
-book_published: %publication_date%  
+book_published: %publication_date%
+shelf: %shelf%  
 cover: %book_large_image_url%   
 tags: 
-- books
+- books 
 date: %publication_date%
+date_updated: %date_updated%
 reviews: [%my_reviews%]
 average_rating: %average_rating%
 ratings_count: %ratings_count%

@@ -75,7 +75,7 @@ get_publication_date(){
           result="${year}-${month}-${day}"
         fi
       fi
-      result="[[${result}]]"
+      result="${result}"
     fi
 
     echo "${result}"

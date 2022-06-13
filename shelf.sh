@@ -63,7 +63,7 @@ do
   
   echo "$( expr "$i" + 1)/${num_books} - ${title}"
 
-  sh ./review.sh ${review['reviewid']} ${book_large_image_url}
+  sh ./review.sh ${review['reviewid']} ${book_large_image_url} ${shelf}
 
   # sleep 1
 

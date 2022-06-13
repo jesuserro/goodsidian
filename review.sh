@@ -79,6 +79,7 @@ book['average_rating']=$( echo $xml | xmllint --xpath "//$xpathBook/average_rati
 book['ratings_count']=$( echo $xml | xmllint --xpath "//$xpathBook/ratings_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['link']=$( echo $xml | xmllint --xpath "//$xpathBook/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['header']=$(get_book_header "${author['name']}" "${book['publication_year']}" "${book['publisher']}" "${book['link']}" "${book['num_pages']}" "${book['ratings_count']}" "${book['average_rating']}")
+book['shelf']=${3}
 
 
 # REVIEW
@@ -196,6 +197,8 @@ sed -E \
     -e "s;%ratings_count%;${book['ratings_count']};g" \
     -e "s|%rating%|${review['rating']}|g" \
     -e "s;%header%;${book['header']};g" \
+    -e "s;%shelf%;${book['shelf']};g" \
+    -e "s;%date_updated%;${review['date_updated']};g" \
     book.tpl > "${book['bookPath']}"
 
 # AUTHOR
