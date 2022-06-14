@@ -33,8 +33,9 @@ emotion:
 ## Editoriales
 - %publishers%
 
+## Referencias
+%referencias%
+
 ## Citas
 %citas%
 
-## Notas
-- %notas%

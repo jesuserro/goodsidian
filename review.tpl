@@ -37,6 +37,9 @@ emotion:
 **Tags**: %shelves_links%
 **Rating**: %rating%
 
+## Referencias
+%referencias%
+
 ## Recomendado por
 %recommended_by%
 

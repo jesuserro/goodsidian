@@ -34,10 +34,13 @@ emotion:
 ## Reviews
 - [[%reviewNoteFile%]]
 
+## Referencias
+%referencias%
+
 ## Citas
 %citas%
 
 ## Notas
-%notas% 
+%notas%
 
 
