@@ -12,10 +12,18 @@ get_book_header(){
   local num_pages="${5}"
   local ratings_count="${6}"
   local average_rating="${7}"
+  local isbn="${8}"
+  local kindle_asin="${9}"
   local result=""
 
   if [ -n "${author}" ]; then
     result="[[${author}]]"
+  fi
+  if [ -n "${isbn}" ]; then
+    result="${result} | [[${isbn}]]"
+  fi
+  if [ -n "${kindle_asin}" ]; then
+    result="${result} | [[${kindle_asin}]]"
   fi
   if [ -n "${publication_year}" ]; then
     result="${result} | [[${publication_year}]]"
