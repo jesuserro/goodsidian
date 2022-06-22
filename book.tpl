@@ -21,26 +21,15 @@ rating: %rating%
 emotion:
 ---
 # %title%
+
+## Goodreads Metadata
 ![b|150](%book_large_image_url%)
-%header%
 [[libros]]
+%header%
 
 ## Sinopsis
 %description%
 
-## Índice
-%indice%
 
-## Reviews
-- [[%reviewNoteFile%]]
-
-## Referencias
-%referencias%
-
-## Citas
-%citas%
-
-## Notas
-%notas%
 
 
