@@ -42,7 +42,7 @@ author['image_url']=$( echo $xml | xmllint --xpath "//$xpathAuthor/image_url/tex
 # Remueve saltos de línea de la imagen url
 author['image_url']=${author[image_url]//$'\n'/}
 author['link']=$( echo $xml | xmllint --xpath "//$xpathAuthor/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-author['authorFile']="${vaultpath}/${author['name']}.md"
+author['authorFile']="${vaultpath}/${author['name']} - WRITER.md"
 author['average_rating']=$( echo $xml | xmllint --xpath "//$xpathAuthor/average_rating/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 author['ratings_count']=$( echo $xml | xmllint --xpath "//$xpathAuthor/ratings_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 author['text_reviews_count']=$( echo $xml | xmllint --xpath "//$xpathAuthor/text_reviews_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' ) 
@@ -71,7 +71,7 @@ book['num_pages']=$( echo $xml | xmllint --xpath "//$xpathBook/num_pages/text()"
 book['uri']=$( echo $xml | xmllint --xpath "//$xpathBook/uri/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['publisher']=$( echo $xml | xmllint --xpath "//$xpathBook/publisher/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['format']=$( echo $xml | xmllint --xpath "//$xpathBook/format/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-book['bookPath']="${vaultpath}/${book[bookFileName]}.md"
+book['bookPath']="${vaultpath}/${book[bookFileName]} - GOODREADS.md"
 
 book['description']=$( echo $xml | xmllint --xpath "//$xpathBook/description/text()" - | sed -e 's|<!\[CDATA\[||' -e 's|\]\]>||' )
 book['description']=$(clean_long_text "${book['description']}")
@@ -133,7 +133,7 @@ review['comments_count']=$( echo $xml | xmllint --xpath "//$xpathReview/comments
 END
 
 review['reviewNoteFile']="${review[clean_read_at]} ${book[cleantitle]}"
-review['reviewNotePath']="${vaultpath}/${review[reviewNoteFile]}.md"
+review['reviewNotePath']="${vaultpath}/${review[reviewNoteFile]} - REVIEW.md"
 
 
 # PRINTING REVIEW
