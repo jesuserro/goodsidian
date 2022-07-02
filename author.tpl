@@ -5,11 +5,10 @@ author: %name%
 tags: 
 - people/author/writer
 popular_shelves:
-date: %user_read_at%
-readed: %user_read_at%
-created: %user_date_created% 
-updated: %user_date_updated% 
-rating: %user_rating%
+date: %read_at%
+readed: %read_at%
+created: %date_created% 
+updated: %date_updated% 
 average_rating: %average_rating%
 ratings_count: %ratings_count%
 text_reviews_count: %text_reviews_count%
@@ -24,11 +23,4 @@ emotion:
 ## About
 %about%
 
-## Libros
-- [[%books%]]
-
-## Reseñas
-- [[%reviews%]] 
-
-## Editoriales
-- %publishers%
+## books %books%

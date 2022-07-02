@@ -37,6 +37,9 @@ declare -A book
 declare -A author
 
 author['authorid']=$( echo $xml | xmllint --xpath "//$xpathAuthor/id/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+
+
+# Data author desde review
 author['name']=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 author['image_url']=$( echo $xml | xmllint --xpath "//$xpathAuthor/image_url/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 # Remueve saltos de línea de la imagen url
@@ -46,6 +49,8 @@ author['authorFile']="${vaultpath}/${author['name']} - WRITER.md"
 author['average_rating']=$( echo $xml | xmllint --xpath "//$xpathAuthor/average_rating/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 author['ratings_count']=$( echo $xml | xmllint --xpath "//$xpathAuthor/ratings_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 author['text_reviews_count']=$( echo $xml | xmllint --xpath "//$xpathAuthor/text_reviews_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' ) 
+
+
 
 book['bookid']=$( echo $xml | xmllint --xpath "//$xpathBook/id/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['title']=$( echo $xml | xmllint --xpath "//$xpathBook/title/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
@@ -202,24 +207,6 @@ sed -E \
     book.tpl > "${book['bookPath']}"
 
 # AUTHOR
-if [ -z "${book['publisher']}" ]; then
-    book['publisher']=""
-else
-    book['publisher']="[[${book['publisher']}]]"
+if [ -n "${author['authorid']}" ]; then
+   sh ./author.sh ${author['authorid']} ${author['image_url']} ${author['average_rating']} ${author['ratings_count']} ${author['text_reviews_count']} ${review['read_at']} ${review['date_added']}
 fi
-sed -E \
-    -e "s|%authorid%|${author['authorid']}|g" \
-    -e "s|%name%|${author['name']}|g" \
-    -e "s|%image_url%|${author[image_url]}|g" \
-    -e "s|%link%|${author['link']}|g" \
-    -e "s|%average_rating%|${author['average_rating']}|g" \
-    -e "s|%ratings_count%|${author['ratings_count']}|g" \
-    -e "s|%text_reviews_count%|${author['text_reviews_count']}|g" \
-    -e "s|%books%|${book[bookFileName]}|g" \
-    -e "s|%reviews%|${review['reviewNoteFile']}|g" \
-    -e "s|%publishers%|${book['publisher']}|" \
-    -e "s|%user_read_at%|${review['read_at']}|g" \
-    -e "s|%user_rating%|${review['rating']}|g" \
-    -e "s|%user_date_updated%|${review['date_updated']}|g" \
-    -e "s|%user_date_created%|${review['date_added']}|g" \
-    author.tpl > "${author['authorFile']}"
