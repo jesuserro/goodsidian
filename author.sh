@@ -69,14 +69,16 @@ author['bookLinks']=$( echo $xml | xmllint --xpath "//$xpathAuthor/books/book/li
 author['bookRatingsCount']=$( echo $xml | xmllint --xpath "//$xpathAuthor/books/book/ratings_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 author['bookAverageRating']=$( echo $xml | xmllint --xpath "//$xpathAuthor/books/book/average_rating/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 author['bookUris']=$( echo $xml | xmllint --xpath "//$xpathAuthor/books/book/uri/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+author['bookPublicationYear']=$( echo $xml | xmllint --xpath "//$xpathAuthor/books/book/publication_year/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 mapfile -t arrtags <<< "${author['books']}"
 mapfile -t arrlinks <<< "${author['bookLinks']}"
 mapfile -t arrRatingsCount <<< "${author['bookRatingsCount']}"
 mapfile -t arrAverageRating <<< "${author['bookAverageRating']}"
 mapfile -t arrUris <<< "${author['bookUris']}"
+mapfile -t arrPublicationYear <<< "${author['bookPublicationYear']}"
 for index in "${!arrtags[@]}"
 do
-    books[$index]="\n- [${arrtags[$index]}](${arrlinks[$index]}) \n  - Num. Ratings: ${arrRatingsCount[$index]} \n  - Average Rating: ${arrAverageRating[$index]} \n  - [Kindle](${arrUris[$index]})"
+    books[$index]="\n- [${arrtags[$index]}](${arrlinks[$index]}) \n  - Publication Year: ${arrPublicationYear[$index]} \n  - Num. Ratings: ${arrRatingsCount[$index]} \n  - Average Rating: ${arrAverageRating[$index]} \n  - [Kindle](${arrUris[$index]})"
 done
 author['books']=$(echo "${books[*]}")
 
