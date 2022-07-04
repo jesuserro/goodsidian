@@ -16,11 +16,12 @@ cover: %image_url%
 emotion:
 ---
 
-# %name%
+# %name% 
 ![b|150](%image_url%)
+%hometown% (%born_at% - %died_at%)
 [Goodreads profile](%link%) | [[escritores]]
 
 ## About
 %about%
 
-## Books %books%
+## Books (%works_count%) %books%

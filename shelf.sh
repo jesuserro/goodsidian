@@ -2,7 +2,7 @@
 
 # USAGE: sh shelf.sh patata
 
-if [ -z "$1" ]
+if [ -z "$1" ];
 then
     echo "Especifica una estantería por favor"
     exit 1
