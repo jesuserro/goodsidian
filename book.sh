@@ -77,7 +77,7 @@ if [ -n "${book['clean_publication_date']}" ]; then
 elif [ -n "${book['publication_date']}" ]; then
     book['bookFileName']="${book['publication_date']} ${book['cleantitle']}"
 fi
-book['bookPath']="${vaultpath}/${book[bookFileName]} - GOODREADS.md"
+book['bookPath']="${vaultpath}/${book[bookFileName]} - BOOK.md"
 
 if [ -z "${book[bookFileName]}" ];
 then

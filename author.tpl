@@ -12,6 +12,7 @@ updated: %date_updated%
 average_rating: %average_rating%
 ratings_count: %ratings_count%
 text_reviews_count: %text_reviews_count%
+works_count: %works_count%
 cover: %image_url%
 emotion:
 ---
