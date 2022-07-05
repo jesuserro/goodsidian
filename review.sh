@@ -176,6 +176,7 @@ sed -E \
     -e "s|%recommended_by%|${review['recommended_by']}|g" \
     -e "s|%format%|${book['format']}|g" \
     -e "s;%header%;${review['header']};g" \
+    -e "s;%shelf%;${shelf};g" \
     review.tpl > "${review['reviewNotePath']}"
 
 # BOOK

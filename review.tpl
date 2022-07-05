@@ -16,6 +16,7 @@ started_at: %started_at%
 date_added: %date_added%
 date_updated: %date_updated%
 rating: %rating%
+status: %shelf% 
 votos: %votes%   
 tags: 
 - reviews %shelves%

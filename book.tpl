@@ -9,7 +9,7 @@ author: %author%
 pages: %num_pages%
 publisher: %publisher%  
 book_published: %publication_date%
-shelf: %shelf%  
+status: %shelf%  
 cover: %image_url%   
 tags: 
 - books 
@@ -28,6 +28,9 @@ emotion:
 
 ## Sinopsis
 %description%
+
+## Popular Shelves 
+%popular_shelves%
 
 
 

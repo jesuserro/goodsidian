@@ -62,10 +62,25 @@ book['link']=$( echo $xml | xmllint --xpath "//$xpathBook/link/text()" - | sed -
 book['original_publication_year']=$( echo $xml | xmllint --xpath "//$xpathBook/work/original_publication_year/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['authorid']=$( echo $xml | xmllint --xpath "//$xpathAuthor/id/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 book['author']=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+
+book['popular_shelves']=$( echo $xml | xmllint --xpath "//$xpathBook/popular_shelves/shelf/@name" - | sed -e 's/name="//' -e 's/"//')
+book['popular_shelves_counts']=$( echo $xml | xmllint --xpath "//$xpathBook/popular_shelves/shelf/@count" - | sed -e 's/count="//' -e 's/"//' )
+mapfile -t arrshelves <<< "${book['popular_shelves']}"
+mapfile -t arrcounts <<< "${book['popular_shelves_counts']}"
+
+if [ -n "${arrshelves}" ]; then
+
+    for index in "${!arrshelves[@]}"
+    do
+        cleanname="${arrshelves[$index]#"${arrshelves[$index]%%[![:space:]]*}"}"
+        cleancount="${arrcounts[$index]#"${arrcounts[$index]%%[![:space:]]*}"}"
+        books[$index]="[[${cleanname}]] (${cleancount})"
+    done
+    book['popular_shelves']=$(echo "${books[*]}")
+fi
 ##
 
-if [ -z "${book['publication_date']}" ];
-then
+if [ -z "${book['publication_date']}" ]; then
     book['publication_date']=${book['original_publication_year']}
 fi
 
@@ -106,4 +121,5 @@ sed -E \
     -e "s;%ratings_count%;${book['ratings_count']};g" \
     -e "s;%header%;${book['header']};g" \
     -e "s;%shelf%;${book['shelf']};g" \
+    -e "s;%popular_shelves%;${book['popular_shelves']};g" \
     book.tpl > "${book['bookPath']}"
