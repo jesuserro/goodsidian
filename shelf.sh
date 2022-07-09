@@ -16,10 +16,11 @@ shelf=${1}
 url="$urlbase/review/list_rss/$user?key=$key&shelf=$1"
 
 # This grabs the data from the currently reading rss feed and formats it (2 campos)
-IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|guid>|book_large_image_url>)' | \
+IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|guid>|book_large_image_url>|book_id)' | \
 sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
--e 's/<title>//' -e 's/<\/title>/ | /' \
 -e 's/<guid>//' -e 's/<\/guid>/ | /' \
+-e 's/<title>//' -e 's/<\/title>/ | /' \
+-e 's/<book_id>//' -e 's/<\/book_id>/ | /' \
 -e 's/<book_large_image_url>//' -e 's/<\/book_large_image_url>/ | /' \
 -e 's/^[ \t]*//' -e 's/[ \t]*$//' | \
 tail +3 | \
@@ -37,7 +38,7 @@ if (( "$bookamount" == 0 )); then
 fi
 
 # Número de campos del grep -E
-miNumeroDeVariables=3
+miNumeroDeVariables=4
 
 num_books=$(($bookamount / $miNumeroDeVariables))
 echo "Capturando ${num_books} libros de estantería '${shelf}'..."
@@ -55,15 +56,30 @@ do
   # Set variables 2 (miNumeroDeVariables)
   guid=$( echo ${arr["$counter"]} | xargs)
   title=$( echo ${arr[$( expr "$counter" + 1)]} | xargs)
-  book_large_image_url=$( echo ${arr[$( expr "$counter" + 2)]} | xargs)
+  bookid=$( echo ${arr[$( expr "$counter" + 2)]} | xargs)
+  book_large_image_url=$( echo ${arr[$( expr "$counter" + 3)]} | xargs)
   book_large_image_url=${book_large_image_url//$'\n'/}
   #https://www.goodreads.com/review/show/2297011024?utm_medium=api%25guid%25utm_source=rss
   last_url=$(echo "${guid##*/}") # último slash de la url
   review['reviewid']=${last_url%\?*} # remove suffix starting with "?"
+
+  # echo "bookamount ${bookamount}"
+  # echo "${arr[@]}"
+  # echo "guid: ${guid}"
+  # echo "title: ${title}"
+  # echo "bookid: ${bookid}"
+  # echo "book_large_image_url: ${book_large_image_url}"
+  # exit 1
   
   echo "$( expr "$i" + 1)/${num_books} - ${title}"
 
-  sh ./review.sh ${review['reviewid']} ${book_large_image_url} ${shelf}
+  if [ -n "${bookid}" ]; then
+    sh ./book.sh ${bookid} ${shelf} ${book_large_image_url} "review.date_updated"
+  fi
+  
+  if [ -n "${review['reviewid']}" ]; then
+    sh ./review.sh ${review['reviewid']} ${book_large_image_url} ${shelf}
+  fi
 
   # sleep 1
 

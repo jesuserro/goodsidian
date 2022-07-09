@@ -147,6 +147,7 @@ sed -E \
     -e "s;%isbn13%;${book['isbn13']};g" \
     -e "s;%url%;${review['url']};g" \
     -e "s;%isbn%;${review['isbn']};g" \
+    -e "s;%asin%;${book['asin']};g" \
     -e "s;%kindle_uri%;${book['uri']};g" \
     -e "s;%title%;${review['title']};g" \
     -e "s;%author%;${author['name']};g" \
@@ -179,10 +180,6 @@ sed -E \
     -e "s;%shelf%;${shelf};g" \
     review.tpl > "${review['reviewNotePath']}"
 
-# BOOK
-if [ -n "${book['bookid']}" ]; then
-   sh ./book.sh ${book['bookid']} ${shelf} ${review['book_large_image_url']} ${review['date_updated']}
-fi
 
 # AUTHOR
 if [ -n "${author['authorid']}" ]; then
