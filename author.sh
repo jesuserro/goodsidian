@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # USAGE: sh author.sh 4905855
 
