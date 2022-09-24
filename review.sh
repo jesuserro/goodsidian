@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # USAGE: 
 # - sh review.sh 2297011024 Jesús de Nazareth Tranfiguración
 # - sh review.sh 2333083521 Mi corazoón triunfará
@@ -183,5 +183,5 @@ sed -E \
 
 # AUTHOR
 if [ -n "${author['authorid']}" ]; then
-   sh ./author.sh ${author['authorid']} ${author['image_url']} ${author['average_rating']} ${author['ratings_count']} ${author['text_reviews_count']} ${review['read_at']} ${review['date_added']}
+   ./author.sh ${author['authorid']} ${author['image_url']} ${author['average_rating']} ${author['ratings_count']} ${author['text_reviews_count']} ${review['read_at']} ${review['date_added']}
 fi

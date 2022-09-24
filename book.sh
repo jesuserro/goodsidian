@@ -1,6 +1,6 @@
-#!/bin/sh
-# USAGE: sh book.sh 10988371 Resurrección
-# USAGE: sh book.sh 82405 Transfiguración
+#!/bin/bash
+# USAGE: ./book.sh 10988371 Resurrección
+# USAGE: ./book.sh 82405 Transfiguración
 
 if [ -z "$1" ]; then
   echo "Especifica un bookid"

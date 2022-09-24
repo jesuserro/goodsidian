@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-# USAGE: sh shelf.sh patata
+# USAGE: ./shelf.sh patata
 
 if [ -z "$1" ];
 then
@@ -74,11 +74,11 @@ do
   echo "$( expr "$i" + 1)/${num_books} - ${title}"
 
   if [ -n "${bookid}" ]; then
-    sh ./book.sh ${bookid} ${shelf} ${book_large_image_url} "review.date_updated"
+    ./book.sh ${bookid} ${shelf} ${book_large_image_url} "review.date_updated"
   fi
   
   if [ -n "${review['reviewid']}" ]; then
-    sh ./review.sh ${review['reviewid']} ${book_large_image_url} ${shelf}
+    ./review.sh ${review['reviewid']} ${book_large_image_url} ${shelf}
   fi
 
   # sleep 1

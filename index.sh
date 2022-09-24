@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # USAGE: sh index.sh patata
 
@@ -145,7 +145,7 @@ do
   export scalar_review=$(declare -p review)
 
   # sh ./book.sh "${review[@]}"
-  sh ./book.sh ${review['bookid']}
+  ./book.sh ${review['bookid']}
 
   sleep 1
 
