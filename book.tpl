@@ -20,11 +20,9 @@ ratings_count: %ratings_count%
 emotion:
 ---
 # %title%
-
-## Goodreads Metadata
 ![b|150](%image_url%)
-[[libros]]
 %header%
+[[libros]]
 
 ## Sinopsis
 %description%

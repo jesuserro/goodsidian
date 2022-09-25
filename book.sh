@@ -84,7 +84,7 @@ if [ -z "${book['publication_date']}" ]; then
     book['publication_date']=${book['original_publication_year']}
 fi
 
-book['header']=$(get_book_header "${book['author']}" "${book['publication_year']}" "${book['publisher']}" "${book['link']}" "${book['num_pages']}" "${book['ratings_count']}" "${book['average_rating']}" "${book['isbn']}" "${book['kindle_asin']}")
+book['header']=$(get_book_header "${book['author']}" "${book['publication_year']}" "${book['publisher']}" "${book['link']}" "${book['num_pages']}" "${book['ratings_count']}" "${book['average_rating']}" "${book['isbn']}" "${book['kindle_asin']}" "${book['asin']}")
 
 book['bookFileName']="${book['cleantitle']}"
 if [ -n "${book['clean_publication_date']}" ]; then

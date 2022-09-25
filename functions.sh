@@ -14,6 +14,7 @@ get_book_header(){
   local average_rating="${7}"
   local isbn="${8}"
   local kindle_asin="${9}"
+  local asin="${10}"
   local result=""
 
   if [ -n "${author}" ]; then
@@ -32,7 +33,7 @@ get_book_header(){
     result="${result} | [[${publisher}]]" 
   fi
   if [ -n "${link}" ]; then
-    result="${result} | [Goodreads Profile](${link})"
+    result="${result}\n[Goodreads book](${link})"
   fi
   if [ -n "${num_pages}" ]; then
     result="${result} | ${num_pages}"  
@@ -43,6 +44,10 @@ get_book_header(){
   if [ -n "${average_rating}" ]; then
     result="${result} | ${average_rating}"
   fi
+  if [ -n "${asin}" ]; then
+    result="${result}\n[Amazon book](https://www.amazon.com/dp/${asin})"
+  fi
+
   echo "${result}"
 }
 
