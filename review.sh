@@ -144,7 +144,8 @@ then
 fi
 review['reviewNotePath']="${path_reviews}/${review[reviewNoteFile]}.md"
 
-# PRINTING REVIEW
+if [ -n "${review['body']}" ]; then
+  # PRINTING REVIEW
 sed -E \
     -e "s;%bookid%;${book['bookid']};g" \
     -e "s;%isbn%;${book['isbn']};g" \
@@ -183,7 +184,7 @@ sed -E \
     -e "s;%header%;${review['header']};g" \
     -e "s;%shelf%;${shelf};g" \
     review.tpl > "${review['reviewNotePath']}"
-
+fi
 
 # AUTHOR
 if [ -n "${author['authorid']}" ]; then
