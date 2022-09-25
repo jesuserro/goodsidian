@@ -137,8 +137,12 @@ review['book_large_image_url']="${2}"
 review['header']=$(get_review_header "${author['name']}" "${book['publication_year']}" "${book['publisher']}" "${book['format']}")
 
 review['reviewNoteFile']="${review[clean_read_at]} ${book[cleantitle]}"
-review['reviewNotePath']="${vaultpath}/${review[reviewNoteFile]} - REVIEW.md"
 
+if [ ! -d "${path_reviews}" ]; 
+then
+    mkdir -p "${path_reviews}"
+fi
+review['reviewNotePath']="${path_reviews}/${review[reviewNoteFile]}.md"
 
 # PRINTING REVIEW
 sed -E \

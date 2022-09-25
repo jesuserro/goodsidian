@@ -92,13 +92,18 @@ if [ -n "${book['clean_publication_date']}" ]; then
 elif [ -n "${book['publication_date']}" ]; then
     book['bookFileName']="${book['publication_date']} ${book['cleantitle']}"
 fi
-book['bookPath']="${vaultpath}/${book[bookFileName]} - BOOK.md"
 
 if [ -z "${book[bookFileName]}" ];
 then
     echo "Missing: ${book['title']}"
     exit
 fi
+
+if [ ! -d "${path_libros}" ]; 
+then
+    mkdir -p "${path_libros}"
+fi
+book['bookPath']="${path_libros}/${book[bookFileName]}.md"
 
 sed -E \
     -e "s;%bookid%;${book['bookid']};g" \

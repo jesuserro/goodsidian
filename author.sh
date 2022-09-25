@@ -78,12 +78,17 @@ do
 done
 author['books']=$(echo "${books[*]}")
 
-author['authorFile']="${vaultpath}/${author['name']} - WRITER.md"
-if [ -n "${author['born_at']}" ]; then
-    author['clean_born_at']=$( echo "${author['born_at']}" | sed -e 's|\/||g' )
-    author['authorFile']="${vaultpath}/${author['clean_born_at']} ${author['name']} - WRITER.md"
+
+if [ ! -d "${path_autores}" ]; 
+then
+    mkdir -p "${path_autores}"
 fi
 
+author['authorFile']="${path_autores}/${author['name']}.md"
+if [ -n "${author['born_at']}" ]; then
+    author['clean_born_at']=$( echo "${author['born_at']}" | sed -e 's|\/||g' )
+    author['authorFile']="${path_autores}/${author['clean_born_at']} ${author['name']}.md"
+fi
 
 # AUTHOR
 sed -E \
