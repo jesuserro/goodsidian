@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# USAGE: ./shelf.sh patata
+# USAGE: ./shelf.sh currently-reading
 
 if [ -z "$1" ];
 then
