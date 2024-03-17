@@ -1,71 +1,75 @@
+# What is Goodsidian?
+
+Goodsidian takes updates to your shelves on [Goodreads](https://www.goodreads.com/) and formats them to a note in [Obsidian](https://obsidian.md/).
+
 # My Goodsidian Usage
+
+- Create your config file with your Goodreads (GR) params from [goodreads.com/api/keys](https://www.goodreads.com/api/keys)
 - Open shell and run "sh index.sh PUT_YOUR_SHELF_NAME_HERE"
 - Open shell and run "sh book.sh PUT_BOOKID_HERE" Ex: sh book.sh 82405
 - sh author.sh 4905855
 - Some minutes after, goodreads books in md notes will be downloaded in vaultpath defined in goodreads.cfg
 
-# Goodsidian 
-Goodsidian takes updates to your shelves on [Goodreads](https://www.goodreads.com/) and formats them to a note in [Obsidian](https://obsidian.md/).
-
-> You can help me keep creating tools like this by [buying me a coffee](https://www.buymeacoffee.com/joschua).
-
-<a href="https://www.buymeacoffee.com/joschua" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height= "48" width="173"></a>
-
-## Help wanted! 🤝
-I'd love to turn this into a proper plugin for Obsidian but my TypeScript knowledge is pretty *lacking*. 
-
-If you'd like to collaborate/contribute on that, head to the [Goodsidian plugin](https://github.com/selfire1/goodsidian-plugin) repo and reach out!
-
 ## Overview
+
 Goodsidian extracts data from your "currently-reading" and "read" Goodreads rss feeds. That data then gets formatted and creates (if a new book) or updates (if book is read) a note in your Obsidian vault.
 
 ![Goodsidian overview picture](https://github.com/selfire1/goodsidian/blob/master/images/g-to-obs.png?raw=true)
-
 
 **Disclaimer**: Never run a script without knowing what it does. Make sure you understand the script and back up your vault. I use this script on my own vault but cannot guarantee no data losses or unintended changes.
 
 If you find value in this resource, consider sponsoring my next read on Patreon.
 
 ## Setting up the script
+
 This master branch of this script is written for bash on MacOS. Thanks to [bboerzel](https://github.com/selfire1/goodsidian/issues/1)'s contribution you can find the script for linux bash on [another branch](https://github.com/selfire1/goodsidian/tree/linux-bash).
 
 ## Variables
+
 You can find the url to your Goodreads RSS feed by navigating to one of your shelfes and clicking the "RSS" button at the bottom of the page.
-* for `url` enter the Goodreads rss url for the "currently-reading" shelf
-* for `readurl` enter the Goodreads rss url for the "read" shelf
-* for `vaultpath` enter the path to your vault
+
+- for `url` enter the Goodreads rss url for the "currently-reading" shelf
+- for `readurl` enter the Goodreads rss url for the "read" shelf
+- for `vaultpath` enter the path to your vault
 
 ## Name of your bookshelf
+
 Open your Goodreads rss feed. It will say something like "Joschua's bookshelf" in the beginning. Replace `Joschua.s bookshelf` in line 24 in the script with the name of your bookshelf.
 
 ## Adapt your format
+
 ### Currently reading
+
 For a book that's being currently read the default output will look like this:
 
 ![Format of a currently reading book note](https://github.com/selfire1/goodsidian/blob/master/images/reading%20example.png?raw=true)
 
 For your use case you will surely want to change this. You can do so with the following variables:
-* `${title}`: Self-explanatory. The title.
-* `${author}`: The author.
-* `${bookid}`: The Goodreads bookid. Keep this in your frontmatter, so that the script can check for books marked as "read"
-* `${imglink}`: The link to the book cover.
-* `${pub}`: Year published
+
+- `${title}`: Self-explanatory. The title.
+- `${author}`: The author.
+- `${bookid}`: The Goodreads bookid. Keep this in your frontmatter, so that the script can check for books marked as "read"
+- `${imglink}`: The link to the book cover.
+- `${pub}`: Year published
 
 ### Read
+
 When a book is marked 'read' in the Goodreads rss feed, the script checks if a note has a corresponding Goodreads bookid. If so, it removes the `#currently-reading` tag, adds a `#read` tag. It also appends two lines for "Year read" and "Month read" after the "Year published" line.
 
 So when tinkering with the formatting, be aware that the script targets the bookid and the "Year read" lines. If you delete or change these around, the script might have unintended consquences.
 
 ## Running the script
+
 If you're unfamiliar with file navigation and executing a script, [here](https://joschuasgarden.com/Shell#File+navigation) is a short overview.
 
 Otherwise, set the script as executable and run it. It might take a bit but then should notify you on new books read or currently-reading book notes created.
 
-Forks and improvements are welcome. If you have a problem, don't hesitate to raise an issue or shoot me a message at hi@joschuasgarden.com. I'll do my best to help out.
+Forks and improvements are welcome. If you have a problem, don't hesitate to raise an issue or shoot me a message at <hi@joschuasgarden.com>. I'll do my best to help out.
 
 ## Detailed script commentary
 
 First, the script sets the urls and path to vault as variables. It also assigns the current time to variables.
+
 ```bash
 # url for "Currently reading":
 url="https://www.goodreads.com/url-to-your-rss-feed-shelf=currently-reading"
@@ -83,6 +87,7 @@ month=$(date +%B)
 ```
 
 Next up the script grabs the data from the rss feed and takes out the items that we need. First from the "currently-reading" sheld and then from the "read" shelf:
+
 ```bash
 # This grabs the data from the currently reading rss feed and formats it
 IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>)' | \
@@ -107,6 +112,7 @@ fmt
 ```
 
 Next up we turn the data into an array, a list essentially. Each item that we pulled from the rss gets split up. We also remove leading and trailing whitespace.
+
 ```bash
 # Turn the data into an array
 arr=($(echo $feed | tr "|" "\n")) # CURRENTLY-READING
@@ -226,7 +232,7 @@ links: [[Books MOC]]
 done
 ```
 
-Next up we get into the meat of things. We now check if any book notes that were "currently-reading" now have been read. 
+Next up we get into the meat of things. We now check if any book notes that were "currently-reading" now have been read.
 
 We take all bookids from the 'read' shelf and check if there is any note that contains them and is marked with the tag `#currently-reading`.
 
@@ -290,3 +296,12 @@ osascript -e "display notification \"No new read books.\" with title \"Read: No 
 fi
 ```
 
+## Help wanted! 🤝
+
+> You can help me keep creating tools like this by [buying me a coffee](https://www.buymeacoffee.com/joschua).
+
+<a href="https://www.buymeacoffee.com/joschua" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height= "48" width="173"></a>
+
+I'd love to turn this into a proper plugin for Obsidian but my TypeScript knowledge is pretty *lacking*.
+
+If you'd like to collaborate/contribute on that, head to the [Goodsidian plugin](https://github.com/selfire1/goodsidian-plugin) repo and reach out!
