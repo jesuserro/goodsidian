@@ -14,7 +14,7 @@ url="$urlbase/review/list_rss/$user?key=$key&shelf=$1"
 # This grabs the data from the currently reading rss feed and formats it
 IFS=$'\n' feed=$(curl --silent "$url" | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>|user_review>|guid>|user_rating>|user_read_at>|user_date_added>)' | \
 sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' \
--e 's/Jei.s bookshelf: '$shelf'//' \
+-e 's/Your Bookshelf: '$shelf'//' \
 -e 's/<book_large_image_url>//' -e 's/<\/book_large_image_url>/ | /' \
 -e 's/<title>//' -e 's/<\/title>/ | /' \
 -e 's/<book_description>//' -e 's/<\/book_description>/ | /' \
