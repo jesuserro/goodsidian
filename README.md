@@ -300,8 +300,8 @@ fi
 
 > You can help me keep creating tools like this by [buying me a coffee](https://www.buymeacoffee.com/joschua).
 
-<a href="https://www.buymeacoffee.com/joschua" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height= "48" width="173"></a>
-
 I'd love to turn this into a proper plugin for Obsidian but my TypeScript knowledge is pretty *lacking*.
 
 If you'd like to collaborate/contribute on that, head to the [Goodsidian plugin](https://github.com/selfire1/goodsidian-plugin) repo and reach out!
+
+<a href="https://www.buymeacoffee.com/joschua" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height= "48" width="173"></a>
