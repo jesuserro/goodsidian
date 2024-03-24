@@ -1,6 +1,6 @@
-#!/bin/sh
-# USAGE: sh book.sh 82405
-# see: https://unix.stackexchange.com/questions/277861/parse-xml-returned-from-curl-within-a-bash-script
+#!/bin/bash
+# USAGE: ./book.sh 10988371 Resurrección
+# USAGE: ./book.sh 82405 Transfiguración
 
 if [ -z "$1" ]; then
   echo "Especifica un bookid"
@@ -10,101 +10,121 @@ fi
 . ./goodreads.cfg
 . ./functions.sh
 
+
+# echo "review guid: ${review[guid]}"
+ 
 xpathBook="GoodreadsResponse/book"
-xpathAuthor="GoodreadsResponse/book/authors/author[1]"
+xpathAuthor="${xpathBook}/authors/author[1]"
 
 url="$urlbase/book/show?format=xml&key=$apikey&id=$1"
-
-# echo "BOOK $url"
-
 xml=$(curl -s $url)
 
+declare -A book
+book['bookid']="${1}"
+book['shelf']=""
+if [ -n "$2" ];
+then
+    book['shelf']=${2}
+fi
+book['image_url']=""
+if [ -n "$3" ];
+then
+    book['image_url']=${3}
+fi
+book['date_updated']=""
+if [ -n "$4" ];
+then
+    book['date_updated']=${4}
+fi
+
 # LIBRO
-title=$( echo $xml | xmllint --xpath "//$xpathBook/title[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+
+##
+# Book data from review
+book['title']=$( echo $xml | xmllint --xpath "//$xpathBook/title/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 # 2. Delete illegal (':' and '/') and unwanted ('#') characters
-cleantitle=$(echo "${title}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
+book['cleantitle']=$(echo "${book['title']}" | sed -e 's/\///' -e 's/:/ –/' -e 's/#//')
+# book['image_url']=$( echo $xml | xmllint --xpath "//$xpathBook/image_url/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
 
-image_url=$( echo $xml | xmllint --xpath "//$xpathBook/image_url[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-description=$( echo $xml | xmllint --xpath "//$xpathBook/description[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-description=$(clean_long_text "${description}")
-publisher=$( echo $xml | xmllint --xpath "//$xpathBook/publisher[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-isbn=$( echo $xml | xmllint --xpath "//$xpathBook/isbn[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-isbn13=$( echo $xml | xmllint --xpath "//$xpathBook/isbn13[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-if [ -z "$isbn" ]; then
-  isbn=$isbn13
+book['asin']=$( echo $xml | xmllint --xpath "//$xpathBook/asin/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['isbn']=$( echo $xml | xmllint --xpath "//$xpathBook/isbn/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['isbn13']=$( echo $xml | xmllint --xpath "//$xpathBook/isbn13/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['num_pages']=$( echo $xml | xmllint --xpath "//$xpathBook/num_pages/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['uri']=$( echo $xml | xmllint --xpath "//$xpathBook/uri/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['publisher']=$( echo $xml | xmllint --xpath "//$xpathBook/publisher/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['format']=$( echo $xml | xmllint --xpath "//$xpathBook/format/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+
+book['description']=$( echo $xml | xmllint --xpath "//$xpathBook/description/text()" - | sed -e 's|<!\[CDATA\[||' -e 's|\]\]>||' )
+book['description']=$(clean_long_text "${book['description']}")
+book['average_rating']=$( echo $xml | xmllint --xpath "//$xpathBook/average_rating/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['ratings_count']=$( echo $xml | xmllint --xpath "//$xpathBook/ratings_count/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['link']=$( echo $xml | xmllint --xpath "//$xpathBook/link/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['original_publication_year']=$( echo $xml | xmllint --xpath "//$xpathBook/work/original_publication_year/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['authorid']=$( echo $xml | xmllint --xpath "//$xpathAuthor/id/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+book['author']=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+
+book['popular_shelves']=$( echo $xml | xmllint --xpath "//$xpathBook/popular_shelves/shelf/@name" - | sed -e 's/name="//' -e 's/"//')
+book['popular_shelves_counts']=$( echo $xml | xmllint --xpath "//$xpathBook/popular_shelves/shelf/@count" - | sed -e 's/count="//' -e 's/"//' )
+mapfile -t arrshelves <<< "${book['popular_shelves']}"
+mapfile -t arrcounts <<< "${book['popular_shelves_counts']}"
+
+if [ -n "${arrshelves}" ]; then
+
+    for index in "${!arrshelves[@]}"
+    do
+        cleanname="${arrshelves[$index]#"${arrshelves[$index]%%[![:space:]]*}"}"
+        cleancount="${arrcounts[$index]#"${arrcounts[$index]%%[![:space:]]*}"}"
+        books[$index]="[[${cleanname}]] (${cleancount})"
+    done
+    book['popular_shelves']=$(echo "${books[*]}")
 fi
-kindle_asin=$( echo $xml | xmllint --xpath "//$xpathBook/kindle_asin[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-publication_year=$( echo $xml | xmllint --xpath "//$xpathBook/publication_year[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-average_rating=$( echo $xml | xmllint --xpath "//$xpathBook/average_rating[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-num_pages=$( echo $xml | xmllint --xpath "//$xpathBook/num_pages[1]/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
+##
 
-
-# AUTHOR
-authorId=$( echo $xml | xmllint --xpath "//$xpathAuthor/id/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-author=$( echo $xml | xmllint --xpath "//$xpathAuthor/name/text()" - | sed -e 's/<!\[CDATA\[//' -e 's/\]\]>//' )
-
-# echo "$bookid -> $title -> $kindle_asin -> $isbn -> $isbn13 -> $publication_year"
-echo "BOOK $1 -> $title -> $publisher"
-
-
-bookNote="---
-aliases: []
-bookid: ${1}
-isbn: ${isbn}
-asin: ${kindle_asin}
-author:: [[${author}]]
-pages: ${num_pages}
-publisher:: [[${publisher}]]  
-book_published:: [[${publication_year}]]  
-cover: ${image_url}   
-tags: 
-- book/goodreads/profile
-date: ${publication_year}
-rating: ${average_rating}
-emotion:
----
-
-# ${title}
-
-**Author**: [[${author}]]
-**Fecha Publicación**: $publication_year
-**Ficha Goodreads**: [Review, Private notes & Quotes]($1)
-**Tags**: [[goodreads]]
-
-![b|150](${image_url})
-
-## Sinopsis
-${description}
-
-## Índice
-
-## Referencias
-- " 
-
-  bookFileName="${publication_year} ${cleantitle}"
-  bookPath="${vaultpath}/${bookFileName}.md"
-
-
-
-
-# AUTOR
-if [ -z "$authorId" ]; then
-  echo "Missing author_id"
-  exit 1
-fi
-sleep 1
-
-authorIdCleaned=$( echo $authorId | sed -e 's/^[[:space:]]*//')
-
-if [ -z "$2" -a -z "$3" ]; then
-  # Review note missing
-  sh ./author.sh $authorIdCleaned "${bookNote}" "${bookPath}"
-  exit 1
+if [ -z "${book['publication_date']}" ]; then
+    book['publication_date']=${book['original_publication_year']}
 fi
 
-# Review note exist
-reviewNote="${2} [[${bookFileName}]]"
-sh ./author.sh $authorIdCleaned "${bookNote}" "${bookPath}" "${reviewNote}" "${3}"
+book['header']=$(get_book_header "${book['author']}" "${book['publication_year']}" "${book['publisher']}" "${book['link']}" "${book['num_pages']}" "${book['ratings_count']}" "${book['average_rating']}" "${book['isbn']}" "${book['kindle_asin']}" "${book['asin']}")
 
+book['bookFileName']="${book['cleantitle']}"
+if [ -n "${book['clean_publication_date']}" ]; then
+    book['bookFileName']="${book['clean_publication_date']} ${book['cleantitle']}"
+elif [ -n "${book['publication_date']}" ]; then
+    book['bookFileName']="${book['publication_date']} ${book['cleantitle']}"
+fi
 
+if [ -z "${book[bookFileName]}" ];
+then
+    echo "Missing: ${book['title']}"
+    exit
+fi
 
+if [ ! -d "${path_libros}" ]; 
+then
+    mkdir -p "${path_libros}"
+fi
+book['bookPath']="${path_libros}/${book[bookFileName]}.md"
+
+sed -E \
+    -e "s;%bookid%;${book['bookid']};g" \
+    -e "s;%authorid%;${book['authorid']};g" \
+    -e "s;%isbn%;${book['isbn']};g" \
+    -e "s;%asin%;${book['asin']};g" \
+    -e "s;%kindle_asin%;${book['kindle_asin']};g" \
+    -e "s;%title%;${book['title']};g" \
+    -e "s;%date_updated%;${book['date_updated']};g" \
+    -e "s;%publication_year%;${book['publication_year']};g" \
+    -e "s;%publication_date%;${book['publication_date']};g" \
+    -e "s|%description%|${book['description']}|g" \
+    -e "s;%image_url%;${book['image_url']};g" \
+    -e "s;%average_rating%;${book['average_rating']};g" \
+    -e "s;%publisher%;${book['publisher']};g" \
+    -e "s;%author%;${book['author']};g" \
+    -e "s;%num_pages%;${book['num_pages']};g" \
+    -e "s;%goodreads_url%;${book['link']};g" \
+    -e "s;%average_rating%;${book['average_rating']};g" \
+    -e "s;%ratings_count%;${book['ratings_count']};g" \
+    -e "s;%header%;${book['header']};g" \
+    -e "s;%shelf%;${book['shelf']};g" \
+    -e "s;%popular_shelves%;${book['popular_shelves']};g" \
+    book.tpl > "${book['bookPath']}"

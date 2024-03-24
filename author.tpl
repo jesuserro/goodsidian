@@ -1,26 +1,28 @@
 ---
 aliases: []
-authorid: %authorId%
-author:: [[%authorName%]]  
+authorid: %authorid%
+author: %name%
 tags: 
-- people/goodreads/author
+- people/author/writer
 popular_shelves:
-date: %user_read_at%
-readed: %user_read_at%
-created: %user_date_created% 
-updated: %user_date_added% 
-rating: %user_rating%
+date: %read_at%
+readed: %read_at%
+created: %date_created% 
+updated: %date_updated% 
+average_rating: %average_rating%
+ratings_count: %ratings_count%
+text_reviews_count: %text_reviews_count%
+works_count: %works_count%
+cover: %image_url%
 emotion:
 ---
 
-# %authorName%
+# %name% 
+![b|150](%image_url%)
+%hometown% (%born_at% - %died_at%)
+[Goodreads profile](%link%) | [[escritores]]
 
-![b|150](%authorImage%)
-[Goodreads profile](%authorLink%)
-**Tags**:: [[goodreads]] %user_shelves_links%
+## About
+%about%
 
-## Libros
-%books%
-
-## Mis Reseñas
-%reviews% 
+## Books (%works_count%) %books%

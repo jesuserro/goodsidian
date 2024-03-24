@@ -1,30 +1,46 @@
 ---
 aliases: []
+reviewid: %reviewid%
 bookid: %bookid%
 isbn: %isbn%
-asin: %kindle_asin%
-author:: [[%author%]]
+isbn13: %isbn13%
+asin: %asin%
+kindle: %kindle_uri%
+authorid: %authorid%
+author: %author%
 pages: %num_pages%
-publisher:: [[%publisher%]]  
-book_published:: [[%book_published%]]  
-cover: %image_url%   
-tags: %tags%
-%user_shelves%
-date: %user_read_at%
-rating: %user_rating%
+publisher: %publisher%   
+cover: %book_large_image_url%
+book_published: %publication_date% 
+read_at: %read_at%
+started_at: %started_at%
+date_added: %date_added%
+date_updated: %date_updated%
+rating: %rating%
+status: %shelf% 
+votos: %votes%   
+tags: 
+- reviews %shelves%
 emotion:
 ---
-
 # %title%
+%published_read_at%
+[Goodreads](%url%) %votes% votos
 
-**Fecha Review**: %published_user_read_at%
-**Ficha Goodreads**: [Goodreads Private Notes & Quotes](%1%) 
-**Tags**: [[goodreads]] %user_shelves_links%
-**Rating**: %user_rating% 
+![b|150](%book_large_image_url%)
 
-![b|150](%imglink%)
+%header%
+[[%bookFileName%]]
+[Kindle app](%kindle_uri%) | [[reviews]]
 
-%user_review%
+%body%
 
-## Referencias
-%referencias%
+## Valoración 
+**Tags**: %shelves_links%
+**Rating**: %rating%
+
+## Recomendado por
+%recommended_by%
+
+## Recomendado para
+%recommended_for%

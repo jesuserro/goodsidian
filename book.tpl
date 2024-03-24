@@ -1,34 +1,35 @@
 ---
 aliases: []
 bookid: %bookid%
+authorid: %authorid%
 isbn: %isbn%
-asin: %kindle_asin%
-author:: [[%author%]]
+asin: %asin%
+kindle_asin: %kindle_asin%
+author: %author%
 pages: %num_pages%
-publisher:: [[%publisher%]]  
-book_published:: [[%publication_year%]]  
+publisher: %publisher%  
+book_published: %publication_date%
+status: %shelf%  
 cover: %image_url%   
 tags: 
-- book/goodreads/profile
-date: %publication_year%
-rating: %average_rating%
+- books 
+date: %publication_date%
+date_updated: %date_updated%
+average_rating: %average_rating%
+ratings_count: %ratings_count%
 emotion:
 ---
-
 # %title%
-
-**Author**: [[%author%]]
-**Fecha Publicación**: %publication_year%
-**Ficha Goodreads**: [Review, Private notes & Quotes](%goodreads_url%)
-**Tags**: [[goodreads]]
-
 ![b|150](%image_url%)
+%header%
+[[libros]]
 
 ## Sinopsis
 %description%
 
-## Índice
-%indice%
+## Popular Shelves 
+%popular_shelves%
 
-## Referencias
-%referencias%
+
+
+
