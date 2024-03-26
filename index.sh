@@ -39,6 +39,7 @@ declare -A reviews
 # Variables para almacenar datos del libro actual
 title=""
 author=""
+guid=""
 guid_found=0
 
 # Iterar por todos los tags xml del feed
@@ -49,12 +50,15 @@ for tag in "${xml_tags[@]}"; do
         
         # Si ya se ha almacenado un libro completo, añadirlo a la lista de reviews
         if [ ${#review[@]} -gt 0 ]; then
-            reviews+=([${review["title"]}]="${review["author_name"]}")
+            reviews["$guid_title"]=$title
+            reviews["$guid_author"]=$author
         fi
         
         # Limpiar el array review para el próximo libro
         unset review
-        declare -A review
+        guid=$(echo "$tag" | sed -e 's/<guid>//g' -e 's/<\/guid>//g' -e 's/.*review\/show\/\([0-9]*\).*/\1/')
+        guid_title="${guid}_title"
+        guid_author="${guid}_author"
     fi
 
     if [[ "$tag" == *"<title>"* ]]; then
@@ -69,8 +73,8 @@ for tag in "${xml_tags[@]}"; do
 
     if [[ "$guid_found" -eq 1 && ! -z "$title" && ! -z "$author" ]]; then
         # Si se encontró el tag <guid> y tenemos un título y un autor, almacenamos el libro en el array de reviews
-        review["title"]=$title
-        review["author_name"]=$author
+        reviews["$guid_title"]=$title
+        reviews["$guid_author"]=$author
         # Restablecer las variables para el próximo libro
         guid_found=0
         title=""
@@ -80,13 +84,17 @@ done
 
 # Añadir el último libro a la lista de reviews
 if [ ${#review[@]} -gt 0 ]; then
-    reviews+=([${review["title"]}]="${review["author_name"]}")
+    reviews["$guid_title"]=$title
+    reviews["$guid_author"]=$author
 fi
 
 # Mostrar el número de reviews encontrados
-num_reviews=${#reviews[@]}
+num_reviews=$((${#reviews[@]} / 2))
 echo "Número de reviews encontrados: $num_reviews"
 echo "Detalles de los reviews encontrados:"
-for title in "${!reviews[@]}"; do
-    echo "Título: $title, Autor: ${reviews[$title]}"
+for guid in "${!reviews[@]}"; do
+    if [[ "$guid" == *"_title" ]]; then
+        guid_key="${guid/_title/}"
+        echo "GUID: ${guid_key}, Título: ${reviews["$guid"]}, Autor: ${reviews["${guid_key}_author"]}"
+    fi
 done
