@@ -22,7 +22,7 @@ echo "URL de la API de Goodreads: $url"
 feed=$(curl --silent "$url")
 
 # Extraer información XML del feed
-IFS=$'\n' read -r -d '' -a xml_tags < <(echo "$feed" | awk -F'</item>' '{for(i=1;i<=NF;i++) print $i}' | grep -E '(title>|book_large_image_url>|author_name>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>|user_review>|guid>|user_rating>|user_read_at>|user_date_added>)')
+IFS=$'\n' read -r -d '' -a xml_tags < <(echo "$feed" | awk -F'</item>' '{for(i=1;i<=NF;i++) print $i}' | grep -E '(title>|author_name>|book_large_image_url>|book_published>|book_id>|user_date_created>|book_description>|user_shelves>|num_pages>|isbn>|average_rating>|user_review>|guid>|user_rating>|user_read_at>|user_date_added>)')
 
 # Contar el número de tags xml devueltos por la api
 num_tags=${#xml_tags[@]}
@@ -33,11 +33,12 @@ if [ "$num_tags" -eq 0 ]; then
     exit 0
 fi
 
-# Inicializar array para almacenar libros
-declare -a books
+# Inicializar array para almacenar reviews
+declare -a reviews
 
 # Variables para almacenar datos del libro actual
 title=""
+author=""
 guid_found=0
 
 # Iterar por todos los tags xml del feed
@@ -45,7 +46,15 @@ for tag in "${xml_tags[@]}"; do
     if [[ "$tag" == *"<guid>"* ]]; then
         # Si encontramos un tag <guid>, es el comienzo de un nuevo libro
         guid_found=1
-        title=""
+        
+        # Si ya se ha almacenado un libro completo, añadirlo a la lista de reviews
+        if [ ${#review[@]} -gt 0 ]; then
+            reviews+=("${review[@]}")
+        fi
+        
+        # Limpiar el array review para el próximo libro
+        unset review
+        declare -a review
     fi
 
     if [[ "$tag" == *"<title>"* ]]; then
@@ -53,19 +62,30 @@ for tag in "${xml_tags[@]}"; do
         title=$(echo "$tag" | sed -e 's/<title>//g' -e 's/<\/title>//g' -e 's/<!\[CDATA\[\(.*\)\]\]>/\1/g')
     fi
 
-    if [[ "$guid_found" -eq 1 && ! -z "$title" ]]; then
-        # Si se encontró el tag <guid> y tenemos un título, almacenamos el libro en el array de libros
-        books+=("Título: $title")
-        # Restablecer la bandera y la variable del título para el próximo libro
+    if [[ "$tag" == *"<author_name>"* ]]; then
+        # Si encontramos un tag <author_name>, almacenamos el nombre del autor del libro
+        author=$(echo "$tag" | sed -e 's/<author_name>//g' -e 's/<\/author_name>//g' -e 's/<!\[CDATA\[\(.*\)\]\]>/\1/g')
+    fi
+
+    if [[ "$guid_found" -eq 1 && ! -z "$title" && ! -z "$author" ]]; then
+        # Si se encontró el tag <guid> y tenemos un título y un autor, almacenamos el libro en el array de reviews
+        review+=("Título: $title, Autor: $author")
+        # Restablecer las variables para el próximo libro
         guid_found=0
         title=""
+        author=""
     fi
 done
 
-# Mostrar el número de libros encontrados
-num_books=${#books[@]}
-echo "Número de libros encontrados: $num_books"
-echo "Títulos de los libros encontrados:"
-for book in "${books[@]}"; do
-    echo "$book"
+# Añadir el último libro a la lista de reviews
+if [ ${#review[@]} -gt 0 ]; then
+    reviews+=("${review[@]}")
+fi
+
+# Mostrar el número de reviews encontrados
+num_reviews=${#reviews[@]}
+echo "Número de reviews encontrados: $num_reviews"
+echo "Detalles de los reviews encontrados:"
+for review in "${reviews[@]}"; do
+    echo "$review"
 done
