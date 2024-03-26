@@ -34,7 +34,7 @@ if [ "$num_tags" -eq 0 ]; then
 fi
 
 # Inicializar array para almacenar reviews
-declare -a reviews
+declare -A reviews
 
 # Variables para almacenar datos del libro actual
 title=""
@@ -49,12 +49,12 @@ for tag in "${xml_tags[@]}"; do
         
         # Si ya se ha almacenado un libro completo, añadirlo a la lista de reviews
         if [ ${#review[@]} -gt 0 ]; then
-            reviews+=("${review[@]}")
+            reviews+=([${review["title"]}]="${review["author_name"]}")
         fi
         
         # Limpiar el array review para el próximo libro
         unset review
-        declare -a review
+        declare -A review
     fi
 
     if [[ "$tag" == *"<title>"* ]]; then
@@ -69,7 +69,8 @@ for tag in "${xml_tags[@]}"; do
 
     if [[ "$guid_found" -eq 1 && ! -z "$title" && ! -z "$author" ]]; then
         # Si se encontró el tag <guid> y tenemos un título y un autor, almacenamos el libro en el array de reviews
-        review+=("Título: $title, Autor: $author")
+        review["title"]=$title
+        review["author_name"]=$author
         # Restablecer las variables para el próximo libro
         guid_found=0
         title=""
@@ -79,13 +80,13 @@ done
 
 # Añadir el último libro a la lista de reviews
 if [ ${#review[@]} -gt 0 ]; then
-    reviews+=("${review[@]}")
+    reviews+=([${review["title"]}]="${review["author_name"]}")
 fi
 
 # Mostrar el número de reviews encontrados
 num_reviews=${#reviews[@]}
 echo "Número de reviews encontrados: $num_reviews"
 echo "Detalles de los reviews encontrados:"
-for review in "${reviews[@]}"; do
-    echo "$review"
+for title in "${!reviews[@]}"; do
+    echo "Título: $title, Autor: ${reviews[$title]}"
 done
