@@ -33,7 +33,39 @@ if [ "$num_tags" -eq 0 ]; then
     exit 0
 fi
 
+# Inicializar array para almacenar libros
+declare -a books
+
+# Variables para almacenar datos del libro actual
+title=""
+guid_found=0
+
 # Iterar por todos los tags xml del feed
 for tag in "${xml_tags[@]}"; do
-    echo "$tag"
+    if [[ "$tag" == *"<guid>"* ]]; then
+        # Si encontramos un tag <guid>, es el comienzo de un nuevo libro
+        guid_found=1
+        title=""
+    fi
+
+    if [[ "$tag" == *"<title>"* ]]; then
+        # Si encontramos un tag <title>, almacenamos el título del libro
+        title=$(echo "$tag" | sed -e 's/<title>//g' -e 's/<\/title>//g' -e 's/<!\[CDATA\[\(.*\)\]\]>/\1/g')
+    fi
+
+    if [[ "$guid_found" -eq 1 && ! -z "$title" ]]; then
+        # Si se encontró el tag <guid> y tenemos un título, almacenamos el libro en el array de libros
+        books+=("Título: $title")
+        # Restablecer la bandera y la variable del título para el próximo libro
+        guid_found=0
+        title=""
+    fi
+done
+
+# Mostrar el número de libros encontrados
+num_books=${#books[@]}
+echo "Número de libros encontrados: $num_books"
+echo "Títulos de los libros encontrados:"
+for book in "${books[@]}"; do
+    echo "$book"
 done
