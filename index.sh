@@ -48,12 +48,6 @@ for tag in "${xml_tags[@]}"; do
         # Si encontramos un tag <guid>, es el comienzo de un nuevo libro
         guid_found=1
         
-        # Si ya se ha almacenado un libro completo, añadirlo a la lista de reviews
-        if [ ${#review[@]} -gt 0 ]; then
-            reviews["$guid_title"]=$title
-            reviews["$guid_author"]=$author
-        fi
-        
         # Limpiar el array review para el próximo libro
         unset review
         guid=$(echo "$tag" | sed -e 's/<guid>//g' -e 's/<\/guid>//g' -e 's/.*review\/show\/\([0-9]*\).*/\1/')
@@ -81,12 +75,6 @@ for tag in "${xml_tags[@]}"; do
         author=""
     fi
 done
-
-# Añadir el último libro a la lista de reviews
-if [ ${#review[@]} -gt 0 ]; then
-    reviews["$guid_title"]=$title
-    reviews["$guid_author"]=$author
-fi
 
 # Mostrar el número de reviews encontrados
 num_reviews=$((${#reviews[@]} / 2))
